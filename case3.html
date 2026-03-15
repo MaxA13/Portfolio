@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Home App Ecosystem - Case Study</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        neutral: {
+                            950: '#0a0a0a',
+                            900: '#171717',
+                            800: '#262626',
+                            700: '#404040',
+                            400: '#a3a3a3',
+                            300: '#d4d4d4',
+                        },
+                        brand: {
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                        }
+                    },
+                    spacing: {
+                        '72': '18rem',
+                        '112': '28rem',
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body class="antialiased">
+
+    <!-- Navigation -->
+    <nav
+        class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-6 py-4 bg-[#0a0a0a]/80 backdrop-blur-md border-b border-neutral-800/50 md:px-12 reveal">
+        <a href="index.html"
+            class="group flex items-center gap-2 text-sm font-medium text-neutral-400 transition-all hover:text-white">
+            <i data-feather="arrow-left" class="h-4 w-4 transition-transform group-hover:-translate-x-1"></i>
+            Back to Portfolio
+        </a>
+        <div class="flex items-center gap-3">
+            <div
+                class="h-8 w-8 rounded-full overflow-hidden bg-neutral-800 flex items-center justify-center text-white font-semibold">
+                <img src="img/ava.png" alt="MA" class="h-full w-full object-cover">
+            </div>
+            <span class="font-semibold text-white tracking-wide text-sm hidden md:block">Max A</span>
+        </div>
+    </nav>
+
+    <div
+        class="relative flex w-full flex-col items-center gap-10 px-4 pt-24 pb-12 md:gap-16 md:px-8 md:pt-32 md:pb-20 lg:pb-24 lg:pt-36 overflow-hidden">
+
+        <!-- Ambient Background Glows -->
+        <div class="fixed inset-0 z-0 bg-grid pointer-events-none opacity-40"></div>
+        <div
+            class="absolute right-[-10%] top-[5%] z-0 h-96 w-96 rounded-full bg-brand-600/20 blur-[100px] pointer-events-none">
+        </div>
+        <div
+            class="absolute left-[-10%] bottom-[20%] z-0 h-72 w-72 rounded-full bg-brand-700/20 blur-[80px] pointer-events-none">
+        </div>
+        <!-- Section: 1 -->
+        <div class="reveal relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-12">
+            <div class="flex w-full flex-col items-start gap-3">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="flex h-10 w-10 items-center justify-center rounded-lg border border-[#10b981]/20 bg-[#10b981]/10 shadow-sm">
+                        <i data-feather="check-circle" class="h-5 w-5 text-[#10b981]"></i>
+                    </div>
+                    <span class="text-2xl font-semibold tracking-tight text-white">
+                        Logo Design
+                    </span>
+                </div>
+                <p class="text-base text-neutral-400 max-w-3xl">
+                    I translate the brand’s unique essence into clean, memorable visuals through strategic research. The
+                    final mark is designed to be versatile and instantly recognizable at any scale.
+                </p>
+            </div>
+            <div
+                class="group relative flex h-64 w-full flex-none flex-col items-center justify-center overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl md:h-112">
+                <img class="h-full w-full object-cover opacity-80 mix-blend-luminosity grayscale transition-all duration-700 group-hover:scale-105 group-hover:opacity-100 group-hover:mix-blend-normal group-hover:grayscale-0"
+                    src="img/case3_1.jpg" alt="Smart Home Devices" loading="lazy" />
+                <div
+                    class="absolute top-4 right-4 rounded bg-black/60 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/10 opacity-100 transition-opacity duration-300 group-hover:opacity-0">
+                </div>
+            </div>
+        </div>
+
+        <!-- Section: 2 -->
+        <div class="reveal relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-12">
+            <div class="flex w-full flex-col items-start gap-3">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="flex h-10 w-10 items-center justify-center rounded-lg border border-[#10b981]/20 bg-[#10b981]/10 shadow-sm">
+                        <i data-feather="check-circle" class="h-5 w-5 text-[#10b981]"></i>
+                    </div>
+                    <span class="text-2xl font-semibold tracking-tight text-white">
+                        Vernesse watches project
+                    </span>
+                </div>
+                <p class="text-base text-neutral-400 max-w-3xl">
+                    Full cycle: watch design + Branding + Website and Promo materials
+                </p>
+            </div>
+            <div
+                class="group relative flex h-64 w-full flex-none flex-col items-center justify-center overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl md:h-112">
+                <img class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    src="img/case3_2.jpg" alt="Mobile UI Components" loading="lazy" />
+            </div>
+        </div>
+
+        <!-- Section: 3 -->
+        <div class="reveal relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-12">
+            <div class="flex w-full flex-col items-start gap-3">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="flex h-10 w-10 items-center justify-center rounded-lg border border-[#10b981]/20 bg-[#10b981]/10 shadow-sm">
+                        <i data-feather="check-circle" class="h-5 w-5 text-[#10b981]"></i>
+                    </div>
+                    <span class="text-2xl font-semibold tracking-tight text-white">
+                        Science website and documentation portal
+                    </span>
+                </div>
+                <p class="text-base text-neutral-400 max-w-3xl">
+                    Website elements for Proteq hi-tec science startup
+                </p>
+            </div>
+            <div
+                class="group relative flex h-64 w-full flex-none flex-col items-center justify-center overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-[0_20px_50px_rgba(0,0,0,0.5)] md:h-112">
+                <img class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    src="img/case3_3.jpg" alt="Final Smart Home App" loading="lazy" />
+                <div
+                    class="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-black/20 to-transparent transition-opacity duration-300 group-hover:opacity-0">
+                </div>
+            </div>
+            <div
+                class="group relative flex h-64 w-full flex-none flex-col items-center justify-center overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-[0_20px_50px_rgba(0,0,0,0.5)] md:h-112">
+                <img class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    src="img/case3_4.jpg" alt="Final Smart Home App" loading="lazy" />
+                <div
+                    class="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-black/20 to-transparent transition-opacity duration-300 group-hover:opacity-0">
+                </div>
+            </div>
+        </div>
+        <!-- Section: 4-->
+        <div class="reveal relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-12">
+            <div class="flex w-full flex-col items-start gap-3">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="flex h-10 w-10 items-center justify-center rounded-lg border border-[#10b981]/20 bg-[#10b981]/10 shadow-sm">
+                        <i data-feather="check-circle" class="h-5 w-5 text-[#10b981]"></i>
+                    </div>
+                    <span class="text-2xl font-semibold tracking-tight text-white">
+                        Tadaa social app
+                    </span>
+                </div>
+                <p class="text-base text-neutral-400 max-w-3xl">
+                    Mobile application for Tadaa social platform
+                </p>
+            </div>
+            <div
+                class="group relative flex h-64 w-full flex-none flex-col items-center justify-center overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl md:h-112">
+                <img class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    src="img/case3_5.jpg" alt="Mobile UI Components" loading="lazy" />
+            </div>
+        </div>
+        <!-- Section: 5-->
+        <div class="reveal relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-12">
+            <div class="flex w-full flex-col items-start gap-3">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="flex h-10 w-10 items-center justify-center rounded-lg border border-[#10b981]/20 bg-[#10b981]/10 shadow-sm">
+                        <i data-feather="check-circle" class="h-5 w-5 text-[#10b981]"></i>
+                    </div>
+                    <span class="text-2xl font-semibold tracking-tight text-white">
+                        Betting portal
+                    </span>
+                </div>
+                <p class="text-base text-neutral-400 max-w-3xl">
+                    Betting platform and website
+                </p>
+            </div>
+            <div
+                class="group relative flex h-64 w-full flex-none flex-col items-center justify-center overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl md:h-112">
+                <img class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    src="img/case3_6.jpg" alt="Mobile UI Components" loading="lazy" />
+            </div>
+        </div>
+        <!-- Call to Action -->
+        <div
+            class="reveal relative z-10 mt-8 flex w-full max-w-5xl flex-col items-center gap-6 border-t border-neutral-800 pt-12 pb-8 md:mt-16 md:pt-16">
+            <span class="text-center text-lg text-neutral-400">
+                Interested in a similar transformation for your product?
+            </span>
+            <a href="index.html#contact"
+                class="group inline-flex items-center justify-center gap-2 rounded-full bg-white px-8 py-3.5 text-sm font-semibold text-neutral-950 transition-all hover:bg-neutral-200 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:-translate-y-0.5 active:translate-y-0">
+                Get in touch
+                <i data-feather="arrow-right"
+                    class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"></i>
+            </a>
+        </div>
+
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Initialize Feather Icons
+        feather.replace();
+
+        // Reveal animations on scroll
+        document.addEventListener("DOMContentLoaded", () => {
+            const reveals = document.querySelectorAll(".reveal");
+
+            const revealOnScroll = () => {
+                const windowHeight = window.innerHeight;
+                const elementVisible = 100;
+
+                reveals.forEach((reveal) => {
+                    const elementTop = reveal.getBoundingClientRect().top;
+                    if (elementTop < windowHeight - elementVisible) {
+                        reveal.classList.add("active");
+                    }
+                });
+            };
+
+            // Initial check
+            revealOnScroll();
+
+            // Check on scroll
+            window.addEventListener("scroll", revealOnScroll, { passive: true });
+        });
+    </script>
+</body>
+
+</html>

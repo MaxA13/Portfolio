@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth overflow-x-hidden">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodexLab</title>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Montserrat:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- AOS Animation CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <!-- Three.js Import Map -->
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        neutral: {
+                            300: '#d4d4d8',
+                            400: '#a1a1aa',
+                            700: '#3f3f46',
+                            800: '#27272a',
+                            900: '#18181b',
+                            950: '#09090b',
+                        },
+                        brand: {
+                            400: '#818cf8',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#312e81',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Montserrat', 'sans-serif'],
+                    },
+                    animation: {
+                        'scroll-left': 'scroll-left var(--duration) linear infinite',
+                        'scroll-right': 'scroll-right var(--duration) linear infinite',
+                    },
+                    keyframes: {
+                        'scroll-left': {
+                            '0%': { transform: 'translateX(0)' },
+                            '100%': { transform: 'translateX(-50%)' },
+                        },
+                        'scroll-right': {
+                            '0%': { transform: 'translateX(-50%)' },
+                            '100%': { transform: 'translateX(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .carousel-mask {
+            mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+        }
+    </style>
+</head>
+
+<body class="bg-neutral-950 font-sans text-white antialiased overflow-x-hidden selection:bg-brand-500/30">
+
+    <!-- WebGL Background -->
+    <div id="webgl-container" class="fixed inset-0 z-0 pointer-events-none opacity-30 mix-blend-screen"></div>
+
+    <!-- Background Pattern -->
+    <div
+        class="fixed inset-0 z-[1] pointer-events-none opacity-40 bg-[radial-gradient(#27272a_1px,transparent_1px)] [background-size:24px_24px]">
+    </div>
+
+    <div class="flex flex-col items-center min-h-screen relative w-full z-10">
+
+        <!-- Header -->
+        <header
+            class="flex w-full items-center justify-between border-b border-neutral-800/50 px-12 py-4 sticky top-0 z-50 bg-neutral-950/80 backdrop-blur-md max-md:px-4">
+            <div class="flex items-center gap-3">
+                <div
+                    class="h-10 w-10 rounded-full overflow-hidden bg-neutral-800 flex items-center justify-center text-white font-semibold">
+                    <img src="img/favicon.png" alt="CodexLab Logo" class="h-full w-full object-cover">
+                </div>
+                <span class="font-semibold text-white tracking-wide">CodexLab</span>
+            </div>
+            <nav class="flex items-center gap-8 max-md:hidden">
+                <a href="#work" class="text-sm font-medium text-neutral-400 hover:text-white transition-colors">Work</a>
+                <a href="#process"
+                    class="text-sm font-medium text-neutral-400 hover:text-white transition-colors">Process</a>
+                <a href="#contact"
+                    class="text-sm font-medium text-neutral-400 hover:text-white transition-colors">Contact</a>
+            </nav>
+            <div class="flex items-center gap-4">
+                <a href="mailto:alexandrovlab@gmail.com"
+                    class="bg-brand-600 text-white px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-brand-700 transition-all active:scale-95">Let's
+                    Talk</a>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section
+            class="flex w-full max-w-7xl flex-col items-start justify-center px-12 py-32 relative max-md:px-4 max-md:py-20 z-10"
+            data-aos="fade-up">
+            <!-- Glow Effects -->
+            <div
+                class="h-[500px] w-[500px] rounded-full absolute -right-20 -top-20 bg-brand-600/20 blur-[120px] pointer-events-none">
+            </div>
+            <div
+                class="h-72 w-72 rounded-full absolute -left-20 bottom-0 bg-brand-700/20 blur-[80px] max-md:hidden pointer-events-none">
+            </div>
+
+            <div class="flex max-w-[800px] flex-col items-start gap-6 relative z-10">
+                <div class="flex items-center gap-2 rounded-full border border-neutral-700/50 bg-neutral-900/80 backdrop-blur-sm px-4 py-2 shadow-sm"
+                    data-aos="fade-down" data-aos-delay="200">
+                    <div class="p-1 bg-green-500/20 text-green-400 rounded-full flex items-center justify-center">
+                        <i data-feather="zap" class="w-4 h-4"></i>
+                    </div>
+                    <span class="font-medium text-sm text-neutral-200">Available for new opportunities</span>
+                </div>
+                <h1 class="font-heading text-6xl lg:text-7xl font-semibold leading-[1.1] tracking-tight text-white max-md:text-4xl"
+                    data-aos="fade-up" data-aos-delay="300">
+                    UX Consulting & Strategy
+                </h1>
+                <div class="flex flex-col gap-4 mt-2" data-aos="fade-up" data-aos-delay="400">
+                    <p class="max-w-2xl text-xl text-neutral-200 leading-relaxed font-light">
+                        Ethical UX & Product Design
+                        Building honest interfaces that respect users and drive real results.
+                        With 15+ years of craft — and a strict personal Code of Ethics.
+
+
+
+
+                    </p>
+                    <p class="max-w-xl text-lg text-neutral-300 leading-relaxed font-light">
+                        Open to consultations. Let's localize your UX pain points — honestly.
+
+
+                    </p>
+                </div>
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-6" data-aos="fade-up"
+                    data-aos-delay="500">
+                    <a href="#work"
+                        class="bg-brand-600 text-white px-7 py-3.5 rounded-xl font-medium hover:bg-brand-700 hover:shadow-lg hover:shadow-brand-600/25 transition-all active:scale-95 flex items-center justify-center gap-2">
+                        View Projects <i data-feather="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                    <a href="CV_Max_Alexandrov.pdf" download="CV_Max_Alexandrov.pdf"
+                        class="bg-neutral-800 text-white border border-neutral-700/50 px-7 py-3.5 rounded-xl font-medium hover:bg-neutral-700 transition-all active:scale-95 group flex items-center justify-center gap-2">
+                        Download CV
+                        <i data-feather="download"
+                            class="w-4 h-4 text-neutral-400 group-hover:text-white transition-colors"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Selected Works Section -->
+        <section id="work"
+            class="flex w-full max-w-7xl items-start gap-16 px-12 py-24 max-md:flex-col max-md:gap-12 max-md:px-4 max-md:py-16 z-10">
+
+            <!-- Sticky Sidebar -->
+            <div class="flex flex-col items-start gap-4 sticky top-32 w-1/3 max-md:w-full max-md:relative max-md:top-0">
+                <h2 class="font-heading text-4xl lg:text-5xl font-semibold text-white" data-aos="fade-right">Selected
+                    Works</h2>
+                <p class="text-neutral-200 leading-relaxed text-lg" data-aos="fade-right" data-aos-delay="100">
+                    A collection of recent projects focusing on complex systemic problems, elegant interaction design,
+                    and impactful business outcomes.
+                </p>
+                <div class="flex flex-col items-start gap-3 mt-10 max-md:hidden" data-aos="fade-in"
+                    data-aos-delay="300">
+                    <span class="font-bold text-xs text-brand-400 uppercase tracking-[0.2em]">Scroll to explore</span>
+                    <div class="h-16 w-[2px] bg-gradient-to-b from-brand-600 to-transparent rounded-full"></div>
+                </div>
+            </div>
+
+            <!-- Projects Grid -->
+            <div class="flex flex-col items-start gap-12 w-2/3 max-md:w-full">
+
+                <!-- Project 1 -->
+                <a href="case1.html"
+                    class="group flex h-[500px] w-full flex-col items-start overflow-hidden rounded-[2rem] bg-neutral-900 relative cursor-pointer transition-all duration-500 hover:shadow-2xl hover:shadow-brand-900/20 hover:-translate-y-2 border border-transparent hover:border-neutral-700/50 max-md:h-96"
+                    data-aos="fade-up">
+                    <img class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                        src="img/project1.jpg" alt="Casino Platform">
+
+                    <!-- Default State Overlay -->
+                    <div
+                        class="flex items-end px-10 py-10 absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/20 to-transparent transition-opacity duration-300 max-md:px-6">
+                        <div
+                            class="flex flex-col gap-2 transition-transform duration-500 group-hover:-translate-y-8 opacity-100 group-hover:opacity-0">
+                            <span class="text-brand-400 font-medium tracking-wide text-sm uppercase">Case Study</span>
+                            <h3 class="font-heading text-3xl font-semibold text-white drop-shadow-md">Casino Platform
+                                Redesign</h3>
+                        </div>
+                    </div>
+
+                    <!-- Hover State Content -->
+                    <div
+                        class="flex flex-col items-start justify-end px-10 py-10 absolute inset-0 bg-neutral-950/80 opacity-0 backdrop-blur-sm transition-all duration-400 ease-out group-hover:opacity-100 max-md:px-6">
+                        <div
+                            class="flex flex-col items-start gap-5 translate-y-8 transition-transform duration-500 ease-out group-hover:translate-y-0">
+                            <h3 class="font-heading text-4xl font-semibold text-white max-md:text-2xl pt-4">Casino
+                                Platform Redesign</h3>
+                            <p class="text-neutral-300 line-clamp-3 text-lg font-light leading-relaxed">
+                                100+ screens, 300+ reimagined flows. Complex redesign with high attention to detail and
+                                structure.
+                            </p>
+                            <div class="flex flex-wrap items-start gap-2 py-2">
+                                <span
+                                    class="text-xs font-medium text-neutral-300 rounded-full border border-neutral-700/50 bg-neutral-800/80 px-4 py-1.5">UX
+                                    Research</span>
+                                <span
+                                    class="text-xs font-medium text-neutral-300 rounded-full border border-neutral-700/50 bg-neutral-800/80 px-4 py-1.5">UI/UX
+                                    Design</span>
+                                <span
+                                    class="text-xs font-medium text-neutral-300 rounded-full border border-neutral-700/50 bg-neutral-800/80 px-4 py-1.5">Information
+                                    Architecture</span>
+                            </div>
+                            <span
+                                class="mt-4 inline-flex bg-white text-neutral-950 px-6 py-3 rounded-xl font-semibold items-center gap-2 group-hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all">
+                                Read Case Study <i data-feather="arrow-right"
+                                    class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
+                            </span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Project 2 -->
+                <a href="case2.html"
+                    class="group flex h-[500px] w-full flex-col items-start overflow-hidden rounded-[2rem] bg-neutral-900 relative cursor-pointer transition-all duration-500 hover:shadow-2xl hover:shadow-brand-900/20 hover:-translate-y-2 border border-transparent hover:border-neutral-700/50 max-md:h-96"
+                    data-aos="fade-up" data-aos-offset="200">
+                    <img class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                        src="img/project2.jpg" alt="Jackpot Platform">
+
+                    <div
+                        class="flex items-end px-10 py-10 absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/20 to-transparent transition-opacity duration-300 max-md:px-6">
+                        <div
+                            class="flex flex-col gap-2 transition-transform duration-500 group-hover:-translate-y-8 opacity-100 group-hover:opacity-0">
+                            <span class="text-brand-400 font-medium tracking-wide text-sm uppercase">Case Study</span>
+                            <h3 class="font-heading text-3xl font-semibold text-white drop-shadow-md">Jackpot Platform
+                                from scratch
+
+                            </h3>
+                        </div>
+                    </div>
+
+                    <div
+                        class="flex flex-col items-start justify-end px-10 py-10 absolute inset-0 bg-neutral-950/80 opacity-0 backdrop-blur-sm transition-all duration-400 ease-out group-hover:opacity-100 max-md:px-6">
+                        <div
+                            class="flex flex-col items-start gap-5 translate-y-8 transition-transform duration-500 ease-out group-hover:translate-y-0">
+                            <h3 class="font-heading text-4xl font-semibold text-white max-md:text-2xl pt-4">Jackpot
+                                Platform from scratch </h3>
+                            <p class="text-neutral-300 line-clamp-3 text-lg font-light leading-relaxed">
+                                Over 100+ screens with unique flows
+                                Architect full logic structure and UI/UX from scratch
+                            </p>
+                            <div class="flex flex-wrap items-start gap-2 py-2">
+                                <span
+                                    class="text-xs font-medium text-neutral-300 rounded-full border border-neutral-700/50 bg-neutral-800/80 px-4 py-1.5">Information
+                                    Architecture</span>
+                                <span
+                                    class="text-xs font-medium text-neutral-300 rounded-full border border-neutral-700/50 bg-neutral-800/80 px-4 py-1.5">Backoffice
+                                    Design</span>
+                                <span
+                                    class="text-xs font-medium text-neutral-300 rounded-full border border-neutral-700/50 bg-neutral-800/80 px-4 py-1.5">UI/UX</span>
+                            </div>
+                            <span
+                                class="mt-4 inline-flex bg-white text-neutral-950 px-6 py-3 rounded-xl font-semibold items-center gap-2 group-hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all">
+                                Read Case Study <i data-feather="arrow-right"
+                                    class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
+                            </span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Project 3 -->
+                <a href="case3.html"
+                    class="group flex h-[500px] w-full flex-col items-start overflow-hidden rounded-[2rem] bg-neutral-900 relative cursor-pointer transition-all duration-500 hover:shadow-2xl hover:shadow-brand-900/20 hover:-translate-y-2 border border-transparent hover:border-neutral-700/50 max-md:h-96"
+                    data-aos="fade-up" data-aos-offset="200">
+                    <img class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                        src="img/project3.jpg" alt="Smart Home App Ecosystem">
+
+                    <div
+                        class="flex items-end px-10 py-10 absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/20 to-transparent transition-opacity duration-300 max-md:px-6">
+                        <div
+                            class="flex flex-col gap-2 transition-transform duration-500 group-hover:-translate-y-8 opacity-100 group-hover:opacity-0">
+                            <span class="text-brand-400 font-medium tracking-wide text-sm uppercase"></span>
+                            <h3 class="font-heading text-3xl font-semibold text-white drop-shadow-md">Other design works
+                            </h3>
+                        </div>
+                    </div>
+
+                    <div
+                        class="flex flex-col items-start justify-end px-10 py-10 absolute inset-0 bg-neutral-950/80 opacity-0 backdrop-blur-sm transition-all duration-400 ease-out group-hover:opacity-100 max-md:px-6">
+                        <div
+                            class="flex flex-col items-start gap-5 translate-y-8 transition-transform duration-500 ease-out group-hover:translate-y-0">
+
+                            <div class="flex flex-wrap items-start gap-2 py-2">
+                                <span
+                                    class="text-xs font-medium text-neutral-300 rounded-full border border-neutral-700/50 bg-neutral-800/80 px-4 py-1.5">Mobile
+                                    App</span>
+                                <span
+                                    class="text-xs font-medium text-neutral-300 rounded-full border border-neutral-700/50 bg-neutral-800/80 px-4 py-1.5">Website</span>
+                            </div>
+                            <span
+                                class="mt-4 inline-flex bg-white text-neutral-950 px-6 py-3 rounded-xl font-semibold items-center gap-2 group-hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all">
+                                Check it out <i data-feather="arrow-right"
+                                    class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
+                            </span>
+                        </div>
+                    </div>
+                </a>
+
+            </div>
+        </section>
+
+
+
+
+        <!-- Process Section -->
+        <section id="process"
+            class="flex mx-4 md:mx-auto max-w-[95%] xl:max-w-7xl w-auto items-start py-32 max-md:py-20 z-10 relative rounded-[3rem] border border-neutral-700/30 bg-neutral-900/30 backdrop-blur-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] my-16 overflow-hidden transition-all">
+            <!-- Background Glow -->
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none -z-10">
+                <div class="h-[600px] w-full max-w-4xl bg-brand-600/5 blur-[100px] rounded-[100%]"></div>
+            </div>
+
+            <div class="flex w-full flex-col items-center gap-20 px-12 mx-auto max-md:px-6 max-md:gap-12 relative z-10">
+                <div class="flex max-w-3xl flex-col items-center gap-6 text-center" data-aos="fade-up">
+                    <div
+                        class="flex items-center gap-2 rounded-full border border-brand-500/30 bg-brand-500/10 px-4 py-2 mb-2">
+                        <i data-feather="cpu" class="w-4 h-4 text-brand-400"></i>
+                        <span class="font-medium text-sm text-brand-300">Human Expertise + AI</span>
+                    </div>
+                    <h2 class="font-heading text-5xl lg:text-6xl font-semibold text-white max-md:text-4xl">Experience
+                        Augmented</h2>
+                    <p class="text-xl text-neutral-400 font-light leading-relaxed">
+                        With over 15 years as a UX practitioner, I blend deep human intuition and critical
+                        decision-making with the speed of AI. I don't let tools design for me; I use them to supercharge
+                        my workflow.
+                    </p>
+                </div>
+
+                <div class="w-full grid grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1 gap-8">
+
+                    <!-- Card 1 -->
+                    <div class="flex flex-col items-start gap-6 rounded-[2rem] border border-neutral-700/50 bg-neutral-800/30 backdrop-blur-md p-10 transition-all duration-300 hover:border-brand-500/50 hover:bg-neutral-800/60 hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-900/10 group"
+                        data-aos="fade-up" data-aos-delay="100">
+                        <div
+                            class="p-4 bg-brand-500/10 text-brand-400 rounded-2xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:bg-brand-500 group-hover:text-white">
+                            <i data-feather="compass" class="w-7 h-7"></i>
+                        </div>
+                        <div class="flex flex-col items-start gap-3">
+                            <h3 class="font-heading text-2xl font-semibold text-white">Strategic Direction</h3>
+                            <p class="text-neutral-400 leading-relaxed font-light">Grounding every project in 15+ years
+                                of strategic thinking. While AI generates options, my seasoned judgment determines the
+                                *right* direction for your specific business goals.</p>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="flex flex-col items-start gap-6 rounded-[2rem] border border-neutral-700/50 bg-neutral-800/30 backdrop-blur-md p-10 transition-all duration-300 hover:border-brand-500/50 hover:bg-neutral-800/60 hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-900/10 group"
+                        data-aos="fade-up" data-aos-delay="200">
+                        <div
+                            class="p-4 bg-brand-500/10 text-brand-400 rounded-2xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:bg-brand-500 group-hover:text-white">
+                            <i data-feather="database" class="w-7 h-7"></i>
+                        </div>
+                        <div class="flex flex-col items-start gap-3">
+                            <h3 class="font-heading text-2xl font-semibold text-white">Masterful Human Polish</h3>
+                            <p class="text-neutral-400 leading-relaxed font-light">Generative tools flood the table with
+                                possibilities. My role is to listen to the brand, feel the audience, and sculpt from the
+                                chaos something elegant, coherent, and emotionally resonant - design that doesn’t just
+                                function, but endures.
+
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="flex flex-col items-start gap-6 rounded-[2rem] border border-neutral-700/50 bg-neutral-800/30 backdrop-blur-md p-10 transition-all duration-300 hover:border-brand-500/50 hover:bg-neutral-800/60 hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-900/10 group"
+                        data-aos="fade-up" data-aos-delay="300">
+                        <div
+                            class="p-4 bg-brand-500/10 text-brand-400 rounded-2xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:bg-brand-500 group-hover:text-white">
+                            <i data-feather="aperture" class="w-7 h-7"></i>
+                        </div>
+                        <div class="flex flex-col items-start gap-3">
+                            <h3 class="font-heading text-2xl font-semibold text-white">Ethical Design</h3>
+                            <p class="text-neutral-400 leading-relaxed font-light">Design that’s honest: free of dark
+                                patterns, transparent, and truly beneficial to the user. I combine the power of
+                                generative tools with ethical responsibility to create an aesthetic you can trust.</p>
+                        </div>
+                    </div>
+
+                    <!-- Card 4 -->
+                    <div class="flex flex-col items-start gap-6 rounded-[2rem] border border-neutral-700/50 bg-neutral-800/30 backdrop-blur-md p-10 transition-all duration-300 hover:border-brand-500/50 hover:bg-neutral-800/60 hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-900/10 group lg:col-span-1 max-lg:col-span-2 max-md:col-span-1"
+                        data-aos="fade-up" data-aos-delay="400">
+                        <div
+                            class="p-4 bg-brand-500/10 text-brand-400 rounded-2xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:bg-brand-500 group-hover:text-white">
+                            <i data-feather="crosshair" class="w-7 h-7"></i>
+                        </div>
+                        <div class="flex flex-col items-start gap-3">
+                            <h3 class="font-heading text-2xl font-semibold text-white">Critical Decision Making</h3>
+                            <p class="text-neutral-400 leading-relaxed font-light">Algorithms can predict, but humans
+                                empathize. Every wireframe, micro-interaction, and user flow is strictly vetted through
+                                my years of observing how real humans use technology.</p>
+                        </div>
+                    </div>
+
+                    <!-- Card 5 -->
+                    <div class="flex flex-col items-start gap-6 rounded-[2rem] border border-neutral-700/50 bg-neutral-800/30 backdrop-blur-md p-10 transition-all duration-300 hover:border-brand-500/50 hover:bg-neutral-800/60 hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-900/10 group lg:col-span-2 max-lg:col-span-2 max-md:col-span-1"
+                        data-aos="fade-up" data-aos-delay="500">
+                        <div
+                            class="p-4 bg-brand-500/10 text-brand-400 rounded-2xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:bg-brand-500 group-hover:text-white">
+                            <i data-feather="layers" class="w-7 h-7"></i>
+                        </div>
+                        <div class="flex flex-col items-start gap-3">
+                            <h3 class="font-heading text-2xl font-semibold text-white">Human-Crafted Refinement</h3>
+                            <p class="text-neutral-400 leading-relaxed font-light">AI explores hundreds of directions at
+                                lightning speed — I bring 15+ years of taste, nuance, and brand intuition to curate,
+                                refine, and elevate the chosen path. Every detail — from typography rhythm to animation
+                                easing — is polished until the design feels inevitable, timeless, and unmistakably
+                                yours.
+
+
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA & Footer Section -->
+        <section id="contact"
+            class="flex mx-4 md:mx-auto max-w-[95%] xl:max-w-7xl w-auto flex-col items-center justify-center pt-32 pb-8 relative z-10 max-md:pt-20 rounded-[3rem] border border-neutral-700/30 bg-neutral-900/30 backdrop-blur-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] overflow-hidden mt-12 mb-12 transition-all">
+            <!-- Decorative Glow -->
+            <div
+                class="h-96 w-96 rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-brand-600/5 blur-[120px] pointer-events-none">
+            </div>
+
+            <div class="flex max-w-[600px] flex-col items-center gap-6 px-12 text-center relative z-10 max-md:px-4"
+                data-aos="zoom-in" data-aos-duration="1000">
+                <img src="img/ava.png" alt="Max Alexandrov"
+                    class="w-24 h-24 rounded-full object-cover border-4 border-neutral-800 shadow-xl mb-2">
+                <h2 class="font-heading text-4xl lg:text-5xl font-medium tracking-tight text-white max-md:text-3xl">
+                    Let's build something exceptional together.
+                </h2>
+                <p class="text-lg text-neutral-400 font-light leading-relaxed">
+                    Hi, I'm Max Alexandrov. Ethical UX specialist helping brands build interfaces users actually trust.
+                </p>
+                <p class="text-lg text-neutral-200 font-light leading-relaxed">
+                    Designing with a Codex: honest, transparent, human-first UX.
+                    No dark patterns. Just interfaces people trust.
+                </p>
+
+
+
+                <div class="mt-4">
+                    <a href="mailto:alexandrovlab@gmail.com"
+                        class="group relative inline-flex items-center gap-3 rounded-full bg-white px-8 py-4 font-medium text-neutral-950 transition-all hover:scale-105 active:scale-95 shadow-[0_4px_20px_rgba(255,255,255,0.15)] hover:shadow-[0_4px_30px_rgba(255,255,255,0.3)] text-lg">
+                        Let's talk <i data-feather="arrow-right"
+                            class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Clients Carousel Section -->
+            <div class="w-full flex flex-col items-center mt-16 max-md:mt-8 relative z-10">
+                <span class="text-xs font-medium tracking-[0.2em] text-neutral-500 uppercase mb-8">Trusted by</span>
+
+                <div class="w-full py-4 overflow-hidden relative">
+                    <div class="flex flex-col gap-8">
+                        <!-- Row 1: Left to Right -->
+                        <div class="carousel-mask w-full overflow-hidden">
+                            <div class="flex animate-scroll-left whitespace-nowrap" style="--duration: 45s;">
+                                <div
+                                    class="flex gap-12 items-center pr-12 text-neutral-500/60 text-sm font-medium tracking-wide">
+                                    <span>Drakedigitall</span><span>B&W</span><span>SERCD</span><span>TrustWell</span><span>GLOBAL
+                                        WORK 通販 - st</span><span>LVPartners</span><span>Wealth
+                                        Alliance</span><span>Walter&Reed</span><span>BergamShultz</span><span>LC
+                                        GROUP</span><span>HUME Capital</span><span>SYM Plan</span><span>Castle
+                                        Holdings</span><span>FlorinInvestement</span><span>Mirami</span><span>Tadaa</span><span>ORGChart</span><span>IPD
+                                        Produktentwicklung und Handel UG</span><span>4SightSolutions</span><span>4Sight
+                                        Solutions</span><span>Speaktopic ApS</span><span>TickerSoft</span><span>Maxmedia
+                                        Web Solutions Inc.</span><span>LightSpeed Games</span><span>Reality
+                                        Television</span><span>NEBEL TV</span><span>MegaWorldMedia</span><span>Krieseler
+                                        Holdings</span><span>BroadPeak</span><span>Byteback
+                                        Computing</span><span>Adventures in Business</span><span>Focused Apps
+                                        LLC</span><span>Monopolize Marketing</span><span>Bitsmedia Pte
+                                        Ltd</span><span>ZV3R</span><span>Speaktopic ApS</span><span>Soloten
+                                        LLC</span><span>GOTRIbal</span><span>Genius
+                                        Inc</span><span>Simplus</span><span>Elysium
+                                        Media</span><span>TickerSoft</span><span>Kenesto</span><span>mpasse</span>
+                                </div>
+                                <div class="flex gap-12 items-center pr-12 text-neutral-500/60 text-sm font-medium tracking-wide"
+                                    aria-hidden="true">
+                                    <span>Drakedigitall</span><span>B&W</span><span>SERCD</span><span>TrustWell</span><span>GLOBAL
+                                        WORK 通販 - st</span><span>LVPartners</span><span>Wealth
+                                        Alliance</span><span>Walter&Reed</span><span>BergamShultz</span><span>LC
+                                        GROUP</span><span>HUME Capital</span><span>SYM Plan</span><span>Castle
+                                        Holdings</span><span>FlorinInvestement</span><span>Mirami</span><span>Tadaa</span><span>ORGChart</span><span>IPD
+                                        Produktentwicklung und Handel UG</span><span>4SightSolutions</span><span>4Sight
+                                        Solutions</span><span>Speaktopic ApS</span><span>TickerSoft</span><span>Maxmedia
+                                        Web Solutions Inc.</span><span>LightSpeed Games</span><span>Reality
+                                        Television</span><span>NEBEL TV</span><span>MegaWorldMedia</span><span>Krieseler
+                                        Holdings</span><span>BroadPeak</span><span>Byteback
+                                        Computing</span><span>Adventures in Business</span><span>Focused Apps
+                                        LLC</span><span>Monopolize Marketing</span><span>Bitsmedia Pte
+                                        Ltd</span><span>ZV3R</span><span>Speaktopic ApS</span><span>Soloten
+                                        LLC</span><span>GOTRIbal</span><span>Genius
+                                        Inc</span><span>Simplus</span><span>Elysium
+                                        Media</span><span>TickerSoft</span><span>Kenesto</span><span>mpasse</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Row 2: Right to Left -->
+                        <div class="carousel-mask w-full overflow-hidden">
+                            <div class="flex animate-scroll-right whitespace-nowrap" style="--duration: 42s;">
+                                <div
+                                    class="flex gap-12 items-center pr-12 text-neutral-500/60 text-sm font-medium tracking-wide">
+                                    <span>NuSpectra</span><span>Network Local</span><span>Chad Iman</span><span>Mutant
+                                        Bear Games</span><span>Obsydion</span><span>The Daily
+                                        Gentleman</span><span>SpinSci</span><span>FLC</span><span>RockyMountainVentures</span><span>InsideSales
+                                        Inc.</span><span>OpenSpend</span><span>Vice
+                                        Consulting</span><span>WirelessFieldService</span><span>Ice-Net
+                                        Technologies</span><span>WaterSlide</span><span>10xEngineer.me</span><span>Ingenio
+                                        Digital</span><span>PureAutomation</span><span>3DE</span><span>zilloindustries</span><span>BlueLight
+                                        analytics inc.</span><span>ContextWorks</span><span>Metric
+                                        Insights</span><span>Gotcha! Mobile
+                                        Solutions</span><span>DesyncedTech</span><span>Clipwire Games</span><span>SRDB,
+                                        LLC</span><span>SATI</span><span>Beast
+                                        Devices</span><span>MeagherDesign.com</span><span>RoadSoft</span><span>Kidimedia
+                                        BVBA</span><span>Bavolar
+                                        L.L.C</span><span>TiffinSolutions</span><span>Zmags</span><span>Leyton Solutions
+                                        Limited</span><span>Amber Consulting</span><span>BarDigg LLC</span><span>Lovely
+                                        Mart</span><span>Pressmatix</span><span>DrinkSUITE Group</span><span>ePageCity,
+                                        Inc</span><span>Greatwide TM</span><span>Blue Shores Solutions Pvt.
+                                        Ltd</span><span>Girnar Software SEZ Pvt Ltd</span>
+                                </div>
+                                <div class="flex gap-12 items-center pr-12 text-neutral-500/60 text-sm font-medium tracking-wide"
+                                    aria-hidden="true">
+                                    <span>NuSpectra</span><span>Network Local</span><span>Chad Iman</span><span>Mutant
+                                        Bear Games</span><span>Obsydion</span><span>The Daily
+                                        Gentleman</span><span>SpinSci</span><span>FLC</span><span>RockyMountainVentures</span><span>InsideSales
+                                        Inc.</span><span>OpenSpend</span><span>Vice
+                                        Consulting</span><span>WirelessFieldService</span><span>Ice-Net
+                                        Technologies</span><span>WaterSlide</span><span>10xEngineer.me</span><span>Ingenio
+                                        Digital</span><span>PureAutomation</span><span>3DE</span><span>zilloindustries</span><span>BlueLight
+                                        analytics inc.</span><span>ContextWorks</span><span>Metric
+                                        Insights</span><span>Gotcha! Mobile
+                                        Solutions</span><span>DesyncedTech</span><span>Clipwire Games</span><span>SRDB,
+                                        LLC</span><span>SATI</span><span>Beast
+                                        Devices</span><span>MeagherDesign.com</span><span>RoadSoft</span><span>Kidimedia
+                                        BVBA</span><span>Bavolar
+                                        L.L.C</span><span>TiffinSolutions</span><span>Zmags</span><span>Leyton Solutions
+                                        Limited</span><span>Amber Consulting</span><span>BarDigg LLC</span><span>Lovely
+                                        Mart</span><span>Pressmatix</span><span>DrinkSUITE Group</span><span>ePageCity,
+                                        Inc</span><span>Greatwide TM</span><span>Blue Shores Solutions Pvt.
+                                        Ltd</span><span>Girnar Software SEZ Pvt Ltd</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <footer
+                class="flex w-full max-w-6xl items-center justify-between border-t border-neutral-800/50 px-12 pt-8 pb-4 mt-16 relative z-10 max-md:flex-col-reverse max-md:gap-6 max-md:px-4 max-md:mt-8">
+                <span class="text-sm font-light text-neutral-500">© 2026 Max Alexandrov. All rights reserved.</span>
+                <div class="flex items-center gap-3">
+                    <a href="https://www.linkedin.com/in/ux145892/" target="_blank" rel="noopener noreferrer"
+                        class="p-2 text-neutral-400 bg-neutral-900/50 border border-neutral-800 hover:text-white hover:bg-brand-600 hover:border-brand-500 rounded-full transition-all focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 focus:ring-offset-neutral-950"
+                        aria-label="LinkedIn">
+                        <i data-feather="linkedin" class="w-4 h-4"></i>
+                    </a>
+                    <a href="mailto:alexandrovlab@gmail.com"
+                        class="p-2 text-neutral-400 bg-neutral-900/50 border border-neutral-800 hover:text-white hover:bg-brand-600 hover:border-brand-500 rounded-full transition-all focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 focus:ring-offset-neutral-950"
+                        aria-label="Email">
+                        <i data-feather="mail" class="w-4 h-4"></i>
+                    </a>
+                    <a href="#"
+                        class="p-2 text-neutral-400 bg-neutral-900/50 border border-neutral-800 hover:text-white hover:bg-brand-600 hover:border-brand-500 rounded-full transition-all focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 focus:ring-offset-neutral-950"
+                        aria-label="Telegram">
+                        <i data-feather="send" class="w-4 h-4"></i>
+                    </a>
+                </div>
+            </footer>
+        </section>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Initialize Feather Icons
+        feather.replace();
+
+        // Initialize AOS animations
+        AOS.init({
+            duration: 800,        // Animation duration
+            once: true,           // Whether animation should happen only once - while scrolling down
+            offset: 100,          // Offset (in px) from the original trigger point
+            easing: 'ease-out-cubic', // Default easing
+            disable: 'mobile'     // Optional: Disable on mobile if performance is an issue, but we want it unless laggy. Leaving enabled for now.
+        });
+
+        // Disable AOS on very small screens for better performance if needed
+        if (window.innerWidth < 768) {
+            AOS.init({ disable: true });
+        } else {
+            AOS.init({ disable: false });
+        }
+    </script>
+
+    <!-- Three.js Background Effect -->
+    <script type="module">
+        import * as THREE from 'three';
+        import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+        import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+        import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+
+        // CONFIG
+        const COUNT = 5000;
+        const SPEED_MULT = 0.1;
+
+        // SETUP
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x000000, 0.01);
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 2000);
+        camera.position.set(0, 0, 100);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance", alpha: true });
+        renderer.setClearColor(0x000000, 0); // Transparent background
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('webgl-container').appendChild(renderer.domElement);
+
+        // POST PROCESSING
+        const composer = new EffectComposer(renderer);
+        const renderPass = new RenderPass(scene, camera);
+        renderPass.clearColor = new THREE.Color(0, 0, 0);
+        renderPass.clearAlpha = 0;
+        composer.addPass(renderPass);
+
+        const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
+        // Slightly increased bloom strength and radius for a more blurred, ethereal glow
+        bloomPass.strength = 1.4;
+        bloomPass.radius = 0.8;
+        bloomPass.threshold = 0.15;
+        composer.addPass(bloomPass);
+
+        // SWARM OBJECTS
+        const dummy = new THREE.Object3D();
+        const color = new THREE.Color();
+        const target = new THREE.Vector3();
+
+        // INSTANCED MESH
+        const geometry = new THREE.SphereGeometry(0.3, 16, 16);
+        const material = new THREE.ShaderMaterial({
+            uniforms: {
+                uTime: { value: 0 }
+            },
+            vertexShader: `
+                varying vec3 vNormal;
+                varying vec3 vViewPosition;
+                varying vec3 vColor;
+                void main() {
+                    vec4 mvPosition = modelViewMatrix * instanceMatrix * vec4(position, 1.0);
+                    vNormal = normalize(normalMatrix * normal);
+                    vViewPosition = -mvPosition.xyz;
+                    vColor = instanceColor;
+                    gl_Position = projectionMatrix * mvPosition;
+                }
+            `,
+            fragmentShader: `
+                varying vec3 vNormal;
+                varying vec3 vViewPosition;
+                varying vec3 vColor;
+                uniform float uTime;
+                void main() {
+                    // Soft radial falloff for "blurred" blob aesthetic (dot with view vector)
+                    float dotNV = dot(vNormal, normalize(vViewPosition));
+                    float radial = smoothstep(0.0, 1.0, dotNV);
+                    radial = pow(radial, 2.0); // Sharpen but keep soft
+                    
+                    // Light pulse logic (sin wave over time)
+                    float pulse = sin(uTime * 5.0 + vColor.g * 20.0) * 0.15 + 0.85;
+                    
+                    vec3 col = vColor * pulse;
+                    // Lower base alpha for better overlapping/blur feel
+                    float alpha = radial * 0.4 * pulse;
+                    
+                    gl_FragColor = vec4(col, alpha);
+                }
+            `,
+            transparent: true, blending: THREE.AdditiveBlending, depthWrite: false
+        });
+
+        const mesh = new THREE.InstancedMesh(geometry, material, COUNT);
+        mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+        scene.add(mesh);
+
+        // DATA ARRAYS
+        const positions = [];
+        for (let i = 0; i < COUNT; i++) {
+            positions.push(new THREE.Vector3((Math.random() - 0.5) * 100, (Math.random() - 0.5) * 100, (Math.random() - 0.5) * 100));
+            mesh.setColorAt(i, color.setHex(0x00ff88)); // Init Color
+        }
+
+        const PARAMS = { "scale": 100, "consume": 0.3, "jetpwr": 0.87, "accdense": 2.67, "lensstr": 0.32, "framedrag": 0.1, "hawking": 0.68, "chaos": 1.52 };
+        const addControl = (id, label, min, max, val) => PARAMS[id] !== undefined ? PARAMS[id] : val;
+
+        // SCROLL ANIMATION VARIABLES
+        let targetRotationY = 0;
+        let targetRotationX = 0;
+
+        window.addEventListener('scroll', () => {
+            const scrollPercent = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+            // Rotate the entire swarm based on scroll
+            targetRotationY = scrollPercent * Math.PI * 1.5;
+            targetRotationX = scrollPercent * Math.PI * 0.5;
+        });
+
+        // ANIMATION LOOP
+        const clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const time = clock.getElapsedTime() * SPEED_MULT;
+
+            // Apply scroll rotation with lerp for smoothness
+            mesh.rotation.y += (targetRotationY - mesh.rotation.y) * 0.05;
+            mesh.rotation.x += (targetRotationX - mesh.rotation.x) * 0.05;
+
+            // Auto spin
+            mesh.rotation.y += 0.002;
+
+            if (material.uniforms && material.uniforms.uTime) {
+                material.uniforms.uTime.value = time;
+            }
+
+            const count = COUNT;
+            for (let i = 0; i < COUNT; i++) {
+                const scale = addControl("scale", "Scale", 15, 100, 55);
+                const consumeSpd = addControl("consume", "Infall Speed", 0, 3, 1.0);
+                const jetPower = addControl("jetpwr", "Jet Power", 0, 3, 1.4);
+                const accDensity = addControl("accdense", "Disk Density", 0, 3, 1.2);
+                const lensStr = addControl("lensstr", "Lens Warp", 0, 2, 0.8);
+                const frameDrag = addControl("framedrag", "Frame Drag", 0, 2, 0.6);
+                const hawkingT = addControl("hawking", "Hawking Temp", 0, 1, 0.5);
+                const chaos = addControl("chaos", "Chaos Field", 0, 2, 0.4);
+
+                const TAU = 6.28318530718;
+                const t = i / count;
+
+                const mDisk = t < 0.35 ? 1.0 : 0.0;
+                const mISCO = t >= 0.35 && t < 0.48 ? 1.0 : 0.0;
+                const mPhot = t >= 0.48 && t < 0.58 ? 1.0 : 0.0;
+                const mErgo = t >= 0.58 && t < 0.67 ? 1.0 : 0.0;
+                const mJet = t >= 0.67 && t < 0.76 ? 1.0 : 0.0;
+                const mSheath = t >= 0.76 && t < 0.84 ? 1.0 : 0.0;
+                const mLens = t >= 0.84 && t < 0.92 ? 1.0 : 0.0;
+                const mHawk = t >= 0.92 ? 1.0 : 0.0;
+
+                const dT = t / 0.35;
+                const arm = Math.floor(dT * 5.0);
+                const armT = (dT * 5.0) % 1.0;
+                const dAng = armT * TAU + arm * (TAU / 5.0) + time * (0.5 + armT * consumeSpd) + dT * TAU * 22.0;
+                const dRad = 7.5 + dT * dT * 38.0 * accDensity;
+                const dWarp = Math.sin(dT * TAU * 3.0 + time * 0.4) * (0.8 + arm * 0.12);
+                const dCurl = Math.cos(dAng * 0.5 + time * 0.2) * chaos * 2.0;
+                const dX = Math.cos(dAng + dCurl * 0.05) * dRad;
+                const dZ = Math.sin(dAng + dCurl * 0.05) * dRad;
+                const dY = dWarp + Math.sin(dT * TAU * 7.0 + time * 0.9) * 1.1 + dCurl * 0.3;
+
+                const iT = (t - 0.35) / 0.13;
+                const iAng = iT * TAU * 18.0 + time * (1.8 + iT * consumeSpd * 2.0);
+                const iRad = 7.5 * (1.0 - iT * 0.55) + Math.sin(iT * TAU * 5.0 + time) * 0.4;
+                const iX = Math.cos(iAng) * iRad;
+                const iZ = Math.sin(iAng) * iRad;
+                const iY = (iT - 0.5) * 1.2 + Math.sin(iAng * 3.0 + time * 2.0) * 0.3;
+
+                const pT = (t - 0.48) / 0.10;
+                const pPhi = pT * TAU * 31.0 + time * 1.4;
+                const pTheta = pT * TAU * 11.7 + time * 0.7;
+                const pRad = 9.75 + Math.sin(pT * TAU * 5.0 + time * 2.5) * 0.15;
+                const pX = Math.cos(pPhi) * Math.sin(pTheta) * pRad;
+                const pY = Math.cos(pTheta) * pRad;
+                const pZ = Math.sin(pPhi) * Math.sin(pTheta) * pRad;
+
+                const eT = (t - 0.58) / 0.09;
+                const eSpin = frameDrag * 2.8;
+                const eAng = eT * TAU * 14.0 + time * eSpin + eT * TAU * 8.0;
+                const eRad = 8.5 + Math.sin(eT * TAU * 4.0 + time * 0.5) * 1.5;
+                const eTilt = eT * Math.PI * 0.6 - Math.PI * 0.3;
+                const eX = Math.cos(eAng) * eRad;
+                const eZ = Math.sin(eAng) * eRad * Math.cos(eTilt * 0.3);
+                const eY = Math.sin(eAng) * eRad * Math.sin(eTilt * 0.3) + Math.sin(eT * TAU * 9.0 + time) * 0.8;
+
+                const jT = (t - 0.67) / 0.09;
+                const jSide = jT < 0.5 ? 1.0 : -1.0;
+                const jFrac = (jT % 0.5) / 0.5;
+                const jH = jSide * (1.0 + jFrac * jFrac * jFrac * 80.0 * jetPower);
+                const jAng = jFrac * TAU * 12.0 + time * (3.0 + jFrac * 4.0);
+                const jRad = Math.pow(1.0 - jFrac, 1.5) * 5.0 * jetPower + Math.sin(jFrac * TAU * 6.0 + time * 4.0) * 0.3 * jetPower;
+                const jKink = Math.sin(jH * 0.08 + time * 2.0) * chaos * 1.5;
+                const jX = Math.cos(jAng) * jRad + jKink;
+                const jZ = Math.sin(jAng) * jRad;
+                const jY = jH;
+
+                const sT = (t - 0.76) / 0.08;
+                const sSide = sT < 0.5 ? 1.0 : -1.0;
+                const sFrac = (sT % 0.5) / 0.5;
+                const sH = sSide * (2.0 + sFrac * 55.0 * jetPower * 0.7);
+                const sAng = sFrac * TAU * 6.0 + time * 1.5;
+                const sRad = (1.0 - sFrac * 0.4) * 8.0 * jetPower + Math.sin(sFrac * TAU * 3.0 + time * 2.0) * 1.0;
+                const sX = Math.cos(sAng) * sRad;
+                const sZ = Math.sin(sAng) * sRad;
+                const sY = sH;
+
+                const lT = (t - 0.84) / 0.08;
+                const lArc = Math.floor(lT * 8.0);
+                const lFrac = (lT * 8.0) % 1.0;
+                const lIncl = lArc * 0.39 + 0.2;
+                const lAng = lFrac * TAU * (0.65 + lArc * 0.08) + time * (0.15 + lArc * 0.06);
+                const lRad = 14.0 + lArc * 4.0 + Math.sin(time * 0.3 + lArc) * 1.5;
+                const lX0 = Math.cos(lAng) * lRad;
+                const lY0 = Math.sin(lAng) * lRad * Math.sin(lIncl);
+                const lZ0 = Math.sin(lAng) * lRad * Math.cos(lIncl);
+                const lDst = Math.sqrt(lX0 * lX0 + lY0 * lY0 + lZ0 * lZ0) + 0.001;
+                const lW = lensStr / (lDst * 0.6 + 1.5);
+                const lX = lX0 * (1.0 - lW);
+                const lY = lY0 * (1.0 - lW);
+                const lZ = lZ0 * (1.0 - lW);
+
+                const hT = (t - 0.92) / 0.08;
+                const hPhi = hT * TAU * 53.0 + time * (0.8 + hawkingT * 3.0);
+                const hThet = hT * TAU * 17.3 + time * (0.5 + hawkingT * 1.5);
+                const hRad = 9.5 + hawkingT * 8.0 + Math.sin(hT * TAU * 4.0 + time * 2.0) * hawkingT * 3.0;
+                const hJit = chaos * (Math.sin(hT * 197.3 + time * 5.0) * 2.0);
+                const hX = Math.cos(hPhi) * Math.sin(hThet) * hRad + hJit;
+                const hY = Math.cos(hThet) * hRad + hJit * 0.5;
+                const hZ = Math.sin(hPhi) * Math.sin(hThet) * hRad;
+
+                const rx = dX * mDisk + iX * mISCO + pX * mPhot + eX * mErgo + jX * mJet + sX * mSheath + lX * mLens + hX * mHawk;
+                const ry = dY * mDisk + iY * mISCO + pY * mPhot + eY * mErgo + jY * mJet + sY * mSheath + lY * mLens + hY * mHawk;
+                const rz = dZ * mDisk + iZ * mISCO + pZ * mPhot + eZ * mErgo + jZ * mJet + sZ * mSheath + lZ * mLens + hZ * mHawk;
+
+                target.set(rx * scale * 0.018, ry * scale * 0.018, rz * scale * 0.018);
+
+                const dist = Math.sqrt(rx * rx + ry * ry + rz * rz) + 0.01;
+                const heat = 1.0 / (dist * 0.045 + 0.28);
+                // Toned down heat for less brightness overall
+                const heatC = Math.min(heat * 0.7, 1.0);
+
+                // Base color: shifting to dark blues and indigos
+                // Hue: ~0.6 (blue) to ~0.7 (purple/indigo)
+                let hue = 0.65 - heatC * 0.1;
+                let sat = 0.80 - heatC * 0.3;
+                // Dimmer base lightness
+                let lite = 0.05 + heatC * 0.3;
+
+                // Photon sphere: deep cyan
+                hue += mPhot * (0.55 - hue) * 0.9;
+                sat += mPhot * (0.70 - sat) * 0.8;
+                lite += mPhot * 0.15;
+
+                // Ergosphere: subtle pulsing royal blue
+                const ergoPhase = Math.sin(time * 3.0 + t * TAU * 4.0) * 0.5 + 0.5;
+                hue += mErgo * (0.62 + ergoPhase * 0.05 - hue) * 0.6;
+                lite += mErgo * 0.08;
+
+                // Jets: ice blue fading to dark blue
+                hue += mJet * (0.58 - hue) * 0.5;
+                sat += mJet * (0.60 - sat) * 0.7;
+                lite += mJet * 0.20;
+
+                // Cocoon sheath: muted navy
+                hue += mSheath * (0.66 - hue) * 0.6;
+                lite += mSheath * 0.05;
+
+                // Lensing arcs: very faint ghostly blue
+                hue += mLens * (0.60 - hue) * 0.7;
+                sat += mLens * (0.40 - sat) * 0.6;
+                lite += mLens * 0.04;
+
+                // Hawking corona: sparse, subtle bright blue sparks
+                const hawkFlicker = Math.abs(Math.sin(t * 1337.7 + time * 8.0));
+                hue += mHawk * (0.60 - hue) * 0.8;
+                sat += mHawk * (0.60 - sat) * 0.7;
+                lite += mHawk * (hawkFlicker * 0.3 * hawkingT + 0.02);
+
+                color.setHSL((hue + 1.0) % 1.0, Math.max(0.0, sat), Math.min(1.0, lite));
+
+                positions[i].lerp(target, 0.1);
+                dummy.position.copy(positions[i]);
+                dummy.updateMatrix();
+                mesh.setMatrixAt(i, dummy.matrix);
+                mesh.setColorAt(i, color);
+            }
+            mesh.instanceMatrix.needsUpdate = true;
+            mesh.instanceColor.needsUpdate = true;
+
+            composer.render();
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            composer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+
+</html>

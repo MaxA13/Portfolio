@@ -637,8 +637,8 @@
         import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 
         // CONFIG
-        const COUNT = 5000;
-        const SPEED_MULT = 0.1;
+        const COUNT = 8000;
+        const SPEED_MULT = 0.08;
 
         // SETUP
         const scene = new THREE.Scene();
@@ -658,11 +658,11 @@
         renderPass.clearAlpha = 0;
         composer.addPass(renderPass);
 
-        const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
-        // Slightly increased bloom strength and radius for a more blurred, ethereal glow
-        bloomPass.strength = 1.4;
-        bloomPass.radius = 0.8;
-        bloomPass.threshold = 0.15;
+        const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.6, 0.5, 0.82);
+        // Premium bloom for "Best Version"
+        bloomPass.strength = 1.8;
+        bloomPass.radius = 1.0;
+        bloomPass.threshold = 0.1;
         composer.addPass(bloomPass);
 
         // SWARM OBJECTS
@@ -671,7 +671,7 @@
         const target = new THREE.Vector3();
 
         // INSTANCED MESH
-        const geometry = new THREE.SphereGeometry(0.3, 16, 16);
+        const geometry = new THREE.SphereGeometry(0.35, 10, 10);
         const material = new THREE.ShaderMaterial({
             uniforms: {
                 uTime: { value: 0 }
@@ -694,17 +694,17 @@
                 varying vec3 vColor;
                 uniform float uTime;
                 void main() {
-                    // Soft radial falloff for "blurred" blob aesthetic (dot with view vector)
+                    // Sleeker radial falloff for "hi-tech" energy blob
                     float dotNV = dot(vNormal, normalize(vViewPosition));
                     float radial = smoothstep(0.0, 1.0, dotNV);
-                    radial = pow(radial, 2.0); // Sharpen but keep soft
+                    radial = pow(radial, 2.8); // Sharper core
                     
-                    // Light pulse logic (sin wave over time)
-                    float pulse = sin(uTime * 5.0 + vColor.g * 20.0) * 0.15 + 0.85;
+                    // Energy pulse flickering
+                    float flicker = sin(uTime * 15.0 + vColor.g * 50.0) * 0.1 + 0.9;
+                    float pulse = sin(uTime * 4.0 + vColor.g * 20.0) * 0.15 + 0.85;
                     
-                    vec3 col = vColor * pulse;
-                    // Lower base alpha for better overlapping/blur feel
-                    float alpha = radial * 0.4 * pulse;
+                    vec3 col = vColor * pulse * flicker;
+                    float alpha = radial * 0.45 * pulse * flicker;
                     
                     gl_FragColor = vec4(col, alpha);
                 }
@@ -714,6 +714,8 @@
 
         const mesh = new THREE.InstancedMesh(geometry, material, COUNT);
         mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+        mesh.position.x = 25; // Premium X Balance
+        mesh.position.y = 15; // Premium Y Balance
         scene.add(mesh);
 
         // DATA ARRAYS
@@ -723,18 +725,19 @@
             mesh.setColorAt(i, color.setHex(0x00ff88)); // Init Color
         }
 
-        const PARAMS = { "scale": 100, "consume": 0.3, "jetpwr": 0.87, "accdense": 2.67, "lensstr": 0.32, "framedrag": 0.1, "hawking": 0.68, "chaos": 1.52 };
+        const PARAMS = { "scale": 555, "consume": 0.25, "jetpwr": 0.95, "accdense": 2.4, "lensstr": 0.35, "framedrag": 0.12, "hawking": 0.7, "chaos": 1.6 };
         const addControl = (id, label, min, max, val) => PARAMS[id] !== undefined ? PARAMS[id] : val;
 
         // SCROLL ANIMATION VARIABLES
-        let targetRotationY = 0;
+        const START_ROTATION = -20 * (Math.PI / 180); // Premium Perspective
+        let targetRotationY = START_ROTATION;
         let targetRotationX = 0;
 
         window.addEventListener('scroll', () => {
-            const scrollPercent = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
-            // Rotate the entire swarm based on scroll
-            targetRotationY = scrollPercent * Math.PI * 1.5;
-            targetRotationX = scrollPercent * Math.PI * 0.5;
+            const scrollPercent = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight || 1);
+            // Rotate with premium response
+            targetRotationY = START_ROTATION + scrollPercent * Math.PI * 1.8;
+            targetRotationX = scrollPercent * Math.PI * 0.4;
         });
 
         // ANIMATION LOOP
@@ -744,15 +747,17 @@
             requestAnimationFrame(animate);
             const time = clock.getElapsedTime() * SPEED_MULT;
 
-            // Apply scroll rotation with lerp for smoothness
-            mesh.rotation.y += (targetRotationY - mesh.rotation.y) * 0.05;
-            mesh.rotation.x += (targetRotationX - mesh.rotation.x) * 0.05;
+            // Apply scroll rotation with smooth lerp
+            mesh.rotation.y += (targetRotationY - mesh.rotation.y) * 0.06;
+            mesh.rotation.x += (targetRotationX - mesh.rotation.x) * 0.06;
 
-            // Auto spin
-            mesh.rotation.y += 0.002;
+            // Idle floating & micro-rotation
+            mesh.rotation.y += 0.0015;
+            mesh.rotation.z += 0.0005;
+            mesh.position.y = 15 + Math.sin(time * 2.0) * 1.5; 
 
             if (material.uniforms && material.uniforms.uTime) {
-                material.uniforms.uTime.value = time;
+                material.uniforms.uTime.value = time * 1.5;
             }
 
             const count = COUNT;

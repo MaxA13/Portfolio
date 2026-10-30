@@ -112,7 +112,7 @@
                     class="text-sm font-medium text-neutral-400 hover:text-white transition-colors">Contact</a>
             </nav>
             <div class="flex items-center gap-4">
-                <a href="mailto:alexandrovlab@gmail.com"
+                <a href="#contact"
                     class="bg-brand-600 text-white px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-brand-700 transition-all active:scale-95">Let's
                     Talk </a>
             </div>
@@ -479,12 +479,18 @@
                 </h2>
 
 
-                <div class="mt-4">
+                <div class="mt-4 flex flex-col items-center gap-4">
                     <a href="mailto:alexandrovlab@gmail.com"
                         class="group relative inline-flex items-center gap-3 rounded-full bg-white px-8 py-4 font-medium text-neutral-950 transition-all hover:scale-105 active:scale-95 shadow-[0_4px_20px_rgba(255,255,255,0.15)] hover:shadow-[0_4px_30px_rgba(255,255,255,0.3)] text-lg">
                         Let's talk <i data-feather="arrow-right"
                             class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"></i>
                     </a>
+                    <button onclick="navigator.clipboard.writeText('alexandrovlab@gmail.com').then(()=>{const el=document.getElementById('copy-feedback');el.textContent='Copied!';el.classList.remove('text-neutral-400');el.classList.add('text-green-400');setTimeout(()=>{el.textContent='alexandrovlab@gmail.com  ·  click to copy';el.classList.remove('text-green-400');el.classList.add('text-neutral-400')},2000)})"
+                        class="group inline-flex items-center gap-2.5 text-neutral-400 hover:text-white transition-colors cursor-pointer bg-transparent border-none outline-none">
+                        <i data-feather="mail" class="w-4 h-4 flex-shrink-0"></i>
+                        <span id="copy-feedback" class="text-sm font-medium tracking-wide">alexandrovlab@gmail.com  ·  click to copy</span>
+                        <i data-feather="copy" class="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0"></i>
+                    </button>
                 </div>
             </div>
 

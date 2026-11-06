@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beyond the Veil – Game Design</title>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        neutral: {
+                            950: '#0a0a0a',
+                            900: '#171717',
+                            800: '#262626',
+                            700: '#404040',
+                            400: '#a3a3a3',
+                            300: '#d4d4d4',
+                        },
+                        brand: {400: '#EBC566', 500: '#E2B54A', 600: '#C99A2E', 700: '#A67C1E'},
+                        alt: '#3FE0C5',
+                        hollow: '#E0367A',
+                        dusk: '#5E7F9C'
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/games.css" rel="stylesheet">
+    <style>
+        body { --glow: rgba(226,181,74,0.25); }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <!-- Navigation -->
+    <nav
+        class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-4 py-4 bg-[#0a0a0a]/80 backdrop-blur-md border-b border-neutral-800/50 sm:px-12 reveal">
+        <a href="games.html"
+            class="group flex items-center gap-2 text-sm font-medium text-neutral-400 transition-all hover:text-white">
+            <i data-feather="arrow-left" class="h-4 w-4 transition-transform group-hover:-translate-x-1"></i>
+            Game Design
+        </a>
+        <div class="flex items-center gap-6">
+            <a href="presentation-beyond-veil.html"
+                class="hidden sm:inline-flex items-center gap-2 text-sm font-medium text-neutral-400 hover:text-white transition-colors">
+                <i data-feather="monitor" class="h-4 w-4"></i> Presentation
+            </a>
+            <a href="index.html" class="flex items-center gap-3">
+                <div
+                    class="h-8 w-8 rounded-full overflow-hidden bg-neutral-800 flex items-center justify-center text-white font-semibold">
+                    <img src="img/favicon.png" alt="CodexLab Logo" class="h-full w-full object-cover">
+                </div>
+                <span class="font-semibold text-white tracking-wide text-sm hidden md:block">CodexLab</span>
+            </a>
+        </div>
+    </nav>
+
+    <div
+        class="relative flex w-full flex-col items-center gap-10 px-4 pt-24 pb-12 md:gap-16 md:px-8 md:pt-32 md:pb-20 lg:pb-24 lg:pt-36 overflow-hidden">
+
+        <!-- Ambient Background Glows -->
+        <div class="fixed inset-0 z-0 bg-grid pointer-events-none opacity-40"></div>
+        <div
+            class="absolute right-[-10%] top-[5%] z-0 h-96 w-96 rounded-full bg-alt/15 blur-[100px] pointer-events-none">
+        </div>
+        <div
+            class="absolute left-[-10%] top-[40%] z-0 h-72 w-72 rounded-full bg-brand-600/15 blur-[80px] pointer-events-none">
+        </div>
+
+        <!-- Header Section -->
+        <div class="reveal relative z-10 flex w-full max-w-5xl flex-col items-center gap-6 text-center">
+            <span
+                class="inline-flex items-center gap-1 rounded-full bg-brand-500/10 px-3 py-1 text-sm font-medium text-brand-400 border border-brand-500/20 transition-all hover:bg-brand-500/20">
+                Game Design · Match-3 + Hero Adventure · Low-Poly 3D
+            </span>
+            <h1 class="sr-only">Beyond the Veil: The Lost Legacy of Aurelia</h1>
+            <img src="img/games/beyond-veil/logo.webp" alt="Beyond the Veil: The Lost Legacy of Aurelia logo"
+                class="w-full max-w-xl drop-shadow-[0_10px_40px_var(--glow)]">
+            <p class="w-full max-w-2xl text-base leading-relaxed text-neutral-300 md:text-lg lg:text-xl italic">
+                “Some worlds are hidden not because they are forgotten, but because they are too powerful to be found.”
+            </p>
+        </div>
+
+        <!-- Trailer + concept -->
+        <div
+            class="reveal relative z-10 grid w-full max-w-5xl grid-cols-1 items-center gap-8 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
+            <div
+                class="relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+                <video class="block w-full h-auto" src="img/games/beyond-veil/trailer.mp4" poster="img/games/beyond-veil/splash.jpg"
+                    controls muted loop playsinline preload="metadata"></video>
+                <div
+                    class="pointer-events-none absolute top-4 right-4 z-20 rounded bg-brand-600/90 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/20 shadow-lg">
+                    Trailer</div>
+            </div>
+            <div class="flex flex-col gap-5">
+                <span class="text-sm font-semibold uppercase tracking-[0.2em] text-brand-400">The Concept</span>
+                <p class="text-xl text-neutral-200 leading-relaxed font-light">
+                    A young explorer travels across Aurelia's floating islands. Every match on the gem board powers her attacks on the Hollow's creatures and restores the sanctuaries.
+                </p>
+                <p class="text-base text-neutral-400 leading-relaxed">
+                    Low-poly 3D throughout: simple polygons, flat-shaded facets and soft sunlit lighting, so every screen looks like a polished toy diorama.
+                </p>
+                <div class="flex flex-wrap gap-2 pt-2">
+                    <span class="text-xs font-medium text-neutral-300 rounded-full border border-neutral-700/50 bg-neutral-800/80 px-4 py-1.5">Mobile · Portrait 9:16</span>
+                    <span class="text-xs font-medium text-neutral-300 rounded-full border border-neutral-700/50 bg-neutral-800/80 px-4 py-1.5">Match-3</span>
+                    <span class="text-xs font-medium text-neutral-300 rounded-full border border-neutral-700/50 bg-neutral-800/80 px-4 py-1.5">Hero adventure</span>
+                    <span class="text-xs font-medium text-neutral-300 rounded-full border border-neutral-700/50 bg-neutral-800/80 px-4 py-1.5">Low-poly 3D</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Design pillars -->
+        <div class="relative z-10 flex w-full max-w-5xl flex-col items-start gap-6">
+            <h2 class="reveal text-2xl font-semibold tracking-tight text-white">Design Pillars</h2>
+            <div class="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4 md:gap-6">
+                <div
+                    class="reveal flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_var(--glow)]">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-brand-400">Genre</span>
+                    <span class="text-sm text-neutral-300">Match-3 + hero adventure for mobile, portrait 9:16</span>
+                </div>
+                <div
+                    class="reveal delay-100 flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_var(--glow)]">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-brand-400">Tone</span>
+                    <span class="text-sm text-neutral-300">Bright, magical and hopeful, with a creeping shadow</span>
+                </div>
+                <div
+                    class="reveal delay-200 flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_var(--glow)]">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-brand-400">Art direction</span>
+                    <span class="text-sm text-neutral-300">Low-poly 3D: flat-shaded facets, soft sunlit lighting, a polished toy diorama</span>
+                </div>
+                <div
+                    class="reveal delay-300 flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_var(--glow)]">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-alt">Hook</span>
+                    <span class="text-sm text-neutral-300">Match gems to charge the hero. Clear a level and the sanctuary rebuilds itself.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lore: The Golden Sanctuary -->
+        <div class="reveal relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-8">
+            <div class="flex w-full flex-col items-start gap-3">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="flex h-10 w-10 items-center justify-center rounded-lg border border-alt/20 bg-alt/10 shadow-sm">
+                        <i data-feather="sun" class="h-5 w-5 text-alt"></i>
+                    </div>
+                    <span class="text-2xl font-semibold tracking-tight text-white">The Golden Sanctuary</span>
+                </div>
+                <div class="lore text-base text-neutral-400 max-w-3xl leading-relaxed">
+                    <p>Before the first kingdoms there was <span class="text-neutral-200">Aurelia</span>: temples on floating islands, golden bridges between sanctuaries and rivers of light.</p>
+                    <p>At its center beat the <span class="text-neutral-200">Heart of Eternity</span>, which kept six primordial forces in balance: Sun, Wisdom, Depth, Flame, Life and Spirit.</p>
+                </div>
+            </div>
+            <div class="grid w-full grid-cols-1 gap-6 sm:grid-cols-[1fr_1.4fr] items-start">
+                <div
+                    class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                        src="img/games/beyond-veil/splash-logo.jpg" alt="Beyond the Veil title splash: the golden temple under the teal rune ring" loading="lazy" />
+                    <div
+                        class="absolute top-4 right-4 z-20 rounded bg-brand-600/90 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/20 shadow-lg">
+                        Title Splash</div>
+                </div>
+                <div
+                    class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                        src="img/games/beyond-veil/world-map.jpg" alt="World map of Aurelia's floating islands" loading="lazy" />
+                    <div
+                        class="absolute top-4 right-4 rounded bg-black/60 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/10">
+                        World Map</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lore: The Fall & The Awakening -->
+        <div class="relative z-10 grid w-full max-w-5xl grid-cols-1 gap-6 pt-8 md:grid-cols-2">
+            <div class="reveal flex flex-col gap-4 rounded-2xl border border-neutral-700 bg-neutral-800/40 backdrop-blur-sm p-8">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-700 bg-neutral-800 shadow-sm">
+                        <i data-feather="moon" class="h-5 w-5 text-neutral-300"></i>
+                    </div>
+                    <span class="text-2xl font-semibold tracking-tight text-white">The Fall</span>
+                </div>
+                <div class="lore text-base text-neutral-400 max-w-3xl leading-relaxed">
+                    <p>Then something came from beyond the edge of reality. It was neither god nor mortal. It ate memories, twisted magic and turned light into shadow. The guardians called it <span class="text-neutral-200">the Hollow</span>.</p>
+                    <p>As it spread, the Heart cracked. The guardians broke the Heart into six sacred relics, hid them across the islands, and raised the Veil, a barrier that sealed Aurelia away from the world.</p>
+                    <p class="text-neutral-200">The Hollow was imprisoned, and Aurelia was forgotten.</p>
+                </div>
+            </div>
+            <div class="reveal delay-100 flex flex-col gap-4 rounded-2xl border border-alt/20 bg-alt/5 backdrop-blur-sm p-8">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="flex h-10 w-10 items-center justify-center rounded-lg border border-alt/20 bg-alt/10 shadow-sm">
+                        <i data-feather="compass" class="h-5 w-5 text-alt"></i>
+                    </div>
+                    <span class="text-2xl font-semibold tracking-tight text-white">The Awakening</span>
+                </div>
+                <div class="lore text-base text-neutral-400 max-w-3xl leading-relaxed">
+                    <p>Centuries later the Veil is thinning. <span class="text-neutral-200">Lyra Venn</span>, a young explorer mapping ruins in the mortal world, finds a glowing teal shard in a collapsed temple.</p>
+                    <p>When she touches it, the shard opens a door in the sky. On the other side is Aurelia, half in ruins.</p>
+                    <p class="text-neutral-200">The shard is a fragment of the Heart. It chose her.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lore: The Call -->
+        <div class="reveal relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-8">
+            <div class="flex w-full flex-col items-start gap-3">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="flex h-10 w-10 items-center justify-center rounded-lg border border-brand-500/20 bg-brand-500/10 shadow-sm">
+                        <i data-feather="hexagon" class="h-5 w-5 text-brand-400"></i>
+                    </div>
+                    <span class="text-2xl font-semibold tracking-tight text-white">The Call</span>
+                </div>
+                <div class="lore text-base text-neutral-400 max-w-3xl leading-relaxed">
+                    <p>At the first temple a small guardian spirit made of crystal light wakes up and joins her: <span class="text-neutral-200">Glim</span>, the last of the sanctuary's keepers.</p>
+                    <p>The surviving guardians tell Lyra the six relics must be recovered before the Hollow breaks free.</p>
+                </div>
+            </div>
+            <div class="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+                <div class="reveal flex flex-col gap-1 rounded-xl border border-neutral-700 bg-neutral-800/50 p-5">
+                    <span class="font-semibold" style="color:#F5C842">The Sun Emblem</span>
+                    <span class="text-sm text-neutral-300">Sun: creation and light</span>
+                    <span class="text-xs text-neutral-500 flex items-center gap-1.5"><i data-feather="map-pin" class="h-3 w-3"></i>The Golden Sanctuary</span>
+                </div>
+                <div class="reveal flex flex-col gap-1 rounded-xl border border-neutral-700 bg-neutral-800/50 p-5">
+                    <span class="font-semibold" style="color:#3A6FE0">The Sapphire of Depths</span>
+                    <span class="text-sm text-neutral-300">Depth: ancient memories</span>
+                    <span class="text-xs text-neutral-500 flex items-center gap-1.5"><i data-feather="map-pin" class="h-3 w-3"></i>Sunken Gardens</span>
+                </div>
+                <div class="reveal flex flex-col gap-1 rounded-xl border border-neutral-700 bg-neutral-800/50 p-5">
+                    <span class="font-semibold" style="color:#F05A28">The Flame of Eternity</span>
+                    <span class="text-sm text-neutral-300">Flame: transformation</span>
+                    <span class="text-xs text-neutral-500 flex items-center gap-1.5"><i data-feather="map-pin" class="h-3 w-3"></i>Ember Peaks</span>
+                </div>
+                <div class="reveal flex flex-col gap-1 rounded-xl border border-neutral-700 bg-neutral-800/50 p-5">
+                    <span class="font-semibold" style="color:#4FC25A">The Emerald of Life</span>
+                    <span class="text-sm text-neutral-300">Life: growth and renewal</span>
+                    <span class="text-xs text-neutral-500 flex items-center gap-1.5"><i data-feather="map-pin" class="h-3 w-3"></i>Elderwood Grove</span>
+                </div>
+                <div class="reveal flex flex-col gap-1 rounded-xl border border-neutral-700 bg-neutral-800/50 p-5">
+                    <span class="font-semibold" style="color:#3FE0C5">The Celestial Rune</span>
+                    <span class="text-sm text-neutral-300">Wisdom: link between worlds</span>
+                    <span class="text-xs text-neutral-500 flex items-center gap-1.5"><i data-feather="map-pin" class="h-3 w-3"></i>Crystal Spires</span>
+                </div>
+                <div class="reveal flex flex-col gap-1 rounded-xl border border-neutral-700 bg-neutral-800/50 p-5">
+                    <span class="font-semibold" style="color:#A66BF0">The Heart of Spirit</span>
+                    <span class="text-sm text-neutral-300">Spirit: binds all life</span>
+                    <span class="text-xs text-neutral-500 flex items-center gap-1.5"><i data-feather="map-pin" class="h-3 w-3"></i>The Cloud Palace</span>
+                </div>
+            </div>
+            <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
+                <div
+                    class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                        src="img/games/beyond-veil/six-relics.jpg" alt="The six sacred relics on sandstone pedestals" loading="lazy" />
+                    <div
+                        class="absolute top-4 right-4 rounded bg-black/60 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/10">
+                        Six Relics</div>
+                </div>
+                <div
+                    class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                        src="img/games/beyond-veil/six-gems.jpg" alt="The six faceted gems: star, teardrop, flame, leaf, hexagon, moon" loading="lazy" />
+                    <div
+                        class="absolute top-4 right-4 rounded bg-black/60 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/10">
+                        Six Gems</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Characters -->
+        <div class="relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-8">
+            <div class="flex w-full flex-col items-start gap-3">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-700 bg-neutral-800 shadow-sm">
+                        <i data-feather="users" class="h-5 w-5 text-neutral-300"></i>
+                    </div>
+                    <span class="text-2xl font-semibold tracking-tight text-white">Characters</span>
+                </div>
+                <p class="text-base text-neutral-400 max-w-3xl">
+                    Chunky stylized proportions and simple faceted faces. Lyra is attractive and athletic, tasteful, never sexualized.
+                </p>
+            </div>
+            <div class="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4 md:gap-6">
+                <div
+                    class="reveal flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_var(--glow)]">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-alt">Lyra Venn</span>
+                    <span class="text-sm text-neutral-300">Hero, 22, explorer. Confident and friendly: teal-dyed bob, sand explorer jacket, gold compass, the Heart shard glowing on a cord.</span>
+                </div>
+                <div
+                    class="reveal delay-100 flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_var(--glow)]">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-alt">Glim</span>
+                    <span class="text-sm text-neutral-300">Companion: a small floating fox-like spirit of teal crystal facets, a gold rune on its forehead, a trail of light for a tail.</span>
+                </div>
+                <div
+                    class="reveal delay-200 flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_var(--glow)]">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-brand-400">Elder Oro</span>
+                    <span class="text-sm text-neutral-300">Guardian and quest giver: an ancient sandstone statue come to life, with gold Celtic knots, glowing teal eyes and a stone beard.</span>
+                </div>
+                <div
+                    class="reveal delay-300 flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_var(--glow)]">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-brand-400">Sela</span>
+                    <span class="text-sm text-neutral-300">Guardian and shopkeeper: tall and graceful, ivory robes with gold trim, a staff topped with a floating gem.</span>
+                </div>
+            </div>
+            <div
+                class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                    src="img/games/beyond-veil/lyra-character-sheet.jpg" alt="Lyra Venn character sheet with Glim" loading="lazy" />
+                <div
+                    class="absolute top-4 right-4 rounded bg-black/60 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/10">
+                    Lyra &amp; Glim</div>
+            </div>
+            <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-[1.6fr_1fr] items-center">
+                <div
+                    class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                        src="img/games/beyond-veil/lyra-poses.jpg" alt="Lyra action poses with Glim" loading="lazy" />
+                    <div
+                        class="absolute top-4 right-4 rounded bg-black/60 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/10">
+                        Poses</div>
+                </div>
+                <div
+                    class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                        src="img/games/beyond-veil/glim-rune-emblem.jpg" alt="Glim inside the golden rune ring" loading="lazy" />
+                    <div
+                        class="absolute top-4 right-4 rounded bg-black/60 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/10">
+                        Glim</div>
+                </div>
+            </div>
+            <div
+                class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                    src="img/games/beyond-veil/guardians-oro-sela.jpg" alt="Elder Oro and Sela, the surviving guardians" loading="lazy" />
+                <div
+                    class="absolute top-4 right-4 rounded bg-black/60 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/10">
+                    Guardians</div>
+            </div>
+        </div>
+
+        <!-- The Hollow -->
+        <div class="reveal relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-8">
+            <div class="flex w-full flex-col items-start gap-3">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-700 bg-neutral-800 shadow-sm">
+                        <i data-feather="eye" class="h-5 w-5 text-neutral-300"></i>
+                    </div>
+                    <span class="text-2xl font-semibold tracking-tight text-white">The Hollow &amp; Its Creatures</span>
+                </div>
+                <div class="lore text-base text-neutral-400 max-w-3xl leading-relaxed">
+                    <p>On every island the Hollow's creatures guard the relic. Lyra fights them with the gems' power, and every victory rebuilds part of the sanctuary.</p>
+                    <p class="text-neutral-200">But the deeper she goes, the clearer one truth becomes: the Hollow was not only imprisoned. It was guarding something, and Aurelia's greatest secret is still waiting behind the Veil.</p>
+                </div>
+            </div>
+            <div class="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
+                <div
+                    class="reveal flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_var(--glow)]">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-hollow">Hollow Wisp</span>
+                    <span class="text-sm text-neutral-300">Common enemy: floating dark violet smoke with magenta eyes.</span>
+                </div>
+                <div
+                    class="reveal delay-100 flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_var(--glow)]">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-hollow">Shade Golem</span>
+                    <span class="text-sm text-neutral-300">Strong enemy: cracked sandstone golem with violet crystals.</span>
+                </div>
+                <div
+                    class="reveal delay-200 flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_var(--glow)]">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-hollow">Veil Wraith</span>
+                    <span class="text-sm text-neutral-300">Elite enemy: tall hooded shadow, torn cloak, crystal claws.</span>
+                </div>
+                <div
+                    class="reveal delay-300 flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_var(--glow)]">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-hollow">The Hollow</span>
+                    <span class="text-sm text-neutral-300">Final boss: a huge mask-like face of black and violet crystal facets with one great magenta eye.</span>
+                </div>
+            </div>
+            <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-[1.7fr_1fr] items-start">
+                <div
+                    class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                        src="img/games/beyond-veil/enemy-lineup.jpg" alt="Hollow Wisp, Shade Golem and Veil Wraith" loading="lazy" />
+                    <div
+                        class="absolute top-4 right-4 rounded bg-black/60 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/10">
+                        Enemy Lineup</div>
+                </div>
+                <div
+                    class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                        src="img/games/beyond-veil/hollow-boss-reveal.jpg" alt="Lyra faces the Hollow above a floating island" loading="lazy" />
+                    <div
+                        class="absolute top-4 right-4 rounded bg-black/60 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/10">
+                        Boss Reveal</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Core Loop -->
+        <div class="relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-8">
+            <div class="flex w-full flex-col items-start gap-3">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="flex h-10 w-10 items-center justify-center rounded-lg border border-[#10b981]/20 bg-[#10b981]/10 shadow-sm">
+                        <i data-feather="layout" class="h-5 w-5 text-[#10b981]"></i>
+                    </div>
+                    <span class="text-2xl font-semibold tracking-tight text-white">Core Loop &amp; Interface</span>
+                </div>
+                <p class="text-base text-neutral-400 max-w-3xl">
+                    A young explorer travels across Aurelia's floating islands. Every match on the gem board powers her attacks on the
+                    Hollow's creatures and restores the sanctuaries.
+                </p>
+            </div>
+            <div class="grid w-full grid-cols-2 gap-4 md:grid-cols-5">
+                <div class="reveal flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 p-5">
+                    <i data-feather="grid" class="h-5 w-5 text-brand-400"></i>
+                    <span class="font-semibold text-white">1. Match</span>
+                    <span class="text-sm text-neutral-400">Gems of the six forces: Sun, Wisdom, Depth, Flame, Life, Spirit.</span>
+                </div>
+                <div class="reveal flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 p-5">
+                    <i data-feather="zap" class="h-5 w-5 text-alt"></i>
+                    <span class="font-semibold text-white">2. Charge</span>
+                    <span class="text-sm text-neutral-400">Each gem color fills one of Lyra's powers. Full powers fire at the creature above the board.</span>
+                </div>
+                <div class="reveal flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 p-5">
+                    <i data-feather="target" class="h-5 w-5 text-brand-400"></i>
+                    <span class="font-semibold text-white">3. Defeat</span>
+                    <span class="text-sm text-neutral-400">Beat the creature within a set number of moves to win the level.</span>
+                </div>
+                <div class="reveal flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 p-5">
+                    <i data-feather="home" class="h-5 w-5 text-brand-400"></i>
+                    <span class="font-semibold text-white">4. Restore</span>
+                    <span class="text-sm text-neutral-400">Ruins rebuild and waterfalls flow again on the world map.</span>
+                </div>
+                <div class="reveal flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 p-5">
+                    <i data-feather="award" class="h-5 w-5 text-brand-400"></i>
+                    <span class="font-semibold text-white">5. Recover</span>
+                    <span class="text-sm text-neutral-400">One of the six relics at the end of each island.</span>
+                </div>
+            </div>
+            <div class="grid w-full grid-cols-2 gap-4 md:grid-cols-3 md:gap-6 reveal">
+                <div
+                    class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                        src="img/games/beyond-veil/board.jpg" alt="Match-3 board with Lyra and a Hollow Wisp above it" loading="lazy" />
+                </div>
+                <div
+                    class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                        src="img/games/beyond-veil/board-alt.jpg" alt="Board with the restored temple in the background" loading="lazy" />
+                </div>
+                <div
+                    class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                        src="img/games/beyond-veil/board-combo.jpg" alt="Combo with a lightning chain and +500 score" loading="lazy" />
+                    <div
+                        class="absolute top-4 right-4 z-20 rounded bg-brand-600/90 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/20 shadow-lg">
+                        Final</div>
+                </div>
+            </div>
+            <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-[1fr_1.6fr] items-center">
+                <div
+                    class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                        src="img/games/beyond-veil/island-map.jpg" alt="Island level map with a teal river" loading="lazy" />
+                    <div
+                        class="absolute top-4 right-4 rounded bg-black/60 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/10">
+                        Island Map</div>
+                </div>
+                <div class="flex flex-col gap-6">
+                    <div
+                        class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                        <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                            src="img/games/beyond-veil/ui-kit.jpg" alt="Low-poly UI kit: Play button, settings, panel, bar, stars, heart" loading="lazy" />
+                        <div
+                            class="absolute top-4 right-4 rounded bg-black/60 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/10">
+                            UI Kit</div>
+                    </div>
+                    <div
+                        class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                        <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                            src="img/games/beyond-veil/boosters.jpg" alt="Boosters: hammer, sun bomb and crystal staff" loading="lazy" />
+                        <div
+                            class="absolute top-4 right-4 rounded bg-black/60 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/10">
+                            Boosters</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Style Guide -->
+        <div class="relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-8">
+            <div class="flex w-full flex-col items-start gap-3">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="flex h-10 w-10 items-center justify-center rounded-lg border border-alt/20 bg-alt/10 shadow-sm">
+                        <i data-feather="box" class="h-5 w-5 text-alt"></i>
+                    </div>
+                    <span class="text-2xl font-semibold tracking-tight text-white">Style Guide: Low-Poly 3D</span>
+                </div>
+                <p class="text-base text-neutral-400 max-w-3xl">
+                    Low polygon count, large flat facets and hard edges, like a polished toy diorama. Warm sun from the top left, cool
+                    blue fill from the right, bloom only on teal magic and gems.
+                </p>
+            </div>
+            <div class="reveal grid w-full grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-4">
+                <div class="flex flex-col gap-1.5"><div class="swatch" style="background:#5E7F9C"></div><span class="text-xs font-semibold text-neutral-200">Dusk Blue</span><span class="text-xs text-neutral-500">#5E7F9C · Sky, islands, UI bg</span></div>
+                <div class="flex flex-col gap-1.5"><div class="swatch" style="background:#F3E6D2"></div><span class="text-xs font-semibold text-neutral-200">Cloud Cream</span><span class="text-xs text-neutral-500">#F3E6D2 · Clouds, light panels</span></div>
+                <div class="flex flex-col gap-1.5"><div class="swatch" style="background:#C9A97A"></div><span class="text-xs font-semibold text-neutral-200">Sandstone</span><span class="text-xs text-neutral-500">#C9A97A · Temples, statues</span></div>
+                <div class="flex flex-col gap-1.5"><div class="swatch" style="background:#E2B54A"></div><span class="text-xs font-semibold text-neutral-200">Aurelian Gold</span><span class="text-xs text-neutral-500">#E2B54A · Ornaments, UI borders</span></div>
+                <div class="flex flex-col gap-1.5"><div class="swatch" style="background:#3FE0C5"></div><span class="text-xs font-semibold text-neutral-200">Veil Teal</span><span class="text-xs text-neutral-500">#3FE0C5 · Runes, portals, Glim</span></div>
+                <div class="flex flex-col gap-1.5"><div class="swatch" style="background:#4FA35A"></div><span class="text-xs font-semibold text-neutral-200">Grove Green</span><span class="text-xs text-neutral-500">#4FA35A · Trees, grass</span></div>
+                <div class="flex flex-col gap-1.5"><div class="swatch" style="background:#3B2350"></div><span class="text-xs font-semibold text-neutral-200">Hollow Violet</span><span class="text-xs text-neutral-500">#3B2350 · The Hollow, enemies</span></div>
+                <div class="flex flex-col gap-1.5"><div class="swatch" style="background:#E0367A"></div><span class="text-xs font-semibold text-neutral-200">Hollow Magenta</span><span class="text-xs text-neutral-500">#E0367A · Enemy eyes, attacks</span></div>
+            </div>
+            <div class="reveal flex w-full flex-col gap-3">
+                <span class="text-sm font-semibold text-white">Gems: one colour and one silhouette per force</span>
+                <div class="grid w-full grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-6">
+                    <div class="flex items-center gap-3 rounded-xl border border-neutral-700 bg-neutral-800/50 p-3"><span class="h-8 w-8 flex-shrink-0 rounded-lg" style="background:#F5C842"></span><div class="flex flex-col"><span class="text-sm font-semibold text-neutral-200">Sun</span><span class="text-xs text-neutral-500">#F5C842 · star</span></div></div>
+                    <div class="flex items-center gap-3 rounded-xl border border-neutral-700 bg-neutral-800/50 p-3"><span class="h-8 w-8 flex-shrink-0 rounded-lg" style="background:#3A6FE0"></span><div class="flex flex-col"><span class="text-sm font-semibold text-neutral-200">Depth</span><span class="text-xs text-neutral-500">#3A6FE0 · teardrop</span></div></div>
+                    <div class="flex items-center gap-3 rounded-xl border border-neutral-700 bg-neutral-800/50 p-3"><span class="h-8 w-8 flex-shrink-0 rounded-lg" style="background:#F05A28"></span><div class="flex flex-col"><span class="text-sm font-semibold text-neutral-200">Flame</span><span class="text-xs text-neutral-500">#F05A28 · flame</span></div></div>
+                    <div class="flex items-center gap-3 rounded-xl border border-neutral-700 bg-neutral-800/50 p-3"><span class="h-8 w-8 flex-shrink-0 rounded-lg" style="background:#4FC25A"></span><div class="flex flex-col"><span class="text-sm font-semibold text-neutral-200">Life</span><span class="text-xs text-neutral-500">#4FC25A · leaf</span></div></div>
+                    <div class="flex items-center gap-3 rounded-xl border border-neutral-700 bg-neutral-800/50 p-3"><span class="h-8 w-8 flex-shrink-0 rounded-lg" style="background:#3FE0C5"></span><div class="flex flex-col"><span class="text-sm font-semibold text-neutral-200">Wisdom</span><span class="text-xs text-neutral-500">#3FE0C5 · hexagon</span></div></div>
+                    <div class="flex items-center gap-3 rounded-xl border border-neutral-700 bg-neutral-800/50 p-3"><span class="h-8 w-8 flex-shrink-0 rounded-lg" style="background:#A66BF0"></span><div class="flex flex-col"><span class="text-sm font-semibold text-neutral-200">Spirit</span><span class="text-xs text-neutral-500">#A66BF0 · moon</span></div></div>
+                </div>
+            </div>
+            <ul class="reveal grid w-full grid-cols-1 gap-3 text-sm text-neutral-300 md:grid-cols-2">
+                <li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-400"></i><span>Low polygon count, large flat facets, hard edges. No smooth surfaces, no fine texture.</span></li>
+                <li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-400"></i><span>Flat shading with soft ambient occlusion. Bloom only on teal magic and gems.</span></li>
+                <li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-400"></i><span>No outlines. Shape comes from facets and light.</span></li>
+                <li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-400"></i><span>Gems and items are faceted 3D objects, never painted icons.</span></li>
+                <li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-400"></i><span>UI uses the same 3D material: beveled gold or teal buttons, faceted sandstone panels with gold frames.</span></li>
+                <li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-400"></i><span>Avoid painterly brushwork, thick outlines, photorealism, high-poly surfaces, tiny details and neon.</span></li>
+            </ul>
+        </div>
+
+        <!-- Call to Action -->
+        <div
+            class="reveal relative z-10 mt-8 flex w-full max-w-5xl flex-col items-center gap-6 border-t border-neutral-800 pt-12 pb-8 md:mt-16 md:pt-16">
+            <span class="text-center text-lg text-neutral-400">
+                See the concept as a pitch, or talk about your own game.
+            </span>
+            <div class="flex flex-col sm:flex-row items-center gap-4">
+                <a href="presentation-beyond-veil.html"
+                    class="group inline-flex items-center justify-center gap-2 rounded-full border border-neutral-700 bg-neutral-800 px-8 py-3.5 text-sm font-semibold text-white transition-all hover:bg-neutral-700 hover:-translate-y-0.5 active:translate-y-0">
+                    <i data-feather="monitor" class="h-4 w-4"></i> View presentation
+                </a>
+                <a href="index.html#contact"
+                    class="group inline-flex items-center justify-center gap-2 rounded-full bg-white px-8 py-3.5 text-sm font-semibold text-neutral-950 transition-all hover:bg-neutral-200 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:-translate-y-0.5 active:translate-y-0">
+                    Get in touch
+                    <i data-feather="arrow-right"
+                        class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"></i>
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="js/games.js"></script>
+</body>
+
+</html>

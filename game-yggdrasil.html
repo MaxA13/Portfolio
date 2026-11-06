@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yggdrasil Tales – Game Design</title>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        neutral: {
+                            950: '#0a0a0a',
+                            900: '#171717',
+                            800: '#262626',
+                            700: '#404040',
+                            400: '#a3a3a3',
+                            300: '#d4d4d4',
+                        },
+                        /* Yggdrasil accent: rune cyan */
+                        brand: {
+                            400: '#22d3ee',
+                            500: '#06b6d4',
+                            600: '#0891b2',
+                            700: '#0e7490',
+                        },
+                        ember: '#f59e0b',
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/games.css" rel="stylesheet">
+</head>
+
+<body class="antialiased">
+
+    <!-- Navigation -->
+    <nav
+        class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-4 py-4 bg-[#0a0a0a]/80 backdrop-blur-md border-b border-neutral-800/50 sm:px-12 reveal">
+        <a href="games.html"
+            class="group flex items-center gap-2 text-sm font-medium text-neutral-400 transition-all hover:text-white">
+            <i data-feather="arrow-left" class="h-4 w-4 transition-transform group-hover:-translate-x-1"></i>
+            Game Design
+        </a>
+        <div class="flex items-center gap-6">
+            <a href="presentation-yggdrasil.html"
+                class="hidden sm:inline-flex items-center gap-2 text-sm font-medium text-neutral-400 hover:text-white transition-colors">
+                <i data-feather="monitor" class="h-4 w-4"></i> Presentation
+            </a>
+            <a href="index.html" class="flex items-center gap-3">
+                <div
+                    class="h-8 w-8 rounded-full overflow-hidden bg-neutral-800 flex items-center justify-center text-white font-semibold">
+                    <img src="img/favicon.png" alt="CodexLab Logo" class="h-full w-full object-cover">
+                </div>
+                <span class="font-semibold text-white tracking-wide text-sm hidden md:block">CodexLab</span>
+            </a>
+        </div>
+    </nav>
+
+    <div
+        class="relative flex w-full flex-col items-center gap-10 px-4 pt-24 pb-12 md:gap-16 md:px-8 md:pt-32 md:pb-20 lg:pb-24 lg:pt-36 overflow-hidden">
+
+        <!-- Ambient Background Glows -->
+        <div class="fixed inset-0 z-0 bg-grid pointer-events-none opacity-40"></div>
+        <div
+            class="absolute right-[-10%] top-[5%] z-0 h-96 w-96 rounded-full bg-brand-600/20 blur-[100px] pointer-events-none">
+        </div>
+        <div
+            class="absolute left-[-10%] top-[40%] z-0 h-72 w-72 rounded-full bg-ember/10 blur-[80px] pointer-events-none">
+        </div>
+
+        <!-- Header Section -->
+        <div class="reveal relative z-10 flex w-full max-w-5xl flex-col items-center gap-6 text-center">
+            <span
+                class="inline-flex items-center gap-1 rounded-full bg-brand-500/10 px-3 py-1 text-sm font-medium text-brand-400 border border-brand-500/20 transition-all hover:bg-brand-500/20">
+                Game Design · Merge RPG
+            </span>
+            <h1 class="sr-only">Yggdrasil Tales</h1>
+            <img src="img/games/yggdrasil/logo.webp" alt="Yggdrasil Tales logo"
+                class="w-full max-w-md drop-shadow-[0_10px_40px_rgba(34,211,238,0.25)]">
+            <p class="w-full max-w-2xl text-base leading-relaxed text-neutral-300 md:text-lg lg:text-xl italic">
+                “When the world tree dims, the realms forget how to burn.”
+            </p>
+        </div>
+
+        <!-- Key art -->
+        <div class="reveal relative z-10 w-full max-w-5xl">
+            <div
+                class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+                <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                    src="img/games/yggdrasil/key-art.jpg" alt="Haldor faces Thrym, king of the Frost Giants" />
+                <div
+                    class="absolute top-4 right-4 z-20 rounded bg-brand-600/90 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/20 shadow-lg">
+                    Key Art</div>
+            </div>
+        </div>
+
+        <!-- Trailer + title screen -->
+        <div class="reveal relative z-10 grid w-full max-w-5xl grid-cols-1 items-center gap-6 md:grid-cols-2">
+            <div
+                class="relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+                <video class="block w-full h-auto" src="img/games/yggdrasil/trailer.mp4" poster="img/games/yggdrasil/title-screen.jpg"
+                    controls muted loop playsinline preload="metadata"></video>
+                <div
+                    class="pointer-events-none absolute top-4 right-4 z-20 rounded bg-brand-600/90 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/20 shadow-lg">
+                    Trailer</div>
+            </div>
+            <div
+                class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+                <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                    src="img/games/yggdrasil/title-screen.jpg" alt="Yggdrasil Tales title screen" loading="lazy" />
+                <div
+                    class="absolute top-4 right-4 z-20 rounded bg-brand-600/90 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/20 shadow-lg">
+                    Title Screen</div>
+            </div>
+        </div>
+
+        <!-- Design pillars -->
+        <div class="relative z-10 flex w-full max-w-5xl flex-col items-start gap-6">
+            <h2 class="reveal text-2xl font-semibold tracking-tight text-white">Design Pillars</h2>
+            <div class="grid w-full grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
+                <div
+                    class="reveal flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_rgba(34,211,238,0.15)]">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-brand-400">Setting</span>
+                    <span class="text-sm text-neutral-300">Norse mythology, stylized and heroic</span>
+                </div>
+                <div
+                    class="reveal delay-100 flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_rgba(34,211,238,0.15)]">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-brand-400">Tone</span>
+                    <span class="text-sm text-neutral-300">Epic, warm-hearted, a little mischievous</span>
+                </div>
+                <div
+                    class="reveal delay-200 flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_rgba(34,211,238,0.15)]">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-brand-400">Palette</span>
+                    <span class="text-sm text-neutral-300">Nordic ice, with gold and ember-orange for hope</span>
+                </div>
+                <div
+                    class="reveal delay-300 flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_rgba(34,211,238,0.15)]">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-brand-400">Motif</span>
+                    <span class="text-sm text-neutral-300">Glowing cyan runes</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lore: The World -->
+        <div class="reveal relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-8">
+            <div class="flex w-full flex-col items-start gap-3">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="flex h-10 w-10 items-center justify-center rounded-lg border border-brand-500/20 bg-brand-500/10 shadow-sm">
+                        <i data-feather="globe" class="h-5 w-5 text-brand-400"></i>
+                    </div>
+                    <span class="text-2xl font-semibold tracking-tight text-white">The World</span>
+                </div>
+                <div class="lore text-base text-neutral-400 max-w-3xl leading-relaxed">
+                    <p>Nine realms hang from the branches of Yggdrasil, the great tree whose roots drink from the wells
+                        of fate. For ages its glow held the cold at bay. Now the glow is failing. Fimbulwinter, the
+                        winter before the end of the world, has begun to creep along the roots, and frost spreads from
+                        realm to realm. Runes that once blazed on every stone and blade are going dark.</p>
+                </div>
+            </div>
+            <div
+                class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                    src="img/games/yggdrasil/rune-road-framed.jpg" alt="The rune road leading to Yggdrasil" loading="lazy" />
+            </div>
+        </div>
+
+        <!-- Lore: The Theft -->
+        <div class="reveal relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-8">
+            <div class="flex w-full flex-col items-start gap-3">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-700 bg-neutral-800 shadow-sm">
+                        <i data-feather="cloud-snow" class="h-5 w-5 text-neutral-300"></i>
+                    </div>
+                    <span class="text-2xl font-semibold tracking-tight text-white">The Theft</span>
+                </div>
+                <div class="lore text-base text-neutral-400 max-w-3xl leading-relaxed">
+                    <p>The frost has a king. Thrym, lord of the Frost Giants of Jotunheim, has stolen Mjolnir, the
+                        hammer of Thor, and hidden it deep in his ice fortress. Without the hammer, the gods of Asgard
+                        cannot hold the winter back, and the thunder that once kept the giants in check has gone silent.
+                        Thrym wants more than the hammer. He wants the tree itself, and a world of endless ice.</p>
+                    <p>Far below, in the roots, something else stirs. Fenrir, the great wolf, has shaken loose the last
+                        strands of Gleipnir, the ribbon that bound him. Odin's ravens, Huginn and Muninn, fly the nine
+                        realms and carry the news back: the old bindings are breaking.</p>
+                </div>
+            </div>
+            <div
+                class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                    src="img/games/yggdrasil/thrym.jpg" alt="Thrym, king of the Frost Giants" loading="lazy" />
+                <div
+                    class="absolute top-4 right-4 rounded bg-black/60 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/10">
+                    Thrym</div>
+            </div>
+            <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
+                <div
+                    class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                        src="img/games/yggdrasil/fenrir.jpg" alt="Fenrir, the great wolf" loading="lazy" />
+                    <div
+                        class="absolute top-4 right-4 rounded bg-black/60 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/10">
+                        Fenrir</div>
+                </div>
+                <div
+                    class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                        src="img/games/yggdrasil/odins-raven.jpg" alt="One of Odin's ravens" loading="lazy" />
+                    <div
+                        class="absolute top-4 right-4 rounded bg-black/60 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/10">
+                        Huginn &amp; Muninn</div>
+                </div>
+            </div>
+            <div
+                class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                    src="img/games/yggdrasil/thrym-action-poses.jpg" alt="Frost Giant pose sheet" loading="lazy" />
+            </div>
+        </div>
+
+        <!-- Lore: The Hero -->
+        <div class="reveal relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-8">
+            <div class="flex w-full flex-col items-start gap-3">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-700 bg-neutral-800 shadow-sm">
+                        <i data-feather="shield" class="h-5 w-5 text-neutral-300"></i>
+                    </div>
+                    <span class="text-2xl font-semibold tracking-tight text-white">The Hero</span>
+                </div>
+                <div class="lore text-base text-neutral-400 max-w-3xl leading-relaxed">
+                    <p>Haldor is no god and no prince. He is a stocky axe-bearer from Midgard, a village at the foot of
+                        the tree, with a braided red beard and a stubborn streak. When the frost reaches his home, the
+                        gods have no answer, so he picks up his axe and walks the rune road toward the tree.</p>
+                    <p>Haldor cannot light the runes alone, but he can forge. Salvaged blades, shards of old rune-steel
+                        and relics of the gods can be joined, two into one, into stronger weapons. Each merge wakes a
+                        rune. Each rune brings back a little of the fire.</p>
+                </div>
+            </div>
+            <div
+                class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                    src="img/games/yggdrasil/haldor.jpg" alt="Haldor, the axe-bearer of Midgard" loading="lazy" />
+                <div
+                    class="absolute top-4 right-4 rounded bg-black/60 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/10">
+                    Haldor</div>
+            </div>
+            <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
+                <div
+                    class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                        src="img/games/yggdrasil/haldor-turnaround.jpg" alt="Haldor turnaround sheet" loading="lazy" />
+                </div>
+                <div
+                    class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                        src="img/games/yggdrasil/haldor-action-poses.jpg" alt="Haldor action poses" loading="lazy" />
+                </div>
+            </div>
+        </div>
+
+        <!-- Lore: The Relics -->
+        <div class="reveal relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-8">
+            <div class="flex w-full flex-col items-start gap-3">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="flex h-10 w-10 items-center justify-center rounded-lg border border-ember/20 bg-ember/10 shadow-sm">
+                        <i data-feather="star" class="h-5 w-5 text-ember"></i>
+                    </div>
+                    <span class="text-2xl font-semibold tracking-tight text-white">The Relics</span>
+                </div>
+                <div class="lore text-base text-neutral-400 max-w-3xl leading-relaxed">
+                    <p>Along the road lie the treasures of the gods, scattered by the winter: Gjallarhorn, the horn that
+                        will announce Ragnarok. Draupnir, the ring that drips new rings. The Helm of Awe. Freya's
+                        necklace Brisingamen. Gleipnir's last threads. The golden apples of Idunn. Each one carries
+                        power Haldor can borrow, and each one has a price.</p>
+                </div>
+            </div>
+            <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
+                <div
+                    class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                        src="img/games/yggdrasil/relics-brisingamen-gleipnir-apple.jpg" alt="Brisingamen, Gleipnir and a golden apple of Idunn"
+                        loading="lazy" />
+                </div>
+                <div
+                    class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                        src="img/games/yggdrasil/relics-gjallarhorn-draupnir-helm.jpg" alt="Gjallarhorn, Draupnir and the Helm of Awe"
+                        loading="lazy" />
+                </div>
+            </div>
+        </div>
+
+        <!-- Lore: The Journey -->
+        <div class="reveal relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-8">
+            <div class="flex w-full flex-col items-start gap-3">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-700 bg-neutral-800 shadow-sm">
+                        <i data-feather="map" class="h-5 w-5 text-neutral-300"></i>
+                    </div>
+                    <span class="text-2xl font-semibold tracking-tight text-white">The Journey</span>
+                </div>
+                <div class="lore text-base text-neutral-400 max-w-3xl leading-relaxed">
+                    <p>Midgard is the home base. Beyond it lie the realms, one chapter at a time: Jotunheim and its
+                        king, the dwarven forges of Svartalfheim, the mist of Niflheim, the fires of Muspelheim, and,
+                        further on, Helheim and the golden halls of Asgard. Every realm has a guardian. Every guardian
+                        guards a piece of the tree's fading light.</p>
+                    <p class="text-neutral-200">Win the realms back, and the tree wakes. Fail, and the winter finishes
+                        what it began.</p>
+                </div>
+            </div>
+            <div
+                class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                    src="img/games/yggdrasil/world-map.jpg" alt="World map of the nine realms around Yggdrasil"
+                    loading="lazy" />
+                <div
+                    class="absolute top-4 right-4 rounded bg-black/60 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/10">
+                    World Map</div>
+            </div>
+            <div
+                class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                    src="img/games/yggdrasil/midgard-home-base.jpg" alt="Midgard home base screen" loading="lazy" />
+                <div
+                    class="absolute top-4 right-4 rounded bg-black/60 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/10">
+                    Midgard – Home Base</div>
+            </div>
+        </div>
+
+        <!-- Gameplay & UI -->
+        <div class="reveal relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-8">
+            <div class="flex w-full flex-col items-start gap-3">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="flex h-10 w-10 items-center justify-center rounded-lg border border-[#10b981]/20 bg-[#10b981]/10 shadow-sm">
+                        <i data-feather="layout" class="h-5 w-5 text-[#10b981]"></i>
+                    </div>
+                    <span class="text-2xl font-semibold tracking-tight text-white">Gameplay &amp; Interface</span>
+                </div>
+                <p class="text-base text-neutral-400 max-w-3xl">
+                    A merge board sits next to the battle: combine two items into a stronger one, wake a rune, and
+                    unleash it on the realm's guardian. The UI kit carries the carved-ice frames, gold trim and cyan
+                    runes across every screen.
+                </p>
+            </div>
+            <div
+                class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+                <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                    src="img/games/yggdrasil/merge-battle-screen.jpg" alt="Merge board and battle screen" loading="lazy" />
+                <div
+                    class="absolute top-4 right-4 z-20 rounded bg-brand-600/90 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/20 shadow-lg">
+                    Merge &amp; Battle</div>
+            </div>
+            <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
+                <div
+                    class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                        src="img/games/yggdrasil/haldor-rune-attack.jpg" alt="Haldor's rune attack" loading="lazy" />
+                </div>
+                <div
+                    class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                        src="img/games/yggdrasil/victory-screen.jpg" alt="Victory screen with rewards" loading="lazy" />
+                </div>
+                <div
+                    class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                        src="img/games/yggdrasil/loading-screen.jpg" alt="Loading screen" loading="lazy" />
+                </div>
+                <div
+                    class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                        src="img/games/yggdrasil/ui-panels.jpg" alt="UI panels" loading="lazy" />
+                </div>
+                <div
+                    class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                        src="img/games/yggdrasil/ui-kit.jpg" alt="UI kit: panels, bars and buttons" loading="lazy" />
+                </div>
+                <div
+                    class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                        src="img/games/yggdrasil/ui-menu-icons.jpg" alt="Menu icons" loading="lazy" />
+                </div>
+            </div>
+        </div>
+
+        <!-- Items & Props -->
+        <div class="reveal relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-8">
+            <div class="flex w-full flex-col items-start gap-3">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-700 bg-neutral-800 shadow-sm">
+                        <i data-feather="package" class="h-5 w-5 text-neutral-300"></i>
+                    </div>
+                    <span class="text-2xl font-semibold tracking-tight text-white">Weapons, Items &amp; Props</span>
+                </div>
+                <p class="text-base text-neutral-400 max-w-3xl">
+                    Merge chains for axes and blades, consumables, and the buildings Haldor restores in Midgard.
+                </p>
+            </div>
+            <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
+                <div
+                    class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                        src="img/games/yggdrasil/axe-merge-chain.jpg" alt="Axe merge chain" loading="lazy" />
+                </div>
+                <div
+                    class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                        src="img/games/yggdrasil/rune-weapons.jpg" alt="Rune weapons" loading="lazy" />
+                </div>
+                <div
+                    class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                        src="img/games/yggdrasil/potion-vial-key.jpg" alt="Potion, rune vial and golden key" loading="lazy" />
+                </div>
+                <div
+                    class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                        src="img/games/yggdrasil/forge-runestone-longship.jpg" alt="Forge, rune stone and longship" loading="lazy" />
+                </div>
+                <div
+                    class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                        src="img/games/yggdrasil/map-tiles-chest-house.jpg" alt="Map tiles, chest and house" loading="lazy" />
+                </div>
+                <div
+                    class="group relative flex w-full items-center justify-center overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl p-8">
+                    <img class="zoomable block h-auto w-1/2 rounded-3xl transition-transform duration-700 ease-out group-hover:scale-105"
+                        src="img/games/yggdrasil/app-icon.jpg" alt="App icon" loading="lazy" />
+                    <div
+                        class="absolute top-4 right-4 rounded bg-black/60 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/10">
+                        App Icon</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div
+            class="reveal relative z-10 mt-8 flex w-full max-w-5xl flex-col items-center gap-6 border-t border-neutral-800 pt-12 pb-8 md:mt-16 md:pt-16">
+            <span class="text-center text-lg text-neutral-400">
+                See the concept as a pitch, or talk about your own game.
+            </span>
+            <div class="flex flex-col sm:flex-row items-center gap-4">
+                <a href="presentation-yggdrasil.html"
+                    class="group inline-flex items-center justify-center gap-2 rounded-full border border-neutral-700 bg-neutral-800 px-8 py-3.5 text-sm font-semibold text-white transition-all hover:bg-neutral-700 hover:-translate-y-0.5 active:translate-y-0">
+                    <i data-feather="monitor" class="h-4 w-4"></i> View presentation
+                </a>
+                <a href="index.html#contact"
+                    class="group inline-flex items-center justify-center gap-2 rounded-full bg-white px-8 py-3.5 text-sm font-semibold text-neutral-950 transition-all hover:bg-neutral-200 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:-translate-y-0.5 active:translate-y-0">
+                    Get in touch
+                    <i data-feather="arrow-right"
+                        class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"></i>
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="js/games.js"></script>
+</body>
+
+</html>

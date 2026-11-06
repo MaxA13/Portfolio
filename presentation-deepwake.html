@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deepwake – Presentation</title>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        neutral: {
+                            950: '#0a0a0a',
+                            900: '#171717',
+                            800: '#262626',
+                            700: '#404040',
+                            400: '#a3a3a3',
+                            300: '#d4d4d4',
+                        },
+                        brand: {
+                            400: '#FF8FAA',
+                            500: '#FF6F91',
+                            600: '#E8557A',
+                            700: '#C93F63',
+                        },
+                        glow: '#9B5CFF',
+                        gold: '#FFC857',
+                        navy: '#0B1A3A',
+                        abyss: '#050B1F',
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/games.css" rel="stylesheet">
+    <style>
+        body { overflow: hidden; --deck-accent: #FF6F91; }
+        .slide.deep { background: radial-gradient(ellipse at 50% 0%, #1C3370 0%, #0B1A3A 45%, #050B1F 100%); }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <!-- Deck bar -->
+    <nav
+        class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-4 py-4 bg-[#0a0a0a]/70 backdrop-blur-md border-b border-neutral-800/50 sm:px-12">
+        <a href="game-deepwake.html"
+            class="group flex items-center gap-2 text-sm font-medium text-neutral-400 transition-all hover:text-white">
+            <i data-feather="arrow-left" class="h-4 w-4 transition-transform group-hover:-translate-x-1"></i>
+            <span class="hidden sm:inline">Deepwake</span><span class="sm:hidden">Back</span>
+        </a>
+        <span class="text-xs font-semibold uppercase tracking-[0.2em] text-brand-400 hidden md:block">Pitch Presentation</span>
+        <div class="flex items-center gap-2">
+            <button id="deck-prev" aria-label="Previous slide"
+                class="rounded-full border border-neutral-700 bg-neutral-900/60 p-2 text-neutral-400 hover:text-white hover:border-neutral-500 transition-colors">
+                <i data-feather="chevron-up" class="h-4 w-4"></i>
+            </button>
+            <span id="deck-counter" class="w-16 text-center text-sm font-medium tabular-nums text-neutral-300">01 / 10</span>
+            <button id="deck-next" aria-label="Next slide"
+                class="rounded-full border border-neutral-700 bg-neutral-900/60 p-2 text-neutral-400 hover:text-white hover:border-neutral-500 transition-colors">
+                <i data-feather="chevron-down" class="h-4 w-4"></i>
+            </button>
+        </div>
+    </nav>
+
+    <div class="deck-dots" aria-label="Slides"></div>
+
+    <main class="deck">
+
+        <!-- 1. Title -->
+        <section class="slide deep">
+            <div class="absolute right-[10%] top-[20%] h-[420px] w-[420px] rounded-full bg-glow/20 blur-[120px]"></div>
+            <div class="slide-content grid grid-cols-1 items-center gap-10 md:grid-cols-[1fr_auto]">
+                <div class="flex flex-col items-start gap-6">
+                    <span
+                        class="reveal inline-flex items-center gap-1 rounded-full bg-brand-500/10 px-3 py-1 text-sm font-medium text-brand-400 border border-brand-500/30 backdrop-blur-sm">
+                        Merge + Collection RPG · Mobile
+                    </span>
+                    <h1 class="sr-only">Deepwake: Lanterns of the Drowned God</h1>
+                    <img src="img/games/deepwake/logo.webp" alt="Deepwake: Lanterns of the Drowned God logo"
+                        class="reveal w-full max-w-xl drop-shadow-[0_10px_40px_rgba(155,92,255,0.35)]">
+                    <p class="reveal text-xl md:text-2xl font-light italic text-neutral-200 max-w-xl">
+                        “The god is the clock. Each lantern you relight keeps it dreaming.”
+                    </p>
+                    <span class="reveal text-xs uppercase tracking-[0.2em] text-neutral-400 flex items-center gap-2">
+                        Scroll or use arrow keys <i data-feather="chevrons-down" class="h-4 w-4"></i>
+                    </span>
+                </div>
+                <video src="img/games/deepwake/trailer.mp4" poster="img/games/deepwake/key-art.jpg" autoplay muted loop playsinline
+                    class="reveal hidden md:block h-[70vh] w-auto rounded-3xl border border-neutral-700 shadow-[0_20px_60px_rgba(0,0,0,0.6)]"></video>
+            </div>
+        </section>
+
+        <!-- 2. Concept -->
+        <section class="slide deep">
+            <div class="slide-content grid grid-cols-1 items-center gap-10 lg:grid-cols-[1.3fr_1fr]">
+                <div class="flex flex-col gap-6">
+                    <span class="reveal text-sm font-semibold uppercase tracking-[0.2em] text-brand-400">01 · The Concept</span>
+                    <h2 class="reveal text-4xl md:text-6xl font-bold tracking-tight text-white">A lamplighter in a sunken city</h2>
+                    <p class="reveal text-lg text-neutral-300 leading-relaxed">
+                        You merge glowing sea relics and creatures to relight a sunken city, while an ancient god sleeps
+                        beneath it.
+                    </p>
+                    <p class="reveal text-lg text-neutral-300 leading-relaxed">
+                        The name works two ways: the wake a diver leaves in deep water, and the god that must not wake.
+                    </p>
+                    <div class="reveal grid grid-cols-2 gap-3">
+                        <div class="rounded-xl border border-neutral-700 bg-neutral-900/50 p-4"><span class="block text-xs font-semibold uppercase tracking-wider text-brand-400">Tone</span><span class="text-sm text-neutral-300">Cozy with a hint of dread</span></div>
+                        <div class="rounded-xl border border-neutral-700 bg-neutral-900/50 p-4"><span class="block text-xs font-semibold uppercase tracking-wider text-brand-400">Format</span><span class="text-sm text-neutral-300">Mobile, portrait 9:16</span></div>
+                    </div>
+                </div>
+                <img src="img/games/deepwake/merge-board-final.jpg" alt="Merge board" loading="lazy"
+                    class="reveal mx-auto max-h-[72vh] w-auto rounded-2xl border border-neutral-700 shadow-2xl">
+            </div>
+        </section>
+
+        <!-- 3. The Sunken City -->
+        <section class="slide">
+            <img class="slide-bg" src="img/games/deepwake/drowned-cathedral.jpg" alt="" loading="lazy">
+            <div class="slide-shade side"></div>
+            <div class="slide-content">
+                <div class="max-w-xl flex flex-col gap-6">
+                    <span class="reveal text-sm font-semibold uppercase tracking-[0.2em] text-brand-400">02 · The Sunken City</span>
+                    <h2 class="reveal text-4xl md:text-6xl font-bold tracking-tight text-white">Nareth sank in a single night</h2>
+                    <p class="reveal text-lg text-neutral-300 leading-relaxed">
+                        A thousand years ago the coral city was pulled down to cover Vor'Thallun, the Dreamer Below, an
+                        elder god as large as a mountain range.
+                    </p>
+                    <p class="reveal text-lg text-neutral-300 leading-relaxed">
+                        Living dreamlanterns sang the god a lullaby. As the old keepers died out, the lanterns went dark.
+                    </p>
+                    <p class="reveal text-lg text-neutral-100">The Dreamer has begun to stir.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. The Hero -->
+        <section class="slide deep">
+            <div class="slide-content grid grid-cols-1 items-center gap-10 lg:grid-cols-2">
+                <div class="flex flex-col gap-6">
+                    <span class="reveal text-sm font-semibold uppercase tracking-[0.2em] text-brand-400">03 · The Hero</span>
+                    <h2 class="reveal text-4xl md:text-6xl font-bold tracking-tight text-white">Mira Kell &amp; Pip</h2>
+                    <p class="reveal text-lg text-neutral-300 leading-relaxed">
+                        A confident 25-year-old salvage diver in an oversized brass helmet that belonged to her
+                        grandmother, the last Lantern Keeper.
+                    </p>
+                    <p class="reveal text-lg text-neutral-300 leading-relaxed">
+                        She finds Pip, a newborn glowfish hatchling that can merge with other sea creatures.
+                    </p>
+                </div>
+                <div class="reveal flex flex-col gap-4">
+                    <img src="img/games/deepwake/mira-character-sheet.jpg" alt="Mira character sheet" loading="lazy"
+                        class="rounded-2xl border border-neutral-700 shadow-2xl">
+                    <img src="img/games/deepwake/mira-sprites.jpg" alt="Mira sprites" loading="lazy"
+                        class="rounded-2xl border border-neutral-700 shadow-2xl">
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Factions -->
+        <section class="slide deep">
+            <div class="slide-content flex flex-col gap-8">
+                <div class="flex flex-col gap-4 max-w-3xl">
+                    <span class="reveal text-sm font-semibold uppercase tracking-[0.2em] text-glow">04 · Factions</span>
+                    <h2 class="reveal text-4xl md:text-6xl font-bold tracking-tight text-white">Keepers, cultists &amp; reef spirits</h2>
+                </div>
+                <div class="reveal grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <div class="rounded-xl border border-neutral-700 bg-neutral-900/50 p-4 flex flex-col gap-1"><span class="font-semibold text-gold">Lantern Keepers</span><span class="text-sm text-neutral-400">Old, eccentric survivors. Mira's mentors.</span></div>
+                    <div class="rounded-xl border border-neutral-700 bg-neutral-900/50 p-4 flex flex-col gap-1"><span class="font-semibold text-glow">The Drowned Choir</span><span class="text-sm text-neutral-400">Fish-lantern-masked cultists who want the Dreamer awake.</span></div>
+                    <div class="rounded-xl border border-neutral-700 bg-neutral-900/50 p-4 flex flex-col gap-1"><span class="font-semibold text-brand-400">Coral Folk</span><span class="text-sm text-neutral-400">Shy reef spirits: traders and collectibles.</span></div>
+                    <div class="rounded-xl border border-neutral-700 bg-neutral-900/50 p-4 flex flex-col gap-1"><span class="font-semibold text-glow">The Dreamer's Spawn</span><span class="text-sm text-neutral-400">Shadow copies of companions with purple eyes.</span></div>
+                </div>
+                <img src="img/games/deepwake/enemy-lineup.jpg" alt="Enemy lineup" loading="lazy"
+                    class="reveal rounded-2xl border border-neutral-700 shadow-2xl max-h-[34vh] w-full object-cover">
+            </div>
+        </section>
+
+        <!-- 6. Core Loop -->
+        <section class="slide deep">
+            <div class="slide-content flex flex-col gap-8">
+                <div class="flex flex-col gap-4 max-w-3xl">
+                    <span class="reveal text-sm font-semibold uppercase tracking-[0.2em] text-brand-400">05 · Core Loop</span>
+                    <h2 class="reveal text-4xl md:text-6xl font-bold tracking-tight text-white">Merge. Collect. Relight.</h2>
+                </div>
+                <div class="reveal grid grid-cols-2 md:grid-cols-5 gap-3">
+                    <div class="rounded-xl border border-neutral-700 bg-neutral-900/50 p-4 flex flex-col gap-1.5"><i data-feather="git-merge" class="h-5 w-5 text-brand-400"></i><span class="font-semibold text-white">Merge</span><span class="text-sm text-neutral-400">Relics, shells and baby creatures on the seabed board</span></div>
+                    <div class="rounded-xl border border-neutral-700 bg-neutral-900/50 p-4 flex flex-col gap-1.5"><i data-feather="book" class="h-5 w-5 text-brand-400"></i><span class="font-semibold text-white">Collect</span><span class="text-sm text-neutral-400">Companions in the Glow Codex</span></div>
+                    <div class="rounded-xl border border-neutral-700 bg-neutral-900/50 p-4 flex flex-col gap-1.5"><i data-feather="compass" class="h-5 w-5 text-brand-400"></i><span class="font-semibold text-white">Expedition</span><span class="text-sm text-neutral-400">3-creature squads on auto-battle runs</span></div>
+                    <div class="rounded-xl border border-neutral-700 bg-neutral-900/50 p-4 flex flex-col gap-1.5"><i data-feather="sun" class="h-5 w-5 text-brand-400"></i><span class="font-semibold text-white">Relight</span><span class="text-sm text-neutral-400">Lanterns unlock merge chains and deeper layers</span></div>
+                    <div class="rounded-xl border border-glow/30 bg-glow/10 p-4 flex flex-col gap-1.5"><i data-feather="clock" class="h-5 w-5 text-glow"></i><span class="font-semibold text-white">Dread meter</span><span class="text-sm text-neutral-400">A soft timer for boss events and "Waking Tide" seasons</span></div>
+                </div>
+                <div class="reveal grid grid-cols-[2fr_1fr_1fr] gap-4 items-center">
+                    <img src="img/games/deepwake/jellyfish-merge-chain.jpg" alt="Merge chain" loading="lazy"
+                        class="rounded-2xl border border-neutral-700 shadow-2xl">
+                    <img src="img/games/deepwake/merge-board.jpg" alt="Merge board" loading="lazy"
+                        class="rounded-2xl border border-neutral-700 shadow-2xl max-h-[38vh] w-auto mx-auto">
+                    <img src="img/games/deepwake/expedition-level.jpg" alt="Expedition level" loading="lazy"
+                        class="rounded-2xl border border-neutral-700 shadow-2xl max-h-[38vh] w-auto mx-auto">
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. The Descent -->
+        <section class="slide">
+            <img class="slide-bg" src="img/games/deepwake/glimmer-shallows.jpg" alt="" loading="lazy">
+            <div class="slide-shade side"></div>
+            <div class="slide-content">
+                <div class="max-w-xl flex flex-col gap-6">
+                    <span class="reveal text-sm font-semibold uppercase tracking-[0.2em] text-brand-400">06 · The Descent</span>
+                    <h2 class="reveal text-4xl md:text-6xl font-bold tracking-tight text-white">Shallow to deep</h2>
+                    <ol class="reveal flex flex-col gap-3 text-neutral-200">
+                        <li><span class="font-semibold text-brand-400">1</span> · Glimmer Shallows <span class="text-neutral-400">– broken spires and kelp forests</span></li>
+                        <li><span class="font-semibold text-brand-400">2</span> · Coral Bazaar <span class="text-neutral-400">– home of the Coral Folk</span></li>
+                        <li><span class="font-semibold text-glow">3</span> · The Drowned Cathedral <span class="text-neutral-400">– the Choir's stronghold</span></li>
+                        <li><span class="font-semibold text-glow">4</span> · Trench of Whispers <span class="text-neutral-400">– tentacles in the dark</span></li>
+                        <li><span class="font-semibold text-glow">5</span> · The Cradle <span class="text-neutral-400">– the Dreamer's moon-sized eye</span></li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. The Dreamer -->
+        <section class="slide deep">
+            <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[520px] w-[520px] rounded-full bg-glow/20 blur-[130px]"></div>
+            <div class="slide-content grid grid-cols-1 items-center gap-10 lg:grid-cols-[auto_1fr]">
+                <img src="img/games/deepwake/boss-reveal-cradle.jpg" alt="Mira before the Dreamer's eye" loading="lazy"
+                    class="reveal hidden lg:block h-[72vh] w-auto rounded-3xl border border-neutral-700 shadow-2xl">
+                <div class="flex flex-col gap-6">
+                    <span class="reveal text-sm font-semibold uppercase tracking-[0.2em] text-glow">07 · The Dreamer Below</span>
+                    <h2 class="reveal text-4xl md:text-6xl font-bold tracking-tight text-white">Always bigger than the frame</h2>
+                    <p class="reveal text-lg text-neutral-300 leading-relaxed">
+                        Vor'Thallun is only ever shown in part. At the bottom of the world its closed eye is the size of
+                        a moon.
+                    </p>
+                    <p class="reveal text-lg text-neutral-100 leading-relaxed">
+                        The twist: the god is a misunderstood dreamer. Its dreams keep the coral glowing.
+                    </p>
+                    <img src="img/games/deepwake/dreamer-eye-stages.jpg" alt="The eye's waking stages" loading="lazy"
+                        class="reveal rounded-2xl border border-neutral-700 shadow-2xl max-h-[30vh] w-full object-cover">
+                </div>
+            </div>
+        </section>
+
+        <!-- 9. Style Guide -->
+        <section class="slide deep">
+            <div class="slide-content flex flex-col gap-8">
+                <div class="flex flex-col gap-4 max-w-3xl">
+                    <span class="reveal text-sm font-semibold uppercase tracking-[0.2em] text-glow">08 · Style Guide</span>
+                    <h2 class="reveal text-4xl md:text-6xl font-bold tracking-tight text-white">Cute-creepy cosmic epic</h2>
+                    <p class="reveal text-lg text-neutral-300 leading-relaxed">
+                        Stylized 2.5D platformer art: chunky silhouettes, thick navy outlines on characters, layered
+                        parallax depth. Light comes only from bioluminescence and lanterns: pink means safe, violet
+                        means magic or danger.
+                    </p>
+                </div>
+                <div class="reveal grid grid-cols-4 md:grid-cols-8 gap-3">
+                    <div class="flex flex-col gap-1.5"><div class="swatch" style="background:#050B1F"></div><span class="text-xs text-neutral-400">Abyss</span></div>
+                    <div class="flex flex-col gap-1.5"><div class="swatch" style="background:#0B1A3A"></div><span class="text-xs text-neutral-400">Deep Navy</span></div>
+                    <div class="flex flex-col gap-1.5"><div class="swatch" style="background:#1C3370"></div><span class="text-xs text-neutral-400">Midnight Blue</span></div>
+                    <div class="flex flex-col gap-1.5"><div class="swatch" style="background:#FF6F91"></div><span class="text-xs text-neutral-400">Coral Pink</span></div>
+                    <div class="flex flex-col gap-1.5"><div class="swatch" style="background:#FFB3C1"></div><span class="text-xs text-neutral-400">Shell Blush</span></div>
+                    <div class="flex flex-col gap-1.5"><div class="swatch" style="background:#9B5CFF"></div><span class="text-xs text-neutral-400">Glow Violet</span></div>
+                    <div class="flex flex-col gap-1.5"><div class="swatch" style="background:#D4B8FF"></div><span class="text-xs text-neutral-400">Ultraviolet</span></div>
+                    <div class="flex flex-col gap-1.5"><div class="swatch" style="background:#FFC857"></div><span class="text-xs text-neutral-400">Lantern Gold</span></div>
+                </div>
+                <div class="reveal grid grid-cols-2 gap-4">
+                    <img src="img/games/deepwake/relic-icons.jpg" alt="Relic icons" loading="lazy"
+                        class="rounded-2xl border border-neutral-700 shadow-2xl max-h-[30vh] w-full object-cover">
+                    <img src="img/games/deepwake/boss-sprites.jpg" alt="Boss sprites" loading="lazy"
+                        class="rounded-2xl border border-neutral-700 shadow-2xl max-h-[30vh] w-full object-cover">
+                </div>
+            </div>
+        </section>
+
+        <!-- 10. Closing -->
+        <section class="slide">
+            <img class="slide-bg" src="img/games/deepwake/dreamer-eye-stages.jpg" alt="" loading="lazy">
+            <div class="slide-shade"></div>
+            <div class="slide-content flex flex-col items-center gap-8 text-center">
+                <p class="reveal text-xl text-neutral-300 font-light">End game</p>
+                <h2 class="reveal text-4xl md:text-6xl font-bold tracking-tight text-white max-w-3xl">
+                    Keep it sleeping, or wake it gently.
+                </h2>
+                <div class="reveal flex flex-col sm:flex-row items-center gap-4 pt-4">
+                    <a href="game-deepwake.html"
+                        class="inline-flex items-center justify-center gap-2 rounded-full border border-neutral-600 bg-neutral-900/70 backdrop-blur-sm px-8 py-3.5 text-sm font-semibold text-white transition-all hover:bg-neutral-800 hover:-translate-y-0.5">
+                        <i data-feather="image" class="h-4 w-4"></i> Full game page
+                    </a>
+                    <a href="index.html#contact"
+                        class="group inline-flex items-center justify-center gap-2 rounded-full bg-white px-8 py-3.5 text-sm font-semibold text-neutral-950 transition-all hover:bg-neutral-200 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:-translate-y-0.5">
+                        Get in touch <i data-feather="arrow-right" class="h-4 w-4 transition-transform group-hover:translate-x-1"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="js/games.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IronVigil – Game Design</title>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        neutral: {
+                            950: '#0a0a0a',
+                            900: '#171717',
+                            800: '#262626',
+                            700: '#404040',
+                            400: '#a3a3a3',
+                            300: '#d4d4d4',
+                        },
+                        brand: {400: '#FF9A5A', 500: '#FF7A2A', 600: '#E8641A', 700: '#C24E0E'},
+                        alt: '#E04848',
+                        gold: '#B8913A',
+                        spark: '#FFC65C'
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/games.css" rel="stylesheet">
+    <style>
+        body { --glow: rgba(255,122,42,0.25); }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <!-- Navigation -->
+    <nav
+        class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-4 py-4 bg-[#0a0a0a]/80 backdrop-blur-md border-b border-neutral-800/50 sm:px-12 reveal">
+        <a href="games.html"
+            class="group flex items-center gap-2 text-sm font-medium text-neutral-400 transition-all hover:text-white">
+            <i data-feather="arrow-left" class="h-4 w-4 transition-transform group-hover:-translate-x-1"></i>
+            Game Design
+        </a>
+        <div class="flex items-center gap-6">
+            <a href="presentation-ironvigil.html"
+                class="hidden sm:inline-flex items-center gap-2 text-sm font-medium text-neutral-400 hover:text-white transition-colors">
+                <i data-feather="monitor" class="h-4 w-4"></i> Presentation
+            </a>
+            <a href="index.html" class="flex items-center gap-3">
+                <div
+                    class="h-8 w-8 rounded-full overflow-hidden bg-neutral-800 flex items-center justify-center text-white font-semibold">
+                    <img src="img/favicon.png" alt="CodexLab Logo" class="h-full w-full object-cover">
+                </div>
+                <span class="font-semibold text-white tracking-wide text-sm hidden md:block">CodexLab</span>
+            </a>
+        </div>
+    </nav>
+
+    <div
+        class="relative flex w-full flex-col items-center gap-10 px-4 pt-24 pb-12 md:gap-16 md:px-8 md:pt-32 md:pb-20 lg:pb-24 lg:pt-36 overflow-hidden">
+
+        <!-- Ambient Background Glows -->
+        <div class="fixed inset-0 z-0 bg-grid pointer-events-none opacity-40"></div>
+        <div
+            class="absolute right-[-10%] top-[5%] z-0 h-96 w-96 rounded-full bg-alt/15 blur-[100px] pointer-events-none">
+        </div>
+        <div
+            class="absolute left-[-10%] top-[40%] z-0 h-72 w-72 rounded-full bg-brand-500/15 blur-[80px] pointer-events-none">
+        </div>
+
+        <!-- Header Section -->
+        <div class="reveal relative z-10 flex w-full max-w-5xl flex-col items-center gap-6 text-center">
+            <span
+                class="inline-flex items-center gap-1 rounded-full bg-brand-500/10 px-3 py-1 text-sm font-medium text-brand-400 border border-brand-500/20 transition-all hover:bg-brand-500/20">
+                Game Design · Run-and-Gun Shooter
+            </span>
+            <h1 class="sr-only">IronVigil: Embers of Rebellion</h1>
+            <img src="img/games/ironvigil/logo.webp" alt="IronVigil: Embers of Rebellion logo"
+                class="w-full max-w-xl drop-shadow-[0_10px_40px_var(--glow)]">
+            <p class="w-full max-w-2xl text-base leading-relaxed text-neutral-300 md:text-lg lg:text-xl italic">
+                “They keep a vigil in iron until the empire falls.”
+            </p>
+        </div>
+
+        <!-- Trailer + concept -->
+        <div
+            class="reveal relative z-10 grid w-full max-w-5xl grid-cols-1 items-center gap-8 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
+            <div
+                class="relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+                <video class="block w-full h-auto" src="img/games/ironvigil/trailer.mp4" poster="img/games/ironvigil/splash-logo.jpg"
+                    controls muted loop playsinline preload="metadata"></video>
+                <div
+                    class="pointer-events-none absolute top-4 right-4 z-20 rounded bg-brand-600/90 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/20 shadow-lg">
+                    Trailer</div>
+            </div>
+            <div class="flex flex-col gap-5">
+                <span class="text-sm font-semibold uppercase tracking-[0.2em] text-brand-400">The Concept</span>
+                <p class="text-xl text-neutral-200 leading-relaxed font-light">
+                    A lone rebel soldier runs and guns his way through a colossal gothic war-empire, from its ash mines to the throne at the top of its spire.
+                </p>
+                <p class="text-base text-neutral-400 leading-relaxed">
+                    The name is the rebels' oath: they keep a vigil in iron until the empire falls.
+                </p>
+                <div class="flex flex-wrap gap-2 pt-2">
+                    <span class="text-xs font-medium text-neutral-300 rounded-full border border-neutral-700/50 bg-neutral-800/80 px-4 py-1.5">Mobile · Landscape gameplay</span>
+                    <span class="text-xs font-medium text-neutral-300 rounded-full border border-neutral-700/50 bg-neutral-800/80 px-4 py-1.5">Run-and-gun</span>
+                    <span class="text-xs font-medium text-neutral-300 rounded-full border border-neutral-700/50 bg-neutral-800/80 px-4 py-1.5">Side-scroller</span>
+                    <span class="text-xs font-medium text-neutral-300 rounded-full border border-neutral-700/50 bg-neutral-800/80 px-4 py-1.5">Gothic dieselpunk</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Design pillars -->
+        <div class="relative z-10 flex w-full max-w-5xl flex-col items-start gap-6">
+            <h2 class="reveal text-2xl font-semibold tracking-tight text-white">Design Pillars</h2>
+            <div class="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4 md:gap-6">
+                <div
+                    class="reveal flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_var(--glow)]">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-brand-400">Genre</span>
+                    <span class="text-sm text-neutral-300">Casual side-scrolling run-and-gun shooter. Landscape gameplay, portrait menus and art.</span>
+                </div>
+                <div
+                    class="reveal delay-100 flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_var(--glow)]">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-brand-400">Tone</span>
+                    <span class="text-sm text-neutral-300">Grim but readable. Monumental and oppressive, with a hot ember of hope. Never gory.</span>
+                </div>
+                <div
+                    class="reveal delay-200 flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_var(--glow)]">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-brand-400">Art direction</span>
+                    <span class="text-sm text-neutral-300">Stylized, chunky gothic dieselpunk: brutalist monuments, cathedral-factories, giant walkers</span>
+                </div>
+                <div
+                    class="reveal delay-300 flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_var(--glow)]">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-spark">Hook</span>
+                    <span class="text-sm text-neutral-300">Burn the Dominion banner at the end of a level and the district rises up to fight beside you.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lore: The Dominion -->
+        <div class="reveal relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-8">
+            <div class="flex w-full flex-col items-start gap-3">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="flex h-10 w-10 items-center justify-center rounded-lg border border-alt/20 bg-alt/10 shadow-sm">
+                        <i data-feather="flag" class="h-5 w-5 text-alt"></i>
+                    </div>
+                    <span class="text-2xl font-semibold tracking-tight text-white">The Ascendant Dominion</span>
+                </div>
+                <div class="lore text-base text-neutral-400 max-w-3xl leading-relaxed">
+                    <p>For a thousand years the Ascendant Dominion has ruled the world of Vharos from the <span class="text-neutral-200">Spire of the Undying</span>, a cathedral-fortress taller than the clouds. At its top sits the God-Chancellor, a ruler kept alive inside a throne of pipes and engines, whose stone face watches from every square.</p>
+                    <p>The Dominion turned cities into cathedral-factories: gothic arches over endless assembly lines, choirs singing over loudspeakers, and walker tanks the size of chapels marching between monuments. Crimson banners with its emblem, the <span class="text-neutral-200">Crowned Iron Eye</span>, hang from every wall.</p>
+                </div>
+            </div>
+            <div
+                class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                    src="img/games/ironvigil/avenue-of-monuments.jpg" alt="The Avenue of Monuments, lined with giant statues and crimson banners" loading="lazy" />
+                <div
+                    class="absolute top-4 right-4 rounded bg-black/60 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/10">
+                    Avenue of Monuments</div>
+            </div>
+            <div
+                class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                    src="img/games/ironvigil/foundry-cathedral.jpg" alt="Inside the Foundry Cathedral, under the red rose window of the Iron Eye" loading="lazy" />
+                <div
+                    class="absolute top-4 right-4 rounded bg-black/60 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/10">
+                    Foundry Cathedral</div>
+            </div>
+        </div>
+
+        <!-- Lore: The Hero -->
+        <div class="reveal relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-8">
+            <div class="flex w-full flex-col items-start gap-3">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="flex h-10 w-10 items-center justify-center rounded-lg border border-brand-500/20 bg-brand-500/10 shadow-sm">
+                        <i data-feather="user" class="h-5 w-5 text-brand-400"></i>
+                    </div>
+                    <span class="text-2xl font-semibold tracking-tight text-white">The Hero</span>
+                </div>
+                <div class="lore text-base text-neutral-400 max-w-3xl leading-relaxed">
+                    <p><span class="text-neutral-200">Roan Kross</span>, 32, is a former Dominion officer who defected after he was ordered to burn his own home district. Broad-shouldered and rugged, with dark stubble and a scar across one cheek.</p>
+                    <p>His left arm is a heavy dieselpunk prosthetic of riveted iron and pistons, rebuilt from a Dominion walker. He wears scratched heavy armor with the Dominion emblem scraped off and an orange ember painted over it, a long patched coat and an orange scarf, and carries a rotary rifle.</p>
+                    <p>His companion is <span class="text-neutral-200">Wick</span>, a salvaged hovering drone with one warm orange lens, once a Dominion surveillance unit until Roan rewired it.</p>
+                </div>
+            </div>
+            <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-[1fr_2fr] items-start">
+                <div
+                    class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                        src="img/games/ironvigil/key-art.jpg" alt="Roan Kross with his rotary rifle in front of the Spire" loading="lazy" />
+                    <div
+                        class="absolute top-4 right-4 z-20 rounded bg-brand-600/90 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/20 shadow-lg">
+                        Key Art</div>
+                </div>
+                <div class="flex flex-col gap-6">
+                    <div
+                        class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                        <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                            src="img/games/ironvigil/roan-character-sheet.jpg" alt="Roan Kross character sheet with Wick" loading="lazy" />
+                        <div
+                            class="absolute top-4 right-4 rounded bg-black/60 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/10">
+                            Roan &amp; Wick</div>
+                    </div>
+                    <div
+                        class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                        <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                            src="img/games/ironvigil/roan-sprites.jpg" alt="Roan run, jump and shoot sprites" loading="lazy" />
+                        <div
+                            class="absolute top-4 right-4 rounded bg-black/60 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/10">
+                            Sprites</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Factions -->
+        <div class="relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-8">
+            <div class="flex w-full flex-col items-start gap-3">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-700 bg-neutral-800 shadow-sm">
+                        <i data-feather="users" class="h-5 w-5 text-neutral-300"></i>
+                    </div>
+                    <span class="text-2xl font-semibold tracking-tight text-white">Factions</span>
+                </div>
+            </div>
+            <div class="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4 md:gap-6">
+                <div
+                    class="reveal flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_var(--glow)]">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-brand-400">The Ember Cell</span>
+                    <span class="text-sm text-neutral-300">The rebels: miners, deserters, factory workers and old soldiers in patched coats and mismatched armor, marked with orange paint.</span>
+                </div>
+                <div
+                    class="reveal delay-100 flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_var(--glow)]">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-alt">The Ascendant Dominion</span>
+                    <span class="text-sm text-neutral-300">The empire: masked soldiers in long riveted greatcoats and round gas-mask helmets with glowing red lenses.</span>
+                </div>
+                <div
+                    class="reveal delay-200 flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_var(--glow)]">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-gold">The Iron Saints</span>
+                    <span class="text-sm text-neutral-300">The Dominion's champions: towering knights in ornate heavy armor with gold trim and huge hammers.</span>
+                </div>
+                <div
+                    class="reveal delay-300 flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_var(--glow)]">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-alt">The Choir Engines</span>
+                    <span class="text-sm text-neutral-300">Walking war machines with organ-pipe cannons.</span>
+                </div>
+            </div>
+            <div
+                class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                    src="img/games/ironvigil/enemy-lineup.jpg" alt="Gas-mask trooper, surveillance drone and Iron Saint" loading="lazy" />
+                <div
+                    class="absolute top-4 right-4 rounded bg-black/60 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/10">
+                    Enemy Lineup</div>
+            </div>
+            <div
+                class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                    src="img/games/ironvigil/enemy-sprites.jpg" alt="Enemy sprites: gas-mask trooper, surveillance drone, flamethrower trooper, Iron Saint" loading="lazy" />
+                <div
+                    class="absolute top-4 right-4 rounded bg-black/60 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/10">
+                    Enemy Sprites</div>
+            </div>
+        </div>
+
+        <!-- Boss -->
+        <div class="reveal relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-8">
+            <div class="flex w-full flex-col items-start gap-3">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="flex h-10 w-10 items-center justify-center rounded-lg border border-alt/20 bg-alt/10 shadow-sm">
+                        <i data-feather="alert-octagon" class="h-5 w-5 text-alt"></i>
+                    </div>
+                    <span class="text-2xl font-semibold tracking-tight text-white">The Basilica Rex</span>
+                </div>
+                <div class="lore text-base text-neutral-400 max-w-3xl leading-relaxed">
+                    <p>A colossal spider-like walker with a whole gothic cathedral on its back, a red rose-window eye, gatling and organ-pipe cannons, and crimson banners.</p>
+                    <p class="text-neutral-200">The God-Chancellor leads the final battle from inside it.</p>
+                </div>
+            </div>
+            <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-[1fr_2fr] items-start">
+                <div
+                    class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                        src="img/games/ironvigil/boss-reveal.jpg" alt="The Basilica Rex looming over Roan" loading="lazy" />
+                    <div
+                        class="absolute top-4 right-4 rounded bg-black/60 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/10">
+                        Boss Reveal</div>
+                </div>
+                <div class="flex flex-col gap-6">
+                    <div
+                        class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                        <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                            src="img/games/ironvigil/boss-idle-sprite.jpg" alt="Basilica Rex idle sprite" loading="lazy" />
+                        <div
+                            class="absolute top-4 right-4 rounded bg-black/60 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/10">
+                            Idle</div>
+                    </div>
+                    <div
+                        class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                        <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                            src="img/games/ironvigil/boss-attack-sprite.jpg" alt="Basilica Rex attack sprite firing its cannons" loading="lazy" />
+                        <div
+                            class="absolute top-4 right-4 rounded bg-black/60 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/10">
+                            Attack</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Map -->
+        <div class="reveal relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-8">
+            <div class="flex w-full flex-col items-start gap-3">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-700 bg-neutral-800 shadow-sm">
+                        <i data-feather="map" class="h-5 w-5 text-neutral-300"></i>
+                    </div>
+                    <span class="text-2xl font-semibold tracking-tight text-white">The War Map: Outskirts to Capital</span>
+                </div>
+                <p class="text-base text-neutral-400 max-w-3xl">
+                    Districts turn from crimson Dominion control to orange rebel fire as they are liberated.
+                </p>
+            </div>
+            <div class="grid w-full grid-cols-1 items-start gap-8 md:grid-cols-[1.3fr_1fr]">
+                <ol class="flex flex-col gap-5">
+                    <li class="flex gap-4">
+                        <span class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-brand-400 text-sm font-bold text-neutral-950">1</span>
+                        <div class="flex flex-col"><span class="font-semibold text-white">The Ash Mines</span><span class="text-sm text-neutral-400">The rebel base under the slag heaps.</span></div>
+                    </li>
+                    <li class="flex gap-4">
+                        <span class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-brand-500 text-sm font-bold text-neutral-950">2</span>
+                        <div class="flex flex-col"><span class="font-semibold text-white">Foundry Cathedral</span><span class="text-sm text-neutral-400">An assembly-line cathedral where tanks are built.</span></div>
+                    </li>
+                    <li class="flex gap-4">
+                        <span class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-brand-600 text-sm font-bold text-neutral-950">3</span>
+                        <div class="flex flex-col"><span class="font-semibold text-white">The Avenue of Monuments</span><span class="text-sm text-neutral-400">A parade road lined with giant statues.</span></div>
+                    </li>
+                    <li class="flex gap-4">
+                        <span class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-alt text-sm font-bold text-neutral-950">4</span>
+                        <div class="flex flex-col"><span class="font-semibold text-white">The Bastion Walls</span><span class="text-sm text-neutral-400">Bunkers and searchlights around the capital.</span></div>
+                    </li>
+                    <li class="flex gap-4">
+                        <span class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-alt/70 text-sm font-bold text-neutral-950">5</span>
+                        <div class="flex flex-col"><span class="font-semibold text-white">The Spire of the Undying</span><span class="text-sm text-neutral-400">The throne at the top of the world.</span></div>
+                    </li>
+                </ol>
+                <div
+                    class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                        src="img/games/ironvigil/splash-screen.jpg" alt="Roan raises a torch on a toppled statue" loading="lazy" />
+                    <div
+                        class="absolute top-4 right-4 rounded bg-black/60 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/10">
+                        Splash Screen</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Core Loop -->
+        <div class="relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-8">
+            <div class="flex w-full flex-col items-start gap-3">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="flex h-10 w-10 items-center justify-center rounded-lg border border-[#10b981]/20 bg-[#10b981]/10 shadow-sm">
+                        <i data-feather="layout" class="h-5 w-5 text-[#10b981]"></i>
+                    </div>
+                    <span class="text-2xl font-semibold tracking-tight text-white">Core Loop &amp; Interface</span>
+                </div>
+                <p class="text-base text-neutral-400 max-w-3xl">
+                    A lone rebel soldier runs and guns his way through a colossal gothic war-empire, from its ash mines to the throne at
+                    the top of its spire.
+                </p>
+            </div>
+            <div class="grid w-full grid-cols-2 gap-4 md:grid-cols-4">
+                <div class="reveal flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 p-5">
+                    <i data-feather="crosshair" class="h-5 w-5 text-brand-400"></i>
+                    <span class="font-semibold text-white">1. Run and gun</span>
+                    <span class="text-sm text-neutral-400">2-3 minute side-scrolling levels with jumping, cover and screen-filling enemy waves.</span>
+                </div>
+                <div class="reveal flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 p-5">
+                    <i data-feather="tool" class="h-5 w-5 text-brand-400"></i>
+                    <span class="font-semibold text-white">2. Upgrade</span>
+                    <span class="text-sm text-neutral-400">Roan's rotary rifle, armor and mechanical arm with salvage.</span>
+                </div>
+                <div class="reveal flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 p-5">
+                    <i data-feather="flag" class="h-5 w-5 text-brand-400"></i>
+                    <span class="font-semibold text-white">3. Liberate</span>
+                    <span class="text-sm text-neutral-400">Districts on a war map, from crimson Dominion control to orange rebel fire.</span>
+                </div>
+                <div class="reveal flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 p-5">
+                    <i data-feather="alert-octagon" class="h-5 w-5 text-alt"></i>
+                    <span class="font-semibold text-white">4. Boss fights</span>
+                    <span class="text-sm text-neutral-400">Giant walkers and Iron Saints, ending in the Basilica Rex.</span>
+                </div>
+            </div>
+            <div
+                class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                    src="img/games/ironvigil/gameplay-effects.jpg" alt="Gameplay with muzzle flashes, explosions and a combo counter" loading="lazy" />
+                <div
+                    class="absolute top-4 right-4 z-20 rounded bg-brand-600/90 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/20 shadow-lg">
+                    Final</div>
+            </div>
+            <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
+                <div
+                    class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                        src="img/games/ironvigil/gameplay-screen.jpg" alt="Gameplay screen with virtual stick and fire buttons" loading="lazy" />
+                    <div
+                        class="absolute top-4 right-4 rounded bg-black/60 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/10">
+                        Gameplay</div>
+                </div>
+                <div
+                    class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                        src="img/games/ironvigil/rifle-upgrade-chain.jpg" alt="Rotary rifle upgrade chain" loading="lazy" />
+                    <div
+                        class="absolute top-4 right-4 rounded bg-black/60 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/10">
+                        Rifle Upgrades</div>
+                </div>
+            </div>
+            <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-[1.5fr_1fr] items-center">
+                <div
+                    class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                        src="img/games/ironvigil/pickup-icons.jpg" alt="Pickup icons: ember core, gears, ammo, medkit, grenade, Dominion lens" loading="lazy" />
+                    <div
+                        class="absolute top-4 right-4 rounded bg-black/60 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/10">
+                        Pickups</div>
+                </div>
+                <div class="group relative flex w-full items-center justify-center overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 p-8 shadow-2xl">
+                    <img class="zoomable block h-auto w-2/3 transition-transform duration-700 ease-out group-hover:scale-105"
+                        src="img/games/ironvigil/app-icon.webp" alt="IronVigil app icon with Roan" loading="lazy" />
+                    <div class="absolute top-4 right-4 rounded bg-black/60 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/10">App Icon</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Style Guide -->
+        <div class="relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-8">
+            <div class="flex w-full flex-col items-start gap-3">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="flex h-10 w-10 items-center justify-center rounded-lg border border-brand-500/20 bg-brand-500/10 shadow-sm">
+                        <i data-feather="feather" class="h-5 w-5 text-brand-400"></i>
+                    </div>
+                    <span class="text-2xl font-semibold tracking-tight text-white">Style Guide</span>
+                </div>
+                <p class="text-base text-neutral-400 max-w-3xl">
+                    Stylized 2.5D mobile game art with chunky heroic proportions and slightly oversized armor. Cold grey light from above,
+                    red lenses and stained glass, warm orange fire, searchlights, smoke and embers.
+                </p>
+            </div>
+            <div class="reveal grid w-full grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-4">
+                <div class="flex flex-col gap-1.5"><div class="swatch" style="background:#0F0F11"></div><span class="text-xs font-semibold text-neutral-200">Oil Black</span><span class="text-xs text-neutral-500">#0F0F11 · Shadows, silhouettes</span></div>
+                <div class="flex flex-col gap-1.5"><div class="swatch" style="background:#2B2D33"></div><span class="text-xs font-semibold text-neutral-200">Gunmetal</span><span class="text-xs text-neutral-500">#2B2D33 · Background, armor</span></div>
+                <div class="flex flex-col gap-1.5"><div class="swatch" style="background:#6E6B66"></div><span class="text-xs font-semibold text-neutral-200">Concrete</span><span class="text-xs text-neutral-500">#6E6B66 · Monuments, fog, smoke</span></div>
+                <div class="flex flex-col gap-1.5"><div class="swatch" style="background:#A3191F"></div><span class="text-xs font-semibold text-neutral-200">Dominion Crimson</span><span class="text-xs text-neutral-500">#A3191F · Banners, the Iron Eye</span></div>
+                <div class="flex flex-col gap-1.5"><div class="swatch" style="background:#B8913A"></div><span class="text-xs font-semibold text-neutral-200">Tarnished Gold</span><span class="text-xs text-neutral-500">#B8913A · Ornaments, Iron Saints</span></div>
+                <div class="flex flex-col gap-1.5"><div class="swatch" style="background:#E3D8BF"></div><span class="text-xs font-semibold text-neutral-200">Bone Ivory</span><span class="text-xs text-neutral-500">#E3D8BF · Statues, highlights</span></div>
+                <div class="flex flex-col gap-1.5"><div class="swatch" style="background:#FF7A2A"></div><span class="text-xs font-semibold text-neutral-200">Ember Orange</span><span class="text-xs text-neutral-500">#FF7A2A · Rebel paint, fire, UI</span></div>
+                <div class="flex flex-col gap-1.5"><div class="swatch" style="background:#FFC65C"></div><span class="text-xs font-semibold text-neutral-200">Spark Yellow</span><span class="text-xs text-neutral-500">#FFC65C · Fire cores, sparks</span></div>
+            </div>
+            <ul class="reveal grid w-full grid-cols-1 gap-3 text-sm text-neutral-300 md:grid-cols-2">
+                <li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-400"></i><span>Crimson and gold always mean the Dominion. Orange fire always means the rebels. Never mix them on one character.</span></li>
+                <li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-400"></i><span>The Dominion is vertical, symmetrical, spiky and gothic. The rebels are rounded, patched and asymmetric.</span></li>
+                <li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-400"></i><span>Thick oil-black outlines on characters, machines and items.</span></li>
+                <li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-400"></i><span>The empire is always bigger than the frame.</span></li>
+                <li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-400"></i><span>The only empire symbol is the Crowned Iron Eye: a mechanical eye under a spiked crown inside a gear ring.</span></li>
+                <li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-400"></i><span>Avoid gore, real-world political symbols or insignia, real uniforms, franchise looks, neon and tiny details.</span></li>
+            </ul>
+        </div>
+
+        <!-- Call to Action -->
+        <div
+            class="reveal relative z-10 mt-8 flex w-full max-w-5xl flex-col items-center gap-6 border-t border-neutral-800 pt-12 pb-8 md:mt-16 md:pt-16">
+            <span class="text-center text-lg text-neutral-400">
+                See the concept as a pitch, or talk about your own game.
+            </span>
+            <div class="flex flex-col sm:flex-row items-center gap-4">
+                <a href="presentation-ironvigil.html"
+                    class="group inline-flex items-center justify-center gap-2 rounded-full border border-neutral-700 bg-neutral-800 px-8 py-3.5 text-sm font-semibold text-white transition-all hover:bg-neutral-700 hover:-translate-y-0.5 active:translate-y-0">
+                    <i data-feather="monitor" class="h-4 w-4"></i> View presentation
+                </a>
+                <a href="index.html#contact"
+                    class="group inline-flex items-center justify-center gap-2 rounded-full bg-white px-8 py-3.5 text-sm font-semibold text-neutral-950 transition-all hover:bg-neutral-200 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:-translate-y-0.5 active:translate-y-0">
+                    Get in touch
+                    <i data-feather="arrow-right"
+                        class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"></i>
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="js/games.js"></script>
+</body>
+
+</html>

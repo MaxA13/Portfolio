@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cogspire – Presentation</title>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        neutral: {
+                            950: '#0a0a0a',
+                            900: '#171717',
+                            800: '#262626',
+                            700: '#404040',
+                            400: '#a3a3a3',
+                            300: '#d4d4d4',
+                        },
+                        brand: {400: '#FFC56E', 500: '#FFB23E', 600: '#E89A24', 700: '#C47D12'},
+                        alt: '#F0683A',
+                        copper: '#B8673A',
+                        brass: '#D4A94F',
+                        patina: '#4E8F86'
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/games.css" rel="stylesheet">
+    <style>
+        body { overflow: hidden; --deck-accent: #FFB23E; }
+        .slide.deep { background: radial-gradient(ellipse at 50% 0%, #4a3a2c 0%, #2E2520 45%, #1A1512 100%); }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <!-- Deck bar -->
+    <nav
+        class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-4 py-4 bg-[#0a0a0a]/70 backdrop-blur-md border-b border-neutral-800/50 sm:px-12">
+        <a href="game-cogspire.html"
+            class="group flex items-center gap-2 text-sm font-medium text-neutral-400 transition-all hover:text-white">
+            <i data-feather="arrow-left" class="h-4 w-4 transition-transform group-hover:-translate-x-1"></i>
+            <span class="hidden sm:inline">Cogspire</span><span class="sm:hidden">Back</span>
+        </a>
+        <span class="text-xs font-semibold uppercase tracking-[0.2em] text-brand-400 hidden md:block">Pitch Presentation</span>
+        <div class="flex items-center gap-2">
+            <button id="deck-prev" aria-label="Previous slide"
+                class="rounded-full border border-neutral-700 bg-neutral-900/60 p-2 text-neutral-400 hover:text-white hover:border-neutral-500 transition-colors">
+                <i data-feather="chevron-up" class="h-4 w-4"></i>
+            </button>
+            <span id="deck-counter" class="w-16 text-center text-sm font-medium tabular-nums text-neutral-300">01 / 11</span>
+            <button id="deck-next" aria-label="Next slide"
+                class="rounded-full border border-neutral-700 bg-neutral-900/60 p-2 text-neutral-400 hover:text-white hover:border-neutral-500 transition-colors">
+                <i data-feather="chevron-down" class="h-4 w-4"></i>
+            </button>
+        </div>
+    </nav>
+
+    <div class="deck-dots" aria-label="Slides"></div>
+
+    <main class="deck">
+
+        <!-- 1. Title -->
+        <section class="slide deep">
+            <div class="absolute right-[10%] top-[20%] h-[420px] w-[420px] rounded-full bg-brand-500/15 blur-[120px]"></div>
+            <div class="slide-content grid grid-cols-1 items-center gap-10 md:grid-cols-[1fr_auto]">
+                <div class="flex flex-col items-start gap-6">
+                    <span
+                        class="reveal inline-flex items-center gap-1 rounded-full bg-brand-500/10 px-3 py-1 text-sm font-medium text-brand-400 border border-brand-500/30 backdrop-blur-sm">
+                        Tower Defense + Hero Action · Mobile
+                    </span>
+                    <h1 class="sr-only">Cogspire: Siege of the Amber Skies</h1>
+                    <img src="img/games/cogspire/logo.webp" alt="Cogspire logo"
+                        class="reveal w-full max-w-xl drop-shadow-[0_10px_40px_rgba(0,0,0,0.6)]">
+                    <p class="reveal text-xl md:text-2xl font-light italic text-neutral-200 max-w-xl">
+                        “Every tower is a gadget you invent.”
+                    </p>
+                    <span class="reveal text-xs uppercase tracking-[0.2em] text-neutral-400 flex items-center gap-2">
+                        Scroll or use arrow keys <i data-feather="chevrons-down" class="h-4 w-4"></i>
+                    </span>
+                </div>
+                <video src="img/games/cogspire/trailer.mp4" poster="img/games/cogspire/splash-screen.jpg" autoplay muted loop playsinline
+                    class="reveal hidden md:block h-[70vh] w-auto rounded-3xl border border-neutral-700 shadow-[0_20px_60px_rgba(0,0,0,0.6)]"></video>
+            </div>
+        </section>
+
+        <!-- 2. Concept -->
+        <section class="slide deep">
+            <div class="slide-content grid grid-cols-1 items-center gap-10 lg:grid-cols-[1.3fr_1fr]">
+                <div class="flex flex-col gap-6">
+                    <span class="reveal text-sm font-semibold uppercase tracking-[0.2em] text-brand-400">01 · The Concept</span>
+                    <h2 class="reveal text-4xl md:text-6xl font-bold tracking-tight text-white">Invent your defense</h2>
+                    <p class="reveal text-lg text-neutral-300 leading-relaxed">Defend a floating clockwork city from a sky armada by building and upgrading brass towers along
+                        its sky-bridges.</p>
+                    <div class="reveal grid grid-cols-2 gap-3">
+                        <div class="rounded-xl border border-neutral-700 bg-neutral-900/50 p-4 flex flex-col gap-1.5"><span class="font-semibold text-brand-400">Tone</span><span class="text-sm text-neutral-400">Cozy workshops against a sky full of smoke and iron</span></div>
+                        <div class="rounded-xl border border-neutral-700 bg-neutral-900/50 p-4 flex flex-col gap-1.5"><span class="font-semibold text-brass">Hook</span><span class="text-sm text-neutral-400">Merge salvaged parts to unlock new tower designs</span></div>
+                    </div>
+                </div>
+                <img src="img/games/cogspire/battle-screen-effects.jpg" alt="Battle screen with effects" loading="lazy"
+            class="rounded-2xl border border-neutral-700 shadow-2xl reveal mx-auto max-h-[72vh] w-auto">
+            </div>
+        </section>
+
+        <!-- 3. The City -->
+        <section class="slide">
+            <img class="slide-bg" src="img/games/cogspire/sunrise-docks.jpg" alt="" loading="lazy">
+            <div class="slide-shade side"></div>
+            <div class="slide-content">
+                <div class="max-w-xl flex flex-col gap-6">
+                    <span class="reveal text-sm font-semibold uppercase tracking-[0.2em] text-brand-400">02 · The City</span>
+                    <h2 class="reveal text-4xl md:text-6xl font-bold tracking-tight text-white">The last clean city in the sky</h2>
+                    <p class="reveal text-lg text-neutral-300 leading-relaxed">Copper towers, gear-driven bridges and clock faces, held aloft by the Amber Heart, a giant
+                        living crystal that powers every engine in Cogspire.</p>
+                    <p class="reveal text-lg text-neutral-100">Below the clouds, the Soot Armada rises to rip the Heart out and burn
+                        it in their furnaces.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. The Heroes -->
+        <section class="slide deep">
+            <div class="slide-content flex flex-col gap-8">
+                <div class="flex flex-col gap-4 max-w-3xl">
+                    <span class="reveal text-sm font-semibold uppercase tracking-[0.2em] text-brand-400">03 · The Heroes</span>
+                    <h2 class="reveal text-4xl md:text-6xl font-bold tracking-tight text-white">Garrick &amp; Wren</h2>
+                </div>
+                <div class="reveal grid grid-cols-2 gap-3">
+                    <div class="rounded-xl border border-neutral-700 bg-neutral-900/50 p-4 flex flex-col gap-1.5"><span class="font-semibold text-brand-400">Garrick Vane + Tick</span><span class="text-sm text-neutral-400">The heavy hitter: jetpack, rivet cannon and a clockwork hawk that spots ships</span></div>
+                    <div class="rounded-xl border border-neutral-700 bg-neutral-900/50 p-4 flex flex-col gap-1.5"><span class="font-semibold text-brass">Wren Halloway + Cog</span><span class="text-sm text-neutral-400">The quick builder: glider pack, big wrench and a clockwork owl</span></div>
+                </div>
+                <div class="reveal grid grid-cols-2 gap-4">
+                    <img src="img/games/cogspire/garrick-character-sheet.jpg" alt="Garrick character sheet" loading="lazy"
+            class="rounded-2xl border border-neutral-700 shadow-2xl max-h-[38vh] w-full object-cover">
+                    <img src="img/games/cogspire/wren-character-sheet.jpg" alt="Wren character sheet" loading="lazy"
+            class="rounded-2xl border border-neutral-700 shadow-2xl max-h-[38vh] w-full object-cover">
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. The Towers -->
+        <section class="slide deep">
+            <div class="slide-content flex flex-col gap-8">
+                <div class="flex flex-col gap-4 max-w-3xl">
+                    <span class="reveal text-sm font-semibold uppercase tracking-[0.2em] text-brand-400">04 · The Towers</span>
+                    <h2 class="reveal text-4xl md:text-6xl font-bold tracking-tight text-white">Four gadgets, three tiers</h2>
+                </div>
+                <div class="reveal grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <div class="rounded-xl border border-neutral-700 bg-neutral-900/50 p-4 flex flex-col gap-1.5"><span class="font-semibold text-brand-400">Steam Cannon</span><span class="text-sm text-neutral-400">Heavy single target · Squat copper barrel puffing steam</span></div>
+                    <div class="rounded-xl border border-neutral-700 bg-neutral-900/50 p-4 flex flex-col gap-1.5"><span class="font-semibold text-brand-400">Tesla Spire</span><span class="text-sm text-neutral-400">Chain lightning · Tall coil with amber arcs</span></div>
+                    <div class="rounded-xl border border-neutral-700 bg-neutral-900/50 p-4 flex flex-col gap-1.5"><span class="font-semibold text-brand-400">Gear Thrower</span><span class="text-sm text-neutral-400">Fast, hits several · Spinning wheel launching saw-gears</span></div>
+                    <div class="rounded-xl border border-neutral-700 bg-neutral-900/50 p-4 flex flex-col gap-1.5"><span class="font-semibold text-brand-400">Amber Beacon</span><span class="text-sm text-neutral-400">Slows enemies, buffs · Lighthouse lamp glowing amber</span></div>
+                </div>
+                <img src="img/games/cogspire/tesla-spire-upgrade-chain.jpg" alt="Tesla Spire upgrade chain" loading="lazy"
+            class="rounded-2xl border border-neutral-700 shadow-2xl reveal max-h-[36vh] w-full object-cover">
+            </div>
+        </section>
+
+        <!-- 6. Core Loop -->
+        <section class="slide deep">
+            <div class="slide-content grid grid-cols-1 items-center gap-10 lg:grid-cols-2">
+                <div class="flex flex-col gap-6">
+                    <span class="reveal text-sm font-semibold uppercase tracking-[0.2em] text-brand-400">05 · Core Loop</span>
+                    <h2 class="reveal text-4xl md:text-6xl font-bold tracking-tight text-white">Defend. Build. Invent.</h2>
+                    <div class="reveal grid grid-cols-2 gap-3">
+                        <div class="rounded-xl border border-neutral-700 bg-neutral-900/50 p-4 flex flex-col gap-1.5"><i data-feather="shield" class="h-5 w-5 text-brand-400"></i><span class="font-semibold text-white">Defend</span><span class="text-sm text-neutral-400">Stop ships on fixed sky lanes</span></div>
+                        <div class="rounded-xl border border-neutral-700 bg-neutral-900/50 p-4 flex flex-col gap-1.5"><i data-feather="tool" class="h-5 w-5 text-brand-400"></i><span class="font-semibold text-white">Build</span><span class="text-sm text-neutral-400">Towers on brass platforms, 3 tiers each</span></div>
+                        <div class="rounded-xl border border-neutral-700 bg-neutral-900/50 p-4 flex flex-col gap-1.5"><i data-feather="settings" class="h-5 w-5 text-brand-400"></i><span class="font-semibold text-white">Workshop</span><span class="text-sm text-neutral-400">Merge parts into new blueprints</span></div>
+                        <div class="rounded-xl border border-neutral-700 bg-neutral-900/50 p-4 flex flex-col gap-1.5"><i data-feather="alert-octagon" class="h-5 w-5 text-alt"></i><span class="font-semibold text-white">Boss sieges</span><span class="text-sm text-neutral-400">A dreadnought every few levels</span></div>
+                    </div>
+                </div>
+                <div class="reveal grid grid-cols-2 gap-4 justify-items-center">
+                    <img src="img/games/cogspire/gameplay-screen.jpg" alt="Gameplay screen" loading="lazy"
+            class="rounded-2xl border border-neutral-700 shadow-2xl max-h-[70vh] w-auto">
+                    <img src="img/games/cogspire/engineers-workshop.jpg" alt="Workshop" loading="lazy"
+            class="rounded-2xl border border-neutral-700 shadow-2xl max-h-[70vh] w-auto object-cover">
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. The Soot Armada -->
+        <section class="slide deep">
+            <div class="slide-content flex flex-col gap-8">
+                <div class="flex flex-col gap-4 max-w-3xl">
+                    <span class="reveal text-sm font-semibold uppercase tracking-[0.2em] text-alt">06 · The Soot Armada</span>
+                    <h2 class="reveal text-4xl md:text-6xl font-bold tracking-tight text-white">Smoke, iron and furnace glow</h2>
+                    <p class="reveal text-lg text-neutral-300 leading-relaxed">Iron airships with smokestacks, gas-masked sky-pirates and clockwork drones with red-amber eyes.</p>
+                </div>
+                <div class="reveal grid grid-cols-2 gap-4">
+                    <img src="img/games/cogspire/soot-armada-lineup.jpg" alt="Soot Armada lineup" loading="lazy"
+            class="rounded-2xl border border-neutral-700 shadow-2xl max-h-[36vh] w-full object-cover">
+                    <img src="img/games/cogspire/enemy-sprites.jpg" alt="Enemy sprites" loading="lazy"
+            class="rounded-2xl border border-neutral-700 shadow-2xl max-h-[36vh] w-full object-cover">
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. The Map -->
+        <section class="slide">
+            <img class="slide-bg" src="img/games/cogspire/engineers-workshop.jpg" alt="" loading="lazy">
+            <div class="slide-shade side"></div>
+            <div class="slide-content">
+                <div class="max-w-xl flex flex-col gap-6">
+                    <span class="reveal text-sm font-semibold uppercase tracking-[0.2em] text-brand-400">07 · The Map</span>
+                    <h2 class="reveal text-4xl md:text-6xl font-bold tracking-tight text-white">Outer rim to core</h2>
+                    <ol class="reveal flex flex-col gap-3 text-neutral-200">
+                        <li><span class="font-semibold text-brand-400">1</span> · Sunrise Docks <span class="text-neutral-400">– moorings and cranes</span></li>
+                        <li><span class="font-semibold text-brand-400">2</span> · Clocktower Quarter <span class="text-neutral-400">– under giant clock faces</span></li>
+                        <li><span class="font-semibold text-brand-400">3</span> · The Great Foundry <span class="text-neutral-400">– molten copper</span></li>
+                        <li><span class="font-semibold text-brand-400">4</span> · Stormgear Heights <span class="text-neutral-400">– lightning rods</span></li>
+                        <li><span class="font-semibold text-brand-400">5</span> · The Heart Chamber <span class="text-neutral-400">– a cathedral of brass</span></li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- 9. The Iron Maw -->
+        <section class="slide deep">
+            <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[520px] w-[520px] rounded-full bg-alt/15 blur-[130px]"></div>
+            <div class="slide-content grid grid-cols-1 items-center gap-10 lg:grid-cols-[auto_1fr]">
+                <img src="img/games/cogspire/iron-maw-boss-reveal.jpg" alt="The Iron Maw" loading="lazy"
+            class="rounded-2xl border border-neutral-700 shadow-2xl reveal hidden lg:block h-[72vh] w-auto">
+                <div class="flex flex-col gap-6">
+                    <span class="reveal text-sm font-semibold uppercase tracking-[0.2em] text-alt">08 · The Final Boss</span>
+                    <h2 class="reveal text-4xl md:text-6xl font-bold tracking-tight text-white">The Iron Maw</h2>
+                    <p class="reveal text-lg text-neutral-300 leading-relaxed">Flagship of the Soot Armada: a dreadnought the size of a city district, with a furnace mouth for a
+                        prow and grates glowing like teeth.</p>
+                    <img src="img/games/cogspire/iron-maw-attack-sprite.jpg" alt="Iron Maw attack sprite" loading="lazy"
+            class="rounded-2xl border border-neutral-700 shadow-2xl reveal max-h-[30vh] w-full object-cover">
+                </div>
+            </div>
+        </section>
+
+        <!-- 10. Style Guide -->
+        <section class="slide deep">
+            <div class="slide-content flex flex-col gap-8">
+                <div class="flex flex-col gap-4 max-w-3xl">
+                    <span class="reveal text-sm font-semibold uppercase tracking-[0.2em] text-brand-400">09 · Style Guide</span>
+                    <h2 class="reveal text-4xl md:text-6xl font-bold tracking-tight text-white">Copper, brass and amber</h2>
+                    <p class="reveal text-lg text-neutral-300 leading-relaxed">Round and friendly for the city, heavy and spiky for the Armada. Warm amber means powered and
+                        friendly; red-orange furnace glow means enemy. Thick soot-black outlines on characters and towers.</p>
+                </div>
+                <div class="reveal grid grid-cols-5 md:grid-cols-9 gap-3">
+                    <div class="flex flex-col gap-1.5"><div class="swatch" style="background:#1A1512"></div><span class="text-xs text-neutral-400">Soot Black</span></div>
+                    <div class="flex flex-col gap-1.5"><div class="swatch" style="background:#2E2520"></div><span class="text-xs text-neutral-400">Iron Brown</span></div>
+                    <div class="flex flex-col gap-1.5"><div class="swatch" style="background:#5A4E46"></div><span class="text-xs text-neutral-400">Smoke Grey</span></div>
+                    <div class="flex flex-col gap-1.5"><div class="swatch" style="background:#B8673A"></div><span class="text-xs text-neutral-400">Copper</span></div>
+                    <div class="flex flex-col gap-1.5"><div class="swatch" style="background:#D4A94F"></div><span class="text-xs text-neutral-400">Brass</span></div>
+                    <div class="flex flex-col gap-1.5"><div class="swatch" style="background:#FFB23E"></div><span class="text-xs text-neutral-400">Warm Amber</span></div>
+                    <div class="flex flex-col gap-1.5"><div class="swatch" style="background:#FFDC8A"></div><span class="text-xs text-neutral-400">Honey Light</span></div>
+                    <div class="flex flex-col gap-1.5"><div class="swatch" style="background:#F2E6D0"></div><span class="text-xs text-neutral-400">Steam Cream</span></div>
+                    <div class="flex flex-col gap-1.5"><div class="swatch" style="background:#4E8F86"></div><span class="text-xs text-neutral-400">Patina Teal</span></div>
+                </div>
+                <div class="reveal grid grid-cols-2 gap-4">
+                    <img src="img/games/cogspire/parts-icons.jpg" alt="Parts icons" loading="lazy"
+            class="rounded-2xl border border-neutral-700 shadow-2xl max-h-[24vh] w-full object-cover">
+                    <img src="img/games/cogspire/garrick-sprites.jpg" alt="Garrick sprites" loading="lazy"
+            class="rounded-2xl border border-neutral-700 shadow-2xl max-h-[24vh] w-full object-cover">
+                </div>
+            </div>
+        </section>
+
+        <!-- 11. Closing -->
+        <section class="slide">
+            <img class="slide-bg" src="img/games/cogspire/sunrise-docks.jpg" alt="" loading="lazy">
+            <div class="slide-shade"></div>
+            <div class="slide-content flex flex-col items-center gap-8 text-center">
+                <p class="reveal text-xl text-neutral-300 font-light">The Soot Armada is rising through the smog.</p>
+                <h2 class="reveal text-4xl md:text-6xl font-bold tracking-tight text-white max-w-3xl">Defend the Amber Heart.</h2>
+                <p class="reveal text-sm font-semibold uppercase tracking-[0.2em] text-brand-400">Siege of the Amber Skies</p>
+                <div class="reveal flex flex-col sm:flex-row items-center gap-4 pt-4">
+                    <a href="game-cogspire.html"
+                        class="inline-flex items-center justify-center gap-2 rounded-full border border-neutral-600 bg-neutral-900/70 backdrop-blur-sm px-8 py-3.5 text-sm font-semibold text-white transition-all hover:bg-neutral-800 hover:-translate-y-0.5">
+                        <i data-feather="image" class="h-4 w-4"></i> Full game page
+                    </a>
+                    <a href="index.html#contact"
+                        class="group inline-flex items-center justify-center gap-2 rounded-full bg-white px-8 py-3.5 text-sm font-semibold text-neutral-950 transition-all hover:bg-neutral-200 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:-translate-y-0.5">
+                        Get in touch <i data-feather="arrow-right" class="h-4 w-4 transition-transform group-hover:translate-x-1"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="js/games.js"></script>
+</body>
+
+</html>

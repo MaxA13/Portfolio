@@ -51,9 +51,7 @@
         class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-4 py-4 bg-[#0a0a0a]/80 backdrop-blur-md border-b border-neutral-800/50 sm:px-12 reveal">
         <a href="index.html"
             class="group flex items-center gap-2 text-sm font-medium text-neutral-400 transition-all hover:text-white">
-            <i data-feather="arrow-left" class="h-4 w-4 transition-transform group-hover:-translate-x-1"></i>
-            Back
-        </a>
+            <i data-feather="arrow-left" class="h-4 w-4 transition-transform group-hover:-translate-x-1"></i> Home </a>
         <div class="flex items-center gap-3">
             <div
                 class="h-8 w-8 rounded-full overflow-hidden bg-neutral-800 flex items-center justify-center text-white font-semibold">
@@ -85,7 +83,7 @@
                 Worlds, lore & game interfaces
             </h1>
             <p class="w-full max-w-2xl text-base leading-relaxed text-neutral-400 md:text-lg lg:text-xl">
-                Five mobile game concepts, from world building and story to characters, items and complete UI kits.
+                Five game concepts and a playable slot prototype, from world building and story to characters, items and complete UI kits.
             </p>
         </div>
 
@@ -95,9 +93,36 @@
 
             <div class="grid w-full grid-cols-1 gap-8 md:grid-cols-2">
 
+                <!-- AXIOM -->
+                <a href="game-axiom.html"
+                    class="reveal group flex h-[460px] w-full flex-col items-start overflow-hidden rounded-[2rem] bg-neutral-900 relative cursor-pointer transition-all duration-500 hover:shadow-2xl hover:shadow-cyan-900/30 hover:-translate-y-2 border border-neutral-800 hover:border-neutral-700 max-md:h-96">
+                    <img class="w-full h-full object-cover object-[42%_50%] transition-transform duration-700 ease-out group-hover:scale-110"
+                        src="img/games/axiom/key-art.jpg" alt="AXIOM splash: Kade Reyes in front of the machine army">
+                    <span
+                        class="absolute top-6 left-6 z-10 inline-flex items-center gap-2 rounded-full border border-[#19E3FF]/50 bg-neutral-950/70 px-4 py-2 text-xs font-bold uppercase tracking-[0.15em] text-[#5CEBFF] backdrop-blur-md shadow-[0_0_24px_rgba(25,227,255,0.35)] max-md:top-4 max-md:left-4">
+                        <span class="relative flex h-2.5 w-2.5">
+                            <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#19E3FF] opacity-75"></span>
+                            <span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-[#19E3FF]"></span>
+                        </span>
+                        Live prototype
+                    </span>
+                    <div
+                        class="flex flex-col justify-end gap-3 px-8 py-8 absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/40 to-transparent max-md:px-6">
+                        <span class="text-[#5CEBFF] font-medium tracking-wide text-sm uppercase">Video slot · Sci-fi</span>
+                        <h3 class="text-3xl font-semibold text-white drop-shadow-md">AXIOM</h3>
+                        <p class="text-neutral-300 font-light leading-relaxed">
+                            A sci-fi slot case study with a playable browser prototype: free spins, a hack bonus and big-win moments.
+                        </p>
+                        <span class="inline-flex items-center gap-2 text-sm font-semibold text-white pt-2">
+                            View case &amp; play <i data-feather="arrow-right"
+                                class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
+                        </span>
+                    </div>
+                </a>
+
                 <!-- Yggdrasil Tales -->
                 <a href="game-yggdrasil.html"
-                    class="reveal group flex h-[460px] w-full flex-col items-start overflow-hidden rounded-[2rem] bg-neutral-900 relative cursor-pointer transition-all duration-500 hover:shadow-2xl hover:shadow-cyan-900/30 hover:-translate-y-2 border border-neutral-800 hover:border-neutral-700 max-md:h-96">
+                    class="reveal delay-100 group flex h-[460px] w-full flex-col items-start overflow-hidden rounded-[2rem] bg-neutral-900 relative cursor-pointer transition-all duration-500 hover:shadow-2xl hover:shadow-cyan-900/30 hover:-translate-y-2 border border-neutral-800 hover:border-neutral-700 max-md:h-96">
                     <img class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                         src="img/games/yggdrasil/key-art.jpg" alt="Yggdrasil Tales key art">
                     <div
@@ -108,7 +133,7 @@
                             The world tree is dimming. An axe-bearer from Midgard forges his way through nine frozen realms.
                         </p>
                         <span class="inline-flex items-center gap-2 text-sm font-semibold text-white pt-2">
-                            Explore the game <i data-feather="arrow-right"
+                            See the concept <i data-feather="arrow-right"
                                 class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
                         </span>
                     </div>
@@ -127,7 +152,7 @@
                             Lyra and Glim cross Aurelia's floating islands to recover six relics before the Hollow breaks free.
                         </p>
                         <span class="inline-flex items-center gap-2 text-sm font-semibold text-white pt-2">
-                            Explore the game <i data-feather="arrow-right"
+                            See the concept <i data-feather="arrow-right"
                                 class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
                         </span>
                     </div>
@@ -140,13 +165,13 @@
                         src="img/games/deepwake/key-art.jpg" alt="Deepwake key art">
                     <div
                         class="flex flex-col justify-end gap-3 px-8 py-8 absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/40 to-transparent max-md:px-6">
-                        <span class="text-[#FF8FAA] font-medium tracking-wide text-sm uppercase">Merge + Collection · Sunken city</span>
+                        <span class="text-[#FF8FAA] font-medium tracking-wide text-sm uppercase">Merge + collection · Sunken city</span>
                         <h3 class="text-3xl font-semibold text-white drop-shadow-md">Deepwake</h3>
                         <p class="text-neutral-300 font-light leading-relaxed">
                             Relight the dreamlanterns of a drowned city before the god beneath it wakes.
                         </p>
                         <span class="inline-flex items-center gap-2 text-sm font-semibold text-white pt-2">
-                            Explore the game <i data-feather="arrow-right"
+                            See the concept <i data-feather="arrow-right"
                                 class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
                         </span>
                     </div>
@@ -165,7 +190,7 @@
                             One rebel runs and guns from the ash mines to the throne of a colossal war-empire.
                         </p>
                         <span class="inline-flex items-center gap-2 text-sm font-semibold text-white pt-2">
-                            Explore the game <i data-feather="arrow-right"
+                            See the concept <i data-feather="arrow-right"
                                 class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
                         </span>
                     </div>
@@ -173,7 +198,7 @@
 
                 <!-- Cogspire -->
                 <a href="game-cogspire.html"
-                    class="reveal group flex h-[460px] w-full flex-col items-start overflow-hidden rounded-[2rem] bg-neutral-900 relative cursor-pointer transition-all duration-500 hover:shadow-2xl hover:shadow-amber-900/30 hover:-translate-y-2 border border-neutral-800 hover:border-neutral-700 max-md:h-96 md:col-span-2">
+                    class="reveal group flex h-[460px] w-full flex-col items-start overflow-hidden rounded-[2rem] bg-neutral-900 relative cursor-pointer transition-all duration-500 hover:shadow-2xl hover:shadow-amber-900/30 hover:-translate-y-2 border border-neutral-800 hover:border-neutral-700 max-md:h-96">
                     <img class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                         src="img/games/cogspire/sunrise-docks.jpg" alt="Cogspire: Sunrise Docks">
                     <div
@@ -184,11 +209,12 @@
                             Build and upgrade brass towers to defend the last clean city in the sky from the Soot Armada.
                         </p>
                         <span class="inline-flex items-center gap-2 text-sm font-semibold text-white pt-2">
-                            Explore the game <i data-feather="arrow-right"
+                            See the concept <i data-feather="arrow-right"
                                 class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
                         </span>
                     </div>
                 </a>
+
             </div>
         </div>
 
@@ -200,10 +226,10 @@
                         class="flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-700 bg-neutral-800 shadow-sm">
                         <i data-feather="monitor" class="h-5 w-5 text-neutral-300"></i>
                     </div>
-                    <span class="text-2xl font-semibold tracking-tight text-white">Pitch Presentations</span>
+                    <span class="text-2xl font-semibold tracking-tight text-white">Pitch Decks</span>
                 </div>
                 <p class="text-base text-neutral-400 max-w-3xl">
-                    Full-screen pitch decks for each concept. Use the arrow keys or scroll to move between slides.
+                    A full-screen pitch deck for each concept. Scroll or use the arrow keys to move between slides.
                 </p>
             </div>
 
@@ -215,8 +241,8 @@
                             class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110">
                     </div>
                     <div class="flex flex-col gap-1">
-                        <span class="text-xs font-semibold uppercase tracking-wider text-cyan-400">Presentation</span>
-                        <span class="text-lg font-semibold text-white">Yggdrasil Tales – Pitch Deck</span>
+                        <span class="text-xs font-semibold uppercase tracking-wider text-cyan-400">Pitch deck</span>
+                        <span class="text-lg font-semibold text-white">Yggdrasil Tales</span>
                         <span class="inline-flex items-center gap-1.5 text-sm text-neutral-400 group-hover:text-white transition-colors">
                             Open deck <i data-feather="arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
                         </span>
@@ -229,8 +255,8 @@
                             class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110">
                     </div>
                     <div class="flex flex-col gap-1">
-                        <span class="text-xs font-semibold uppercase tracking-wider text-amber-400">Presentation</span>
-                        <span class="text-lg font-semibold text-white">Beyond the Veil – Pitch Deck</span>
+                        <span class="text-xs font-semibold uppercase tracking-wider text-amber-400">Pitch deck</span>
+                        <span class="text-lg font-semibold text-white">Beyond the Veil</span>
                         <span class="inline-flex items-center gap-1.5 text-sm text-neutral-400 group-hover:text-white transition-colors">
                             Open deck <i data-feather="arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
                         </span>
@@ -243,8 +269,8 @@
                             class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110">
                     </div>
                     <div class="flex flex-col gap-1">
-                        <span class="text-xs font-semibold uppercase tracking-wider text-[#FF8FAA]">Presentation</span>
-                        <span class="text-lg font-semibold text-white">Deepwake – Pitch Deck</span>
+                        <span class="text-xs font-semibold uppercase tracking-wider text-[#FF8FAA]">Pitch deck</span>
+                        <span class="text-lg font-semibold text-white">Deepwake</span>
                         <span class="inline-flex items-center gap-1.5 text-sm text-neutral-400 group-hover:text-white transition-colors">
                             Open deck <i data-feather="arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
                         </span>
@@ -257,8 +283,8 @@
                             class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110">
                     </div>
                     <div class="flex flex-col gap-1">
-                        <span class="text-xs font-semibold uppercase tracking-wider text-[#FF9A5A]">Presentation</span>
-                        <span class="text-lg font-semibold text-white">IronVigil – Pitch Deck</span>
+                        <span class="text-xs font-semibold uppercase tracking-wider text-[#FF9A5A]">Pitch deck</span>
+                        <span class="text-lg font-semibold text-white">IronVigil</span>
                         <span class="inline-flex items-center gap-1.5 text-sm text-neutral-400 group-hover:text-white transition-colors">
                             Open deck <i data-feather="arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
                         </span>
@@ -271,8 +297,8 @@
                             class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110">
                     </div>
                     <div class="flex flex-col gap-1">
-                        <span class="text-xs font-semibold uppercase tracking-wider text-[#FFC56E]">Presentation</span>
-                        <span class="text-lg font-semibold text-white">Cogspire – Pitch Deck</span>
+                        <span class="text-xs font-semibold uppercase tracking-wider text-[#FFC56E]">Pitch deck</span>
+                        <span class="text-lg font-semibold text-white">Cogspire</span>
                         <span class="inline-flex items-center gap-1.5 text-sm text-neutral-400 group-hover:text-white transition-colors">
                             Open deck <i data-feather="arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
                         </span>

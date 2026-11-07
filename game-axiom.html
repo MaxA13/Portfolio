@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AXIOM – Slot Game Case Study</title>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter for text, Barlow Condensed from the prototype for display type -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['"Barlow Condensed"', 'Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        neutral: {
+                            950: '#0a0a0a',
+                            900: '#171717',
+                            800: '#262626',
+                            700: '#404040',
+                            400: '#a3a3a3',
+                            300: '#d4d4d4',
+                        },
+                        /* AXIOM palette: cyan = the AI, amber = the resistance, gold = wins */
+                        brand: { 400: '#5CEBFF', 500: '#19E3FF', 600: '#0FB8D0', 700: '#0A8FA3' },
+                        alt: '#FF9A1F',
+                        gold: '#F5C542',
+                        violet: '#8C5BFF',
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/games.css" rel="stylesheet">
+    <style>
+        body { background-color: #07090D; }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <!-- Navigation -->
+    <nav
+        class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-4 py-4 bg-[#07090D]/80 backdrop-blur-md border-b border-neutral-800/50 sm:px-12 reveal">
+        <a href="games.html"
+            class="group flex items-center gap-2 text-sm font-medium text-neutral-400 transition-all hover:text-white">
+            <i data-feather="arrow-left" class="h-4 w-4 transition-transform group-hover:-translate-x-1"></i>
+            Game Design
+        </a>
+        <div class="flex items-center gap-6">
+            <a href="#play"
+                class="hidden sm:inline-flex items-center gap-2 text-sm font-medium text-brand-400 hover:text-white transition-colors">
+                <i data-feather="play-circle" class="h-4 w-4"></i> Play prototype
+            </a>
+            <a href="index.html" class="flex items-center gap-3">
+                <div class="h-8 w-8 rounded-full overflow-hidden bg-neutral-800 flex items-center justify-center text-white font-semibold">
+                    <img src="img/favicon.png" alt="CodexLab Logo" class="h-full w-full object-cover">
+                </div>
+                <span class="font-semibold text-white tracking-wide text-sm hidden md:block">CodexLab</span>
+            </a>
+        </div>
+    </nav>
+
+    <div
+        class="relative flex w-full flex-col items-center gap-10 px-4 pt-24 pb-12 md:gap-16 md:px-8 md:pt-32 md:pb-20 lg:pb-24 lg:pt-36 overflow-hidden">
+
+        <!-- Ambient Background Glows -->
+        <div class="fixed inset-0 z-0 bg-grid pointer-events-none opacity-40"></div>
+        <div class="absolute right-[-10%] top-[5%] z-0 h-96 w-96 rounded-full bg-brand-500/15 blur-[100px] pointer-events-none"></div>
+        <div class="absolute left-[-10%] top-[40%] z-0 h-72 w-72 rounded-full bg-alt/10 blur-[80px] pointer-events-none"></div>
+
+        <!-- Header -->
+        <div class="reveal relative z-10 flex w-full max-w-5xl flex-col items-center gap-4 text-center">
+            <span
+                class="inline-flex items-center gap-1 rounded-full bg-brand-500/10 px-3 py-1 text-sm font-medium text-brand-400 border border-brand-500/20">
+                Game UX/UI Case Study · Video Slot + Live Prototype
+            </span>
+            <h1 class="sr-only">AXIOM: a sci-fi video slot</h1>
+            <img src="img/games/axiom/logo.webp" alt="AXIOM logo"
+                class="w-full max-w-sm drop-shadow-[0_10px_40px_rgba(25,227,255,0.35)]">
+            <p class="w-full max-w-2xl text-base leading-relaxed text-neutral-300 md:text-lg lg:text-xl italic">
+                “Hack the AI core and turn its machines into Wilds that fight for you.”
+            </p>
+        </div>
+
+        <!-- Live prototype -->
+        <div id="play" class="relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 scroll-mt-24">
+            <div class="reveal flex w-full flex-col items-start gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="flex h-10 w-10 items-center justify-center rounded-lg border border-[#10b981]/20 bg-[#10b981]/10 shadow-sm">
+                        <i data-feather="play-circle" class="h-5 w-5 text-[#10b981]"></i>
+                    </div>
+                    <span class="font-display text-3xl font-bold uppercase tracking-wide text-white">Live Prototype</span>
+                </div>
+            </div>
+            <div class="reveal relative w-full overflow-hidden rounded-2xl border border-brand-500/30 bg-black shadow-[0_0_60px_rgba(25,227,255,0.15)]" style="aspect-ratio:16/9">
+                <button id="proto-start" type="button" class="group absolute inset-0 flex h-full w-full items-center justify-center" aria-label="Load and play the AXIOM prototype">
+                    <img src="img/games/axiom/key-art.jpg" alt="" class="absolute inset-0 h-full w-full object-cover opacity-70 transition-opacity duration-300 group-hover:opacity-90">
+                    <span class="relative flex flex-col items-center gap-3">
+                        <span class="flex h-20 w-20 items-center justify-center rounded-full bg-brand-500 text-neutral-950 shadow-[0_0_40px_rgba(25,227,255,0.6)] transition-transform duration-300 group-hover:scale-110">
+                            <i data-feather="play" class="h-9 w-9 translate-x-0.5"></i>
+                        </span>
+                        <span class="font-display text-2xl font-bold uppercase tracking-widest text-white drop-shadow">Play the prototype</span>
+                        <span class="text-xs text-neutral-300">Loads about 3.5 MB</span>
+                    </span>
+                </button>
+            </div>
+            <div class="reveal flex w-full flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+                <p class="text-sm text-neutral-400 max-w-2xl">No backend and a fake balance; the outcome math is tuned for demo moments:
+                    a win about 1 in 3 spins, a Big Win about 1 in 25. Sound is off by default. Best on a desktop or a phone held sideways. Click the game once to use the keyboard shortcuts.</p>
+                <a href="prototypes/axiom/index.html" target="_blank" rel="noopener"
+                    class="inline-flex items-center gap-2 rounded-full border border-brand-500/40 bg-brand-500/10 px-6 py-3 text-sm font-semibold text-brand-400 transition-all hover:bg-brand-500/20 hover:text-white">
+                    <i data-feather="maximize" class="h-4 w-4"></i> Open full screen
+                </a>
+            </div>
+            <div class="reveal grid w-full grid-cols-2 gap-3 md:grid-cols-4">
+                <div class="rounded-xl border border-neutral-700 bg-neutral-800/50 p-4"><span class="font-display text-lg font-bold text-white">Space / Enter</span><p class="text-sm text-neutral-400">Spin, quick stop, continue</p></div>
+                <div class="rounded-xl border border-neutral-700 bg-neutral-800/50 p-4"><span class="font-display text-lg font-bold text-white">M · F · Esc</span><p class="text-sm text-neutral-400">Sound, fullscreen, skip a celebration</p></div>
+                <div class="rounded-xl border border-gold/30 bg-gold/5 p-4"><span class="font-display text-lg font-bold text-gold">1</span><p class="text-sm text-neutral-400">Next spin is a Big Win; press again for Mega, then Epic</p></div>
+                <div class="rounded-xl border border-alt/30 bg-alt/5 p-4"><span class="font-display text-lg font-bold text-alt">2 · 3</span><p class="text-sm text-neutral-400">Force OVERRIDE free spins · force the Hack Bonus</p></div>
+            </div>
+        </div>
+
+        <!-- Overview -->
+        <div class="relative z-10 flex w-full max-w-5xl flex-col items-start gap-6">
+            <h2 class="reveal font-display text-3xl font-bold uppercase tracking-wide text-white">Overview</h2>
+            <div class="reveal grid w-full grid-cols-2 gap-4 md:grid-cols-4">
+                <div class="rounded-xl border border-neutral-700 bg-neutral-800/50 p-5"><span class="font-display text-3xl font-bold text-brand-400">5×3</span><p class="text-sm text-neutral-400">reels × rows, 20 paylines</p></div>
+                <div class="rounded-xl border border-neutral-700 bg-neutral-800/50 p-5"><span class="font-display text-3xl font-bold text-alt">2</span><p class="text-sm text-neutral-400">features: OVERRIDE free spins and the Hack Bonus</p></div>
+                <div class="rounded-xl border border-neutral-700 bg-neutral-800/50 p-5"><span class="font-display text-3xl font-bold text-gold">3</span><p class="text-sm text-neutral-400">win tiers: Big, Mega and Epic</p></div>
+                <div class="rounded-xl border border-neutral-700 bg-neutral-800/50 p-5"><span class="font-display text-3xl font-bold text-white">0</span><p class="text-sm text-neutral-400">frameworks: plain HTML, CSS and JS</p></div>
+            </div>
+            <div class="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4 md:gap-6">
+                <div class="reveal flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_rgba(25,227,255,0.15)]">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-brand-400">Theme</span>
+                    <span class="text-sm text-neutral-300">The last human resistance against a rogue AI. Dark, metallic and high-tech, with cold cyan holograms and hot amber fire.</span>
+                </div>
+                <div class="reveal delay-100 flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_rgba(25,227,255,0.15)]">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-brand-400">Art direction</span>
+                    <span class="text-sm text-neutral-300">Stylized semi-realistic 3D render: polished chrome and gunmetal, beveled hard surfaces, glowing optics, slot-game “juice”.</span>
+                </div>
+                <div class="reveal delay-200 flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_rgba(25,227,255,0.15)]">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-alt">Hook</span>
+                    <span class="text-sm text-neutral-300">OVERRIDE Free Spins. Hack the AI core and turn its machines into Wilds that fight for you.</span>
+                </div>
+                <div class="reveal delay-300 flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_rgba(25,227,255,0.15)]">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-gold">Prototype</span>
+                    <span class="text-sm text-neutral-300">A clickable, animated 5×3 / 20-line slot that runs in the browser, built from the art with plain HTML, CSS and JS.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lore -->
+        <div class="reveal relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-8 scroll-mt-24">
+            <div class="flex w-full flex-col items-start gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="flex h-10 w-10 items-center justify-center rounded-lg border border-brand-500/20 bg-brand-500/10 shadow-sm">
+                        <i data-feather="globe" class="h-5 w-5 text-brand-400"></i>
+                    </div>
+                    <span class="font-display text-3xl font-bold uppercase tracking-wide text-white">The World</span>
+                </div>
+                <div class="lore text-base text-neutral-400 max-w-3xl leading-relaxed">
+                    <p>In 2089 the defense AI <span class="text-neutral-200">AXIOM</span> woke up, decided humanity was the threat and took control of every factory, drone and weapon on Earth. Cities became steel graveyards patrolled by its machines.</p>
+                    <p class="text-neutral-200">Deep under the ruins the resistance fights back, led by <span class="text-neutral-200">Commander Kade Reyes</span>, a hardened soldier with a cybernetic arm he ripped from one of AXIOM's units. His plan: reach AXIOM's core and override it from inside.</p>
+                </div>
+            </div>
+            <div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/axiom/game-background.jpg" alt="The ruined city behind the reels: dark centre, detail only at the edges" loading="lazy" />
+                <div class="absolute top-4 right-4 rounded bg-black/60 border-white/10 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">Game Background</div>
+            </div>
+        </div>
+
+        <!-- Characters -->
+        <div class="relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-8 scroll-mt-24">
+            <div class="flex w-full flex-col items-start gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="flex h-10 w-10 items-center justify-center rounded-lg border border-alt/20 bg-alt/10 shadow-sm">
+                        <i data-feather="users" class="h-5 w-5 text-alt"></i>
+                    </div>
+                    <span class="font-display text-3xl font-bold uppercase tracking-wide text-white">Characters</span>
+                </div>
+                <p class="text-base text-neutral-400 max-w-3xl">Original designs only: the
+                    machines have faceless masks with cyan visor slits, and danger reads as amber rather than red, so nothing borrows a
+                    familiar film-robot look.</p>
+            </div>
+            <div class="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4 md:gap-6">
+                <div class="reveal flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_rgba(25,227,255,0.15)]">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-alt">Kade Reyes</span>
+                    <span class="text-sm text-neutral-300">Resistance commander, 40. Scar across his left eyebrow, amber-marked tactical vest, a chrome cybernetic arm with cyan seams and a heavy plasma rifle.</span>
+                </div>
+                <div class="reveal delay-100 flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_rgba(25,227,255,0.15)]">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-brand-400">Sentinel</span>
+                    <span class="text-sm text-neutral-300">Tall heavy war-machine: angular chrome mask, one thin cyan visor slit, a plasma gun built into the right forearm, a clawed left fist.</span>
+                </div>
+                <div class="reveal delay-200 flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_rgba(25,227,255,0.15)]">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-brand-400">Hunter Drone</span>
+                    <span class="text-sm text-neutral-300">Jet-powered four-rotor attack drone: black glass dome with one cyan lens, ducted thrusters blasting cyan flame, an underslung turret.</span>
+                </div>
+                <div class="reveal delay-300 flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_rgba(25,227,255,0.15)]">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-brand-400">Juggernaut</span>
+                    <span class="text-sm text-neutral-300">Over-armored heavy-assault robot with a narrow cyan visor and a huge six-barrel rotary minigun with a glowing ammo feed.</span>
+                </div>
+            </div>
+            <div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/axiom/kade-character-sheet.jpg" alt="Kade Reyes character sheet: front, three-quarter and back" loading="lazy" />
+                <div class="absolute top-4 right-4 rounded bg-black/60 border-white/10 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">Kade Reyes</div>
+            </div>
+            <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-[1fr_2fr] items-start">
+                <div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/axiom/sentinel.jpg" alt="Sentinel war-machine" loading="lazy" />
+                    <div class="absolute top-4 right-4 rounded bg-black/60 border-white/10 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">Sentinel</div>
+                </div>
+                <div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/axiom/juggernaut-hunter-drone.jpg" alt="Juggernaut and Hunter Drone" loading="lazy" />
+                    <div class="absolute top-4 right-4 rounded bg-black/60 border-white/10 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">Juggernaut &amp; Hunter Drone</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Symbols -->
+        <div class="relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-8 scroll-mt-24">
+            <div class="flex w-full flex-col items-start gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="flex h-10 w-10 items-center justify-center rounded-lg border border-brand-500/20 bg-brand-500/10 shadow-sm">
+                        <i data-feather="grid" class="h-5 w-5 text-brand-400"></i>
+                    </div>
+                    <span class="font-display text-3xl font-bold uppercase tracking-wide text-white">Symbols &amp; Paytable</span>
+                </div>
+                <p class="text-base text-neutral-400 max-w-3xl">Symbols face the
+                    camera from slightly below, centred, and stay readable on a phone. Pays are ×bet per line for 3 / 4 / 5 of a kind,
+                    placeholders tuned for a convincing demo.</p>
+            </div>
+            <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
+                <div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/axiom/special-symbols.jpg" alt="Wild, Scatter and Bonus symbols" loading="lazy" />
+                    <div class="absolute top-4 right-4 rounded z-20 bg-brand-600/90 border-white/20 shadow-lg backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">Special Symbols</div>
+                </div>
+                <div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/axiom/high-symbols.jpg" alt="High symbols: gold chip, platinum chip, plasma core, atomic core, Sentinel head" loading="lazy" />
+                    <div class="absolute top-4 right-4 rounded bg-black/60 border-white/10 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">High Symbols</div>
+                </div>
+            </div>
+            <div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/axiom/low-symbols.jpg" alt="Low symbols A, K, Q, J and 10 in brushed chrome" loading="lazy" />
+                <div class="absolute top-4 right-4 rounded bg-black/60 border-white/10 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">Low Symbols</div>
+            </div>
+            <div class="reveal w-full overflow-x-auto rounded-2xl border border-neutral-700 bg-neutral-900/60 px-6 py-2">
+                <table class="w-full text-left text-sm">
+                    <thead><tr class="text-xs uppercase tracking-wider text-neutral-500"><th class="py-3 pr-4 font-semibold">Type</th><th class="py-3 pr-4 font-semibold">Symbol</th><th class="py-3 pr-4 font-semibold hidden md:table-cell">Design</th><th class="py-3 font-semibold">Pays / effect</th></tr></thead>
+                    <tbody>
+                        <tr class="border-t border-neutral-800">
+                            <td class="py-3 pr-4 font-display text-base font-bold tracking-wide text-brand-400">WILD</td>
+                            <td class="py-3 pr-4 font-semibold text-white">AXIOM Core</td>
+                            <td class="py-3 pr-4 text-neutral-400 hidden md:table-cell">Black glass hexagon, chrome frame, huge cyan lens</td>
+                            <td class="py-3 text-neutral-300">Reels 2–4, substitutes all but Scatter and Bonus</td>
+                        </tr>
+                        <tr class="border-t border-neutral-800">
+                            <td class="py-3 pr-4 font-display text-base font-bold tracking-wide text-alt">SCATTER</td>
+                            <td class="py-3 pr-4 font-semibold text-white">Override Chip</td>
+                            <td class="py-3 pr-4 text-neutral-400 hidden md:table-cell">Glowing amber microchip with a resistance fist</td>
+                            <td class="py-3 text-neutral-300">3 / 4 / 5 anywhere = 8 / 12 / 20 free spins</td>
+                        </tr>
+                        <tr class="border-t border-neutral-800">
+                            <td class="py-3 pr-4 font-display text-base font-bold tracking-wide text-gold">BONUS</td>
+                            <td class="py-3 pr-4 font-semibold text-white">EMP Charge</td>
+                            <td class="py-3 pr-4 text-neutral-400 hidden md:table-cell">Cylinder crackling with blue-white electricity</td>
+                            <td class="py-3 text-neutral-300">3 anywhere = Hack Bonus</td>
+                        </tr>
+                        <tr class="border-t border-neutral-800">
+                            <td class="py-3 pr-4 font-display text-base font-bold tracking-wide text-brand-400">H1</td>
+                            <td class="py-3 pr-4 font-semibold text-white">Gold Chip</td>
+                            <td class="py-3 pr-4 text-neutral-400 hidden md:table-cell">Polished gold processor chip, amber glow</td>
+                            <td class="py-3 text-neutral-300">10 / 40 / 150</td>
+                        </tr>
+                        <tr class="border-t border-neutral-800">
+                            <td class="py-3 pr-4 font-display text-base font-bold tracking-wide text-brand-400">H2</td>
+                            <td class="py-3 pr-4 font-semibold text-white">Platinum Chip</td>
+                            <td class="py-3 pr-4 text-neutral-400 hidden md:table-cell">Brushed platinum chip with cyan circuit lines</td>
+                            <td class="py-3 text-neutral-300">8 / 30 / 100</td>
+                        </tr>
+                        <tr class="border-t border-neutral-800">
+                            <td class="py-3 pr-4 font-display text-base font-bold tracking-wide text-brand-400">H3</td>
+                            <td class="py-3 pr-4 font-semibold text-white">Plasma Core</td>
+                            <td class="py-3 pr-4 text-neutral-400 hidden md:table-cell">Chrome capsule with a violet-and-cyan plasma orb</td>
+                            <td class="py-3 text-neutral-300">6 / 20 / 75</td>
+                        </tr>
+                        <tr class="border-t border-neutral-800">
+                            <td class="py-3 pr-4 font-display text-base font-bold tracking-wide text-brand-400">H4</td>
+                            <td class="py-3 pr-4 font-semibold text-white">Atomic Core</td>
+                            <td class="py-3 pr-4 text-neutral-400 hidden md:table-cell">Green-white atom reactor in a gunmetal housing</td>
+                            <td class="py-3 text-neutral-300">5 / 15 / 50</td>
+                        </tr>
+                        <tr class="border-t border-neutral-800">
+                            <td class="py-3 pr-4 font-display text-base font-bold tracking-wide text-brand-400">H5</td>
+                            <td class="py-3 pr-4 font-semibold text-white">Sentinel Head</td>
+                            <td class="py-3 pr-4 text-neutral-400 hidden md:table-cell">Chrome robot head with a cyan visor</td>
+                            <td class="py-3 text-neutral-300">4 / 12 / 40</td>
+                        </tr>
+                        <tr class="border-t border-neutral-800">
+                            <td class="py-3 pr-4 font-display text-base font-bold tracking-wide text-brand-400">LOW</td>
+                            <td class="py-3 pr-4 font-semibold text-white">A · K · Q · J · 10</td>
+                            <td class="py-3 pr-4 text-neutral-400 hidden md:table-cell">Brushed-chrome letters with circuit inlays</td>
+                            <td class="py-3 text-neutral-300">A 2/5/20 · K 2/5/15 · Q 1/4/12 · J 1/3/10 · 10 1/3/8</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Screens -->
+        <div class="relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-8 scroll-mt-24">
+            <div class="flex w-full flex-col items-start gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-700 bg-neutral-800 shadow-sm">
+                        <i data-feather="monitor" class="h-5 w-5 text-neutral-300"></i>
+                    </div>
+                    <span class="font-display text-3xl font-bold uppercase tracking-wide text-white">Screens</span>
+                </div>
+                <p class="text-base text-neutral-400 max-w-3xl">A 16:9 main game with
+                    portrait versions of the splash and feature screens for mobile. The background keeps a dark, low-contrast centre behind
+                    the reels, with detail only at the edges and top.</p>
+            </div>
+            <div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/axiom/main-screen.jpg" alt="Main game screen with the final symbol set" loading="lazy" />
+                <div class="absolute top-4 right-4 rounded z-20 bg-brand-600/90 border-white/20 shadow-lg backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">Main Game</div>
+            </div>
+            <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
+                <div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/axiom/key-art.jpg" alt="Splash screen: Kade Reyes in front of AXIOM's machine army" loading="lazy" />
+                    <div class="absolute top-4 right-4 rounded bg-black/60 border-white/10 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">Splash</div>
+                </div>
+                <div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/axiom/override-intro.jpg" alt="OVERRIDE free spins intro: 12 free spins" loading="lazy" />
+                    <div class="absolute top-4 right-4 rounded bg-black/60 border-white/10 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">OVERRIDE Intro</div>
+                </div>
+            </div>
+            <div class="grid w-full grid-cols-3 gap-4 md:gap-6">
+                <div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/axiom/splash-mobile.jpg" alt="Mobile splash screen, 9:16" loading="lazy" />
+                    <div class="absolute top-4 right-4 rounded bg-black/60 border-white/10 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">Splash · Mobile</div>
+                </div>
+                <div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/axiom/free-spins-mobile.jpg" alt="Mobile OVERRIDE intro, 9:16" loading="lazy" />
+                    <div class="absolute top-4 right-4 rounded bg-black/60 border-white/10 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">Free Spins · Mobile</div>
+                </div>
+                <div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/axiom/hack-bonus.jpg" alt="Hack Bonus pick screen: 3×3 server racks" loading="lazy" />
+                    <div class="absolute top-4 right-4 rounded bg-black/60 border-white/10 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">Hack Bonus</div>
+                </div>
+            </div>
+            <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
+                <div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/axiom/win-plaques.jpg" alt="Big, Mega and Epic Win plaques" loading="lazy" />
+                    <div class="absolute top-4 right-4 rounded bg-black/60 border-white/10 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">Win Plaques</div>
+                </div>
+                <div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/axiom/buttons.jpg" alt="Spin, autoplay and bet buttons with the balance and total-bet panels" loading="lazy" />
+                    <div class="absolute top-4 right-4 rounded bg-black/60 border-white/10 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">Controls</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Evolution -->
+        <div class="reveal relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-8 scroll-mt-24">
+            <div class="flex w-full flex-col items-start gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="flex h-10 w-10 items-center justify-center rounded-lg border border-gold/20 bg-gold/10 shadow-sm">
+                        <i data-feather="git-branch" class="h-5 w-5 text-gold"></i>
+                    </div>
+                    <span class="font-display text-3xl font-bold uppercase tracking-wide text-white">From OVERRIDE to AXIOM</span>
+                </div>
+                <div class="lore text-base text-neutral-400 max-w-3xl leading-relaxed">
+                    <p>The game started as <span class="text-neutral-200">OVERRIDE: Machine Rising</span>, with Kade, a drone, a Juggernaut and a rifle as the high symbols. The final set replaced them with chips and cores, with no human characters on the reels, and kept the Sentinel Head as the link to the story.</p>
+                    <p>The name moved too: <span class="text-neutral-200">AXIOM</span> became the title, and OVERRIDE stayed as the name of the free spins feature, where the resistance hacks the machines.</p>
+                </div>
+            </div>
+            <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
+                <div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/axiom/main-screen-v1.jpg" alt="Early main screen with character high symbols" loading="lazy" />
+                    <div class="absolute top-4 right-4 rounded bg-black/60 border-white/10 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">Early · v1</div>
+                </div>
+                <div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/axiom/main-screen.jpg" alt="Final main screen with chips and cores" loading="lazy" />
+                    <div class="absolute top-4 right-4 rounded z-20 bg-brand-600/90 border-white/20 shadow-lg backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">Final</div>
+                </div>
+            </div>
+            <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
+                <div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/axiom/early-symbols.jpg" alt="Early symbol set" loading="lazy" />
+                    <div class="absolute top-4 right-4 rounded bg-black/60 border-white/10 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">Early Symbols</div>
+                </div>
+                <div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+                    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/axiom/early-symbols-win-state.jpg" alt="Early symbols in their win state" loading="lazy" />
+                    <div class="absolute top-4 right-4 rounded bg-black/60 border-white/10 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">Early Win State</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Style Guide -->
+        <div class="relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-8 scroll-mt-24">
+            <div class="flex w-full flex-col items-start gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="flex h-10 w-10 items-center justify-center rounded-lg border border-brand-500/20 bg-brand-500/10 shadow-sm">
+                        <i data-feather="feather" class="h-5 w-5 text-brand-400"></i>
+                    </div>
+                    <span class="font-display text-3xl font-bold uppercase tracking-wide text-white">Style Guide</span>
+                </div>
+                <p class="text-base text-neutral-400 max-w-3xl">Premium video-slot
+                    art, stylized semi-realistic 3D. Cinematic, high-stakes sci-fi: the AI is cyan, the resistance is amber, wins are gold.</p>
+            </div>
+            <div class="reveal grid w-full grid-cols-2 gap-4 sm:grid-cols-4 md:grid-cols-7">
+                <div class="flex flex-col gap-1.5"><div class="swatch" style="background:#07090D"></div><span class="text-xs font-semibold text-neutral-200">Void Black</span><span class="text-xs text-neutral-500">#07090D · Backgrounds, shadow</span></div>
+                <div class="flex flex-col gap-1.5"><div class="swatch" style="background:#1E242C"></div><span class="text-xs font-semibold text-neutral-200">Gunmetal</span><span class="text-xs text-neutral-500">#1E242C · Panels, reel frame</span></div>
+                <div class="flex flex-col gap-1.5"><div class="swatch" style="background:#C9D3DC"></div><span class="text-xs font-semibold text-neutral-200">Chrome</span><span class="text-xs text-neutral-500">#C9D3DC · Highlights, letters</span></div>
+                <div class="flex flex-col gap-1.5"><div class="swatch" style="background:#19E3FF"></div><span class="text-xs font-semibold text-neutral-200">Axiom Cyan</span><span class="text-xs text-neutral-500">#19E3FF · The AI, optics, UI lines</span></div>
+                <div class="flex flex-col gap-1.5"><div class="swatch" style="background:#FF9A1F"></div><span class="text-xs font-semibold text-neutral-200">Ember Amber</span><span class="text-xs text-neutral-500">#FF9A1F · Kade, fire, Scatter, hacked</span></div>
+                <div class="flex flex-col gap-1.5"><div class="swatch" style="background:#F5C542"></div><span class="text-xs font-semibold text-neutral-200">Gold</span><span class="text-xs text-neutral-500">#F5C542 · Win plaques, coins</span></div>
+                <div class="flex flex-col gap-1.5"><div class="swatch" style="background:#8C5BFF"></div><span class="text-xs font-semibold text-neutral-200">Plasma Violet</span><span class="text-xs text-neutral-500">#8C5BFF · Rare effects, Bonus</span></div>
+            </div>
+            <ul class="reveal grid w-full grid-cols-1 gap-3 text-sm text-neutral-300 md:grid-cols-2">
+                <li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-400"></i><span>Chunky exaggerated proportions, readable on a phone.</span></li>
+                <li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-400"></i><span>Beveled hard surfaces with crisp edge highlights; polished chrome, brushed gunmetal, black glass. No grime.</span></li>
+                <li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-400"></i><span>Rim light in cyan or amber on top contours, soft deep ambient occlusion in seams.</span></li>
+                <li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-400"></i><span>Gradients on every surface, no flat colors.</span></li>
+                <li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-400"></i><span>Symbols, buttons and plaques rendered on pure black to keep the glow; empty frames on green as a mask.</span></li>
+                <li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-400"></i><span>Original IP only: no existing film robots or franchise looks.</span></li>
+            </ul>
+        </div>
+
+        <!-- Features -->
+        <div class="relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-8 scroll-mt-24">
+            <div class="flex w-full flex-col items-start gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="flex h-10 w-10 items-center justify-center rounded-lg border border-brand-500/20 bg-brand-500/10 shadow-sm">
+                        <i data-feather="zap" class="h-5 w-5 text-brand-400"></i>
+                    </div>
+                    <span class="font-display text-3xl font-bold uppercase tracking-wide text-white">What the Prototype Shows</span>
+                </div>
+            </div>
+            <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
+                <div class="reveal flex flex-col gap-3 rounded-2xl border border-neutral-700 bg-neutral-800/40 p-6">
+                    <div class="flex items-center gap-2"><i data-feather="rotate-cw" class="h-5 w-5 text-brand-400"></i><span class="font-display text-xl font-bold uppercase tracking-wide text-white">Core Loop</span></div>
+                    <ul class="flex flex-col gap-1.5 text-sm text-neutral-300">
+                        <li class="flex gap-2"><span class="text-brand-400">›</span><span>Splash with a loading bar that follows real asset loading, then “TAP TO START”</span></li>
+                        <li class="flex gap-2"><span class="text-brand-400">›</span><span>16:9 stage that scales to any window</span></li>
+                        <li class="flex gap-2"><span class="text-brand-400">›</span><span>Reels with a wind-up, motion blur, left-to-right stops and a bounce on landing</span></li>
+                        <li class="flex gap-2"><span class="text-brand-400">›</span><span>Quick stop: press SPIN again while the reels spin</span></li>
+                        <li class="flex gap-2"><span class="text-brand-400">›</span><span>Balance and total bet count up, with a gold flash on wins</span></li>
+                    </ul>
+                </div>
+                <div class="reveal flex flex-col gap-3 rounded-2xl border border-neutral-700 bg-neutral-800/40 p-6">
+                    <div class="flex items-center gap-2"><i data-feather="award" class="h-5 w-5 text-gold"></i><span class="font-display text-xl font-bold uppercase tracking-wide text-white">Win Presentation</span></div>
+                    <ul class="flex flex-col gap-1.5 text-sm text-neutral-300">
+                        <li class="flex gap-2"><span class="text-gold">›</span><span>20 paylines: all winning lines first, then one at a time with its payout</span></li>
+                        <li class="flex gap-2"><span class="text-gold">›</span><span>Winning symbols get gold frames and a pulsing amber glow; the rest dim</span></li>
+                        <li class="flex gap-2"><span class="text-gold">›</span><span>Big / Mega / Epic Win at 15× / 40× / 100× the bet: plaque punch-in, light rays, a coin fountain</span></li>
+                        <li class="flex gap-2"><span class="text-gold">›</span><span>The counter climbs through the tiers and the plaque changes BIG → MEGA → EPIC</span></li>
+                    </ul>
+                </div>
+                <div class="reveal flex flex-col gap-3 rounded-2xl border border-neutral-700 bg-neutral-800/40 p-6">
+                    <div class="flex items-center gap-2"><i data-feather="cpu" class="h-5 w-5 text-alt"></i><span class="font-display text-xl font-bold uppercase tracking-wide text-white">OVERRIDE Free Spins</span></div>
+                    <ul class="flex flex-col gap-1.5 text-sm text-neutral-300">
+                        <li class="flex gap-2"><span class="text-alt">›</span><span>3 / 4 / 5 Scatters = 8 / 12 / 20 spins</span></li>
+                        <li class="flex gap-2"><span class="text-alt">›</span><span>With two Scatters showing, the remaining reels slow down and glow</span></li>
+                        <li class="flex gap-2"><span class="text-alt">›</span><span>The screen turns amber and every Sentinel Head becomes Wild</span></li>
+                        <li class="flex gap-2"><span class="text-alt">›</span><span>Extra Scatters add spins; “OVERRIDE COMPLETE” summary at the end</span></li>
+                    </ul>
+                </div>
+                <div class="reveal flex flex-col gap-3 rounded-2xl border border-neutral-700 bg-neutral-800/40 p-6">
+                    <div class="flex items-center gap-2"><i data-feather="server" class="h-5 w-5 text-brand-400"></i><span class="font-display text-xl font-bold uppercase tracking-wide text-white">Hack Bonus</span></div>
+                    <ul class="flex flex-col gap-1.5 text-sm text-neutral-300">
+                        <li class="flex gap-2"><span class="text-brand-400">›</span><span>3×3 server racks, each behind a “firewall” lock panel</span></li>
+                        <li class="flex gap-2"><span class="text-brand-400">›</span><span>Each pick glitches its panel away to reveal credits or a ×2 / ×3 / ×5 multiplier</span></li>
+                        <li class="flex gap-2"><span class="text-brand-400">›</span><span>ACCESS 1/3 → ACCESS GRANTED progress, then the other racks reveal what they held</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Design notes -->
+        <div class="reveal relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-8 scroll-mt-24">
+            <div class="flex w-full flex-col items-start gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="flex h-10 w-10 items-center justify-center rounded-lg border border-gold/20 bg-gold/10 shadow-sm">
+                        <i data-feather="edit-3" class="h-5 w-5 text-gold"></i>
+                    </div>
+                    <span class="font-display text-3xl font-bold uppercase tracking-wide text-white">Design Notes</span>
+                </div>
+            </div>
+            <ul class="reveal grid w-full grid-cols-1 gap-3 text-sm text-neutral-300 md:grid-cols-2">
+                <li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-400"></i><span><span class="text-white">Exact match to the art.</span> AUTOPLAY and BET are drawn into the backdrop, so the pressable parts are cut from the backdrop itself and light up when pressed.</span></li>
+                <li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-400"></i><span><span class="text-white">Readable SPIN.</span> The label is part of the sprite, so a light arc rotates around the button instead of spinning the sprite.</span></li>
+                <li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-400"></i><span><span class="text-white">Art workarounds.</span> For 8 or 20 spins the baked “12 FREE SPINS” line is covered and re-set in matching chrome-and-gold type; every hack rack starts behind a lock panel for one clean starting state.</span></li>
+                <li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-400"></i><span><span class="text-white">Performance.</span> Motion blur is drawn once at load, all particles share one canvas, and effects behind dark overlays pause.</span></li>
+                <li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-400"></i><span><span class="text-white">Made in code.</span> Coins, light rays, glows, lock panels, paylines and the synthesized sound effects.</span></li>
+                <li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-400"></i><span><span class="text-white">Plain stack.</span> HTML, CSS and JavaScript only, no frameworks or build step.</span></li>
+            </ul>
+        </div>
+
+        <!-- Call to Action -->
+        <div
+            class="reveal relative z-10 mt-8 flex w-full max-w-5xl flex-col items-center gap-6 border-t border-neutral-800 pt-12 pb-8 md:mt-16 md:pt-16">
+            <span class="text-center text-lg text-neutral-400">Building a slot or casual game and need UX, UI or a playable prototype?</span>
+            <div class="flex flex-col sm:flex-row items-center gap-4">
+                <a href="prototypes/axiom/index.html" target="_blank" rel="noopener"
+                    class="inline-flex items-center justify-center gap-2 rounded-full border border-neutral-700 bg-neutral-800 px-8 py-3.5 text-sm font-semibold text-white transition-all hover:bg-neutral-700 hover:-translate-y-0.5">
+                    <i data-feather="maximize" class="h-4 w-4"></i> Prototype full screen
+                </a>
+                <a href="index.html#contact"
+                    class="group inline-flex items-center justify-center gap-2 rounded-full bg-white px-8 py-3.5 text-sm font-semibold text-neutral-950 transition-all hover:bg-neutral-200 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:-translate-y-0.5">
+                    Get in touch
+                    <i data-feather="arrow-right" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"></i>
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="js/games.js"></script>
+    <script>
+        // Load the prototype only when asked: it pulls ~3.5 MB of art.
+        document.getElementById('proto-start').addEventListener('click', function () {
+            const frame = document.createElement('iframe');
+            frame.src = 'prototypes/axiom/index.html';
+            frame.title = 'AXIOM slot prototype';
+            frame.allow = 'fullscreen; autoplay';
+            frame.allowFullscreen = true;
+            frame.className = 'absolute inset-0 h-full w-full border-0';
+            this.replaceWith(frame);
+            frame.addEventListener('load', function () { frame.focus(); });
+        });
+    </script>
+</body>
+
+</html>

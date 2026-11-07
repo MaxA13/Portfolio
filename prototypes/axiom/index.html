@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>AXIOM — Slot Preview</title>
+  <meta name="description" content="AXIOM: a 5x3, 20-line sci-fi slot prototype. Game UX/UI portfolio piece.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,800;1,900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="viewport">
+    <div id="stage" aria-label="AXIOM slot machine">
+      <img id="backdrop" src="art/screens/main_screen_clean.webp" alt="" draggable="false">
+
+      <div id="plate-shine" aria-hidden="true"><i></i></div>
+      <div id="reels"></div>
+      <svg id="paylines" viewBox="0 0 2752 1536" aria-hidden="true"></svg>
+      <div id="win-layer" aria-hidden="true"></div>
+      <div id="win-amount" aria-live="polite"><span class="lbl">WIN</span><span class="num">0.00</span></div>
+
+      <!-- number windows (labels are baked into the backdrop) -->
+      <div id="balance" class="readout"><span class="num">0.00</span></div>
+      <div id="total-bet" class="readout"><span class="num">0.00</span></div>
+
+      <!-- hotspots over the baked buttons -->
+      <button id="btn-auto" class="hot" aria-label="Autoplay">
+        <span class="face"></span>
+        <span class="ring"></span>
+      </button>
+      <button id="btn-spin" class="hot" aria-label="Spin (Space)">
+        <span class="halo"></span>
+        <img src="sprites/ui/btn_spin.webp" alt="" draggable="false">
+        <span class="ring"></span>
+      </button>
+      <button id="btn-bet" class="hot" aria-label="Change bet">
+        <span class="face"></span>
+      </button>
+
+      <!-- OVERRIDE free spins counter (on the logo plate) -->
+      <div id="fs-counter" aria-live="polite">
+        <span class="lbl">FREE SPINS</span><span class="val">0 / 0</span><span class="won"></span>
+      </div>
+
+      <!-- feature screens (9:16, letterboxed; filled by game.js) -->
+      <div id="fs-intro" class="portrait-overlay" role="dialog" aria-label="OVERRIDE free spins"></div>
+      <div id="hack" class="portrait-overlay" role="dialog" aria-label="Hack Bonus"></div>
+
+      <!-- feature summary -->
+      <div id="panel" role="dialog" aria-live="assertive">
+        <div class="pn-card">
+          <div class="pn-title"></div>
+          <div class="pn-label"></div>
+          <div class="pn-amount">0.00</div>
+          <div class="pn-sub"></div>
+          <div class="pn-hint">TAP TO CONTINUE</div>
+        </div>
+      </div>
+
+      <!-- Big / Mega / Epic win celebration -->
+      <div id="bigwin" role="dialog" aria-live="assertive">
+        <div class="bw-scrim"></div>
+        <div class="bw-rays"></div>
+        <div class="bw-glow"></div>
+        <div class="bw-plaque"></div>
+        <div class="bw-amount-glow"></div>
+        <div class="bw-amount">0.00</div>
+        <div class="bw-hint">TAP TO SKIP</div>
+        <div class="bw-flash"></div>
+      </div>
+      <canvas id="fx" aria-hidden="true"></canvas>
+
+      <div id="toast" role="status"></div>
+
+      <!-- corner controls -->
+      <div id="corner">
+        <button id="btn-sound" class="corner-btn" aria-label="Sound" aria-pressed="false" title="Sound (M)">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path class="spk" d="M4 9h4l5-4v14l-5-4H4z"/><path class="waves" d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12"/><path class="mute" d="M16 9l5 6M21 9l-5 6"/></svg>
+        </button>
+        <button id="btn-full" class="corner-btn" aria-label="Fullscreen" title="Fullscreen (F)">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg>
+        </button>
+      </div>
+
+      <div id="layout-debug" aria-hidden="true"></div>
+
+      <!-- splash (full stage, logo baked into the art) -->
+      <div id="splash" role="dialog" aria-label="AXIOM loading">
+        <img src="art/screens/14_splash_screen_16x9.webp" alt="AXIOM" draggable="false">
+        <div class="sp-track"><div class="sp-fill"></div></div>
+        <div class="sp-pct">LOADING 0%</div>
+        <div class="sp-tap">TAP TO START</div>
+      </div>
+    </div>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>

@@ -1712,9 +1712,28 @@ const Sfx = {
    CORNER CONTROLS — sound + fullscreen (handy for recording the case study)
    ========================================================================= */
 function toggleFullscreen() {
-  const d = document;
-  if (!d.fullscreenElement) (d.documentElement.requestFullscreen || d.documentElement.webkitRequestFullscreen || (() => {})).call(d.documentElement);
-  else (d.exitFullscreen || d.webkitExitFullscreen).call(d);
+  const d = document, el = d.documentElement;
+  if (d.fullscreenElement || d.webkitFullscreenElement) { (d.exitFullscreen || d.webkitExitFullscreen).call(d); return; }
+
+  // Some browsers refuse fullscreen (iPhone Safari) and some in-app browsers never answer at all.
+  // Never fail silently: inside the case-study player, open the game on its own page; on that page, say why.
+  let done = false;
+  const fallback = () => {
+    if (done || d.fullscreenElement || d.webkitFullscreenElement) return;
+    done = true;
+    if (window.self !== window.top) window.top.location.href = new URL('index.html', location.href).href;
+    else UI.toast('FULLSCREEN NOT AVAILABLE IN THIS BROWSER');
+  };
+  const req = el.requestFullscreen || el.webkitRequestFullscreen;
+  if (!req || d.fullscreenEnabled === false) return fallback();
+  const granted = () => { done = true; };          // the browser answered: no fallback needed
+  d.addEventListener('fullscreenchange', granted, { once: true });
+  d.addEventListener('webkitfullscreenchange', granted, { once: true });
+  try {
+    const p = req.call(el);
+    if (p && typeof p.catch === 'function') p.catch(fallback);
+  } catch (e) { fallback(); }
+  setTimeout(fallback, 1200); // no answer in time: treat as refused
 }
 
 // Exit control: show "Back to case study" only when the game is its own page, not inside the case-study frame

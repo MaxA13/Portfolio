@@ -1717,6 +1717,19 @@ function toggleFullscreen() {
   else (d.exitFullscreen || d.webkitExitFullscreen).call(d);
 }
 
+// Exit control: show "Back to case study" only when the game is its own page, not inside the case-study frame
+if (window.self === window.top) document.documentElement.classList.add('standalone');
+
+function syncFullscreenButton() {
+  const on = !!(document.fullscreenElement || document.webkitFullscreenElement);
+  const b = $('#btn-full');
+  b.classList.toggle('on', on);
+  b.setAttribute('aria-label', on ? 'Exit fullscreen' : 'Fullscreen');
+  b.title = on ? 'Exit fullscreen (F / Esc)' : 'Fullscreen (F)';
+}
+document.addEventListener('fullscreenchange', syncFullscreenButton);
+document.addEventListener('webkitfullscreenchange', syncFullscreenButton);
+
 function bindCorner() {
   $('#btn-sound').addEventListener('click', () => Sfx.toggle());
   $('#btn-full').addEventListener('click', () => { Sfx.play('click'); toggleFullscreen(); });

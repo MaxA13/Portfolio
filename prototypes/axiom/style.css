@@ -956,3 +956,25 @@ html, body {
 #btn-sound.on .waves { display: inline; }
 #btn-sound.on .mute { display: none; }
 #btn-sound.on { border-color: rgba(25, 227, 255, .95); }
+
+/* fullscreen button shows "exit" arrows while fullscreen is on */
+#btn-full .fs-exit { display: none; }
+#btn-full.on .fs-enter { display: none; }
+#btn-full.on .fs-exit { display: inline; }
+#btn-full.on { border-color: rgba(25, 227, 255, .95); }
+
+/* "Back to case study": top-left, only on the standalone page, above the splash */
+#btn-back {
+  position: absolute; left: 44px; top: 36px; z-index: 60;
+  display: none;
+}
+.standalone #btn-back { display: inline-flex; }
+.corner-pill {
+  width: auto; padding: 0 40px 0 26px;
+  border-radius: 46px;
+  align-items: center; gap: 14px;
+  text-decoration: none;
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 36px;
+  letter-spacing: .06em; text-transform: uppercase; color: #BFF7FF;
+}
+.corner-pill svg { width: 44px; height: 44px; flex: none; stroke-width: 2.6; }

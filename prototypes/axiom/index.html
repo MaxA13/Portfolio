@@ -88,13 +88,19 @@
 
       <div id="toast" role="status"></div>
 
+      <!-- back to the portfolio (shown only when the game runs on its own page) -->
+      <a id="btn-back" class="corner-btn corner-pill" href="../../game-axiom.html#play" aria-label="Back to the AXIOM case study" title="Back to case study">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+        <span>Back to case study</span>
+      </a>
+
       <!-- corner controls -->
       <div id="corner">
         <button id="btn-sound" class="corner-btn" aria-label="Sound" aria-pressed="false" title="Sound (M)">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path class="spk" d="M4 9h4l5-4v14l-5-4H4z"/><path class="waves" d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12"/><path class="mute" d="M16 9l5 6M21 9l-5 6"/></svg>
         </button>
         <button id="btn-full" class="corner-btn" aria-label="Fullscreen" title="Fullscreen (F)">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path class="fs-enter" d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/><path class="fs-exit" d="M9 4v5H4M15 4v5h5M15 20v-5h5M9 20v-5H4"/></svg>
         </button>
       </div>
 

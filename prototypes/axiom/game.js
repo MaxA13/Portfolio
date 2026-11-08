@@ -1713,7 +1713,12 @@ const Sfx = {
    ========================================================================= */
 function toggleFullscreen() {
   const d = document, el = d.documentElement;
-  if (d.fullscreenElement || d.webkitFullscreenElement) { (d.exitFullscreen || d.webkitExitFullscreen).call(d); return; }
+    if (d.fullscreenElement || d.webkitFullscreenElement) { (d.exitFullscreen || d.webkitExitFullscreen).call(d); return; }
+  if (framedFullscreen()) {                       // the case page made the player fullscreen: exit that
+    const pd = window.parent.document;
+    (pd.exitFullscreen || pd.webkitExitFullscreen).call(pd);
+    return;
+  }
 
   // Some browsers refuse fullscreen (iPhone Safari) and some in-app browsers never answer at all.
   // Never fail silently: inside the case-study player, open the game on its own page; on that page, say why.
@@ -1739,8 +1744,17 @@ function toggleFullscreen() {
 // Exit control: show "Back to case study" only when the game is its own page, not inside the case-study frame
 if (window.self === window.top) document.documentElement.classList.add('standalone');
 
+// When the case-study page puts this player in fullscreen, the fullscreen element lives in the parent page
+function framedFullscreen() {
+  try {
+    if (window.self === window.top) return false;
+    const pd = window.parent.document;
+    return (pd.fullscreenElement || pd.webkitFullscreenElement) === window.frameElement;
+  } catch (e) { return false; }
+}
+
 function syncFullscreenButton() {
-  const on = !!(document.fullscreenElement || document.webkitFullscreenElement);
+  const on = !!(document.fullscreenElement || document.webkitFullscreenElement) || framedFullscreen();
   const b = $('#btn-full');
   b.classList.toggle('on', on);
   b.setAttribute('aria-label', on ? 'Exit fullscreen' : 'Fullscreen');
@@ -1748,6 +1762,12 @@ function syncFullscreenButton() {
 }
 document.addEventListener('fullscreenchange', syncFullscreenButton);
 document.addEventListener('webkitfullscreenchange', syncFullscreenButton);
+try {
+  if (window.self !== window.top) {
+    window.parent.document.addEventListener('fullscreenchange', syncFullscreenButton);
+    window.parent.document.addEventListener('webkitfullscreenchange', syncFullscreenButton);
+  }
+} catch (e) { /* different origin: nothing to sync */ }
 
 function bindCorner() {
   $('#btn-sound').addEventListener('click', () => Sfx.toggle());

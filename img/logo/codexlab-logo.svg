@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 48" fill="none">
+  <defs>
+    <linearGradient id="cxg" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#A5B4FC"/>
+      <stop offset=".55" stop-color="#6366F1"/>
+      <stop offset="1" stop-color="#4338CA"/>
+    </linearGradient>
+  </defs>
+  <path d="M38.5 12.2 24 4 7 13.6v20.8L24 44l14.5-8.2" stroke="url(#cxg)" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M16 16.5 31.5 31.5M31.5 16.5 16 31.5" stroke="url(#cxg)" stroke-width="3.4" stroke-linecap="round"/>
+  <circle cx="40.5" cy="24" r="2.6" fill="#818CF8"/>
+  <text x="56" y="32" font-family="Montserrat, sans-serif" font-size="23" font-weight="700" fill="#fff" letter-spacing=".5">Codex<tspan font-weight="400" fill="#A1A1AA">Lab</tspan></text>
+</svg>

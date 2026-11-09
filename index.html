@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth overflow-x-hidden">
+<html lang="en" class="scroll-smooth">
 
 <head>
     <meta charset="UTF-8">
@@ -118,969 +118,777 @@
     }
     </script>
     <!-- /SEO -->
+    <link rel="icon" type="image/svg+xml" href="img/logo/codexlab-mark.svg">
     <link rel="icon" type="image/png" href="img/favicon.png">
 
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Montserrat:wght@400;500;600;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- AOS Animation CSS -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
-    <!-- Three.js Import Map -->
-    <script type="importmap">
-    {
-        "imports": {
-            "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-            "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
-        }
-    }
-    </script>
-
-    <!-- Tailwind Config -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        neutral: {
-                            300: '#d4d4d8',
-                            400: '#a1a1aa',
-                            700: '#3f3f46',
-                            800: '#27272a',
-                            900: '#18181b',
-                            950: '#09090b',
-                        },
-                        brand: {
-                            400: '#818cf8',
-                            500: '#6366f1',
-                            600: '#4f46e5',
-                            700: '#4338ca',
-                            900: '#312e81',
-                        }
+                        neutral: { 300: '#d4d4d8', 400: '#a1a1aa', 500: '#71717a', 700: '#3f3f46', 800: '#27272a', 900: '#18181b', 950: '#09090b' },
+                        brand: { 300: '#a5b4fc', 400: '#818cf8', 500: '#6366f1', 600: '#4f46e5', 700: '#4338ca', 900: '#312e81' }
                     },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        heading: ['Montserrat', 'sans-serif'],
-                    },
-                    animation: {
-                        'scroll-left': 'scroll-left var(--duration) linear infinite',
-                        'scroll-right': 'scroll-right var(--duration) linear infinite',
-                    },
-                    keyframes: {
-                        'scroll-left': {
-                            '0%': { transform: 'translateX(0)' },
-                            '100%': { transform: 'translateX(-50%)' },
-                        },
-                        'scroll-right': {
-                            '0%': { transform: 'translateX(-50%)' },
-                            '100%': { transform: 'translateX(0)' },
-                        }
-                    }
+                    fontFamily: { sans: ['Inter', 'sans-serif'], heading: ['Montserrat', 'sans-serif'] }
                 }
             }
         }
     </script>
     <style>
-        .carousel-mask {
-            mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
-            -webkit-mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+        html, body { overflow-x: clip; }
+        body { background: #09090b; }
+
+        /* ---------- background: static dot grid ---------- */
+        .bg-grid { position: fixed; inset: 0; pointer-events: none; z-index: 0; background-image: radial-gradient(#27272a 1px, transparent 1px); background-size: 24px 24px; opacity: .55; }
+
+        /* pointer label: the normal cursor stays; over a card a small bubble ("Play", "Read"...) follows it */
+        .cursor-ring {
+            position: fixed; top: 0; left: 0; z-index: 100; pointer-events: none;
+            width: 84px; height: 84px; margin: -42px 0 0 -42px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(79, 70, 229, .92); box-shadow: 0 8px 30px rgba(79, 70, 229, .45);
+            opacity: 0; scale: .4; transition: opacity .25s, scale .3s cubic-bezier(.2, .8, .2, 1);
+        }
+        .cursor-ring span { font: 600 11px/1 Inter, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #fff; white-space: nowrap; }
+        .cursor-ring.on { opacity: 1; scale: 1; }
+
+        /* ---------- reveal on scroll ---------- */
+        .rv { opacity: 0; transform: translateY(28px); transition: opacity .9s cubic-bezier(.2, .8, .2, 1), transform .9s cubic-bezier(.2, .8, .2, 1); transition-delay: var(--d, 0s); }
+        .rv.in { opacity: 1; transform: none; }
+        .word { display: inline-block; overflow: hidden; vertical-align: bottom; padding-bottom: .08em; }
+        .word > span { display: inline-block; transform: translateY(105%); transition: transform 1s cubic-bezier(.2, .8, .2, 1); transition-delay: var(--d, 0s); }
+        .in .word > span { transform: none; }
+
+        .grad-text { background: linear-gradient(100deg, #c7d2fe 0%, #818cf8 40%, #6366f1 70%, #a5b4fc 100%); background-size: 200% auto; -webkit-background-clip: text; background-clip: text; color: transparent; animation: shine 8s linear infinite; }
+        @keyframes shine { to { background-position: 200% center; } }
+
+        /* scroll progress */
+        #progress { position: fixed; top: 0; left: 0; height: 2px; width: 100%; transform-origin: 0 50%; transform: scaleX(0); background: linear-gradient(90deg, #4f46e5, #a5b4fc); z-index: 60; }
+
+        /* ---------- cards with a light that follows the pointer ---------- */
+        .spot { position: relative; isolation: isolate; }
+        .spot::before {
+            content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px; z-index: 2; pointer-events: none;
+            background: radial-gradient(420px circle at var(--x, 50%) var(--y, 50%), rgba(165, 180, 252, .75), transparent 45%);
+            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude;
+            opacity: 0; transition: opacity .4s;
+        }
+        .spot::after {
+            content: ""; position: absolute; inset: 0; border-radius: inherit; z-index: 1; pointer-events: none;
+            background: radial-gradient(500px circle at var(--x, 50%) var(--y, 50%), rgba(99, 102, 241, .10), transparent 50%);
+            opacity: 0; transition: opacity .4s;
+        }
+        .spot:hover::before, .spot:hover::after { opacity: 1; }
+
+        /* work cards: tilt + image drift */
+        .tilt { transform-style: preserve-3d; transition: transform .5s cubic-bezier(.2, .8, .2, 1); will-change: transform; }
+        .tilt img.cover { transition: transform 1.2s cubic-bezier(.2, .8, .2, 1), filter .6s; }
+        .tilt:hover img.cover { transform: scale(1.06); }
+
+        /* hero 3D logo */
+        .logo3d-stage { perspective: 1100px; display: grid; place-items: center; }
+        .logo3d-halo { position: absolute; inset: 14%; border-radius: 50%; background: radial-gradient(circle, rgba(99, 102, 241, .35), transparent 65%); filter: blur(40px); }
+        .logo3d-float { width: 74%; aspect-ratio: 1; animation: float 7s ease-in-out infinite; }
+        @keyframes float { 0%, 100% { translate: 0 -8px; } 50% { translate: 0 8px; } }
+        .logo3d { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transform: rotateX(8deg) rotateY(-16deg); will-change: transform; }
+        .logo3d > svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+        .logo3d-face { filter: drop-shadow(0 0 18px rgba(129, 140, 248, .45)); }
+        .logo3d-spark { transform-box: fill-box; transform-origin: center; animation: spark 3.2s ease-in-out infinite; }
+        @keyframes spark { 0%, 100% { opacity: .85; scale: 1; filter: drop-shadow(0 0 1px #a5b4fc); } 50% { opacity: 1; scale: 1.25; filter: drop-shadow(0 0 4px #c7d2fe) drop-shadow(0 0 8px #6366f1); } }
+        .logo3d-shadow { position: absolute; bottom: 4%; left: 22%; right: 22%; height: 8%; border-radius: 50%; background: radial-gradient(closest-side, rgba(0, 0, 0, .7), transparent); animation: shadow 7s ease-in-out infinite; }
+        @keyframes shadow { 0%, 100% { scale: 1; opacity: .9; } 50% { scale: .88; opacity: .6; } }
+
+        /* marquees */
+        .marquee { display: flex; width: max-content; animation: marquee var(--dur, 40s) linear infinite; }
+        .marquee.rev { animation-direction: reverse; }
+        .marquee.paused { animation-play-state: paused; }
+        @keyframes marquee { to { transform: translateX(-50%); } }
+        .mask-x { -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
+        /* terminal feed */
+        .term { font: 400 13px/1.7 'JetBrains Mono', ui-monospace, monospace; color: #a1a1aa; }
+        .term-body { height: calc(1.7em * 9 + 1.5rem); overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; }
+        .term-body > div { flex-shrink: 0; white-space: pre; overflow: hidden; text-overflow: ellipsis; }
+        .term .t-time { color: #52525b; } .term .t-ok { color: #4ade80; } .term .t-key { color: #a5b4fc; }
+        .term .t-dim { color: #71717a; } .term .t-prompt { color: #818cf8; } .term .t-warn { color: #fbbf24; } .term .t-white { color: #e4e4e7; }
+        .term .caret { display: inline-block; width: .6em; height: 1.1em; vertical-align: -.2em; background: #a5b4fc; animation: blink 1s steps(1) infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+        .term-pulse { animation: blink 1.6s steps(1) infinite; }
+        @media (max-width: 640px) {
+            .term { font-size: 11px; } .term .t-time, .term .t-lead { display: none; }
+            .term-body { height: calc(1.7em * 14 + 1.5rem); } .term-body > div { white-space: pre-wrap; }
+            .term .t-val { display: block; padding-left: 4ch; }
+        }
+
+        /* game rail */
+        .rail { scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; }
+        .rail::-webkit-scrollbar { display: none; }
+        .rail { padding-inline: max(1.5rem, calc((100vw - 80rem) / 2 + 2.5rem)); scroll-padding-inline: max(1.5rem, calc((100vw - 80rem) / 2 + 2.5rem)); }
+        .rail > * { scroll-snap-align: start; }
+        .rail.dragging { scroll-snap-type: none; cursor: grabbing; }
+        .rail.dragging a { pointer-events: none; }
+        .game-card { --accent: #818cf8; }
+        .game-card .accent-line { background: var(--accent); }
+        .game-card:hover { border-color: color-mix(in srgb, var(--accent) 60%, transparent); box-shadow: 0 0 60px -10px color-mix(in srgb, var(--accent) 45%, transparent); }
+
+        /* codex principles */
+        .principle .num { font-family: Montserrat, sans-serif; font-weight: 800; line-height: 1; color: rgba(99, 102, 241, .28); transition: color .4s, text-shadow .4s; }
+        .principle:hover .num { color: #818cf8; text-shadow: 0 0 30px rgba(99, 102, 241, .6); }
+
+        .live-dot { position: relative; display: inline-flex; width: 10px; height: 10px; }
+        .live-dot::before, .live-dot::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: #19E3FF; }
+        .live-dot::before { animation: ping 1.4s cubic-bezier(0, 0, .2, 1) infinite; opacity: .75; }
+        @keyframes ping { 75%, 100% { transform: scale(2.2); opacity: 0; } }
+
+        @media (prefers-reduced-motion: reduce) {
+            .rv, .word > span { transition: none !important; opacity: 1 !important; transform: none !important; }
+            .marquee, .grad-text, .live-dot::before, .term .caret, .term-pulse { animation: none !important; }
+            .tilt { transition: none !important; }
+            .logo3d-float, .logo3d-spark, .logo3d-shadow { animation: none !important; }
         }
     </style>
 </head>
 
-<body class="bg-neutral-950 font-sans text-white antialiased overflow-x-hidden selection:bg-brand-500/30">
+<body class="font-sans text-white antialiased selection:bg-brand-500/30">
 
-    <!-- WebGL Background -->
-    <div id="webgl-container" class="fixed inset-0 z-0 pointer-events-none opacity-30 mix-blend-screen"></div>
+    <div id="progress" aria-hidden="true"></div>
+    <div class="bg-grid" aria-hidden="true"></div>
+    <div class="cursor-ring" aria-hidden="true"><span></span></div>
 
-    <!-- Background Pattern -->
-    <div
-        class="fixed inset-0 z-[1] pointer-events-none opacity-40 bg-[radial-gradient(#27272a_1px,transparent_1px)] [background-size:24px_24px]">
-    </div>
-
-    <div class="flex flex-col items-center min-h-screen relative w-full z-10">
-
-        <!-- Header -->
-        <header
-            class="flex w-full items-center justify-between border-b border-neutral-800/20 px-12 py-4 fixed top-0 left-0 z-50 bg-neutral-950/20 backdrop-blur-lg max-md:px-4">
-            <div class="flex items-center gap-3">
-                <div
-                    class="h-10 w-10 rounded-full overflow-hidden bg-neutral-800 flex items-center justify-center text-white font-semibold">
-                    <img src="img/favicon.png" alt="CodexLab Logo" class="h-full w-full object-cover">
-                </div>
-                <span class="font-semibold text-white tracking-wide">CodexLab</span>
-            </div>
-            <nav class="flex items-center gap-8 max-md:hidden">
-                <a href="#work" class="text-sm font-medium text-neutral-400 hover:text-white transition-colors">Work</a>
-                <a href="games.html"
-                    class="text-sm font-medium text-neutral-400 hover:text-white transition-colors">Game Design</a>
-                <a href="#process"
-                    class="text-sm font-medium text-neutral-400 hover:text-white transition-colors">Process</a>
-                <a href="#contact"
-                    class="text-sm font-medium text-neutral-400 hover:text-white transition-colors">Contact</a>
+    <!-- ============ Header ============ -->
+    <header id="top-bar" class="fixed inset-x-0 top-0 z-50 transition-all duration-500">
+        <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 md:px-10">
+            <a href="index.html" class="flex items-center gap-3" aria-label="CodexLab home">
+                <img src="img/logo/codexlab-mark.svg" alt="" class="h-9 w-9">
+                <span class="font-heading text-lg font-bold tracking-wide">Codex<span class="font-normal text-neutral-400">Lab</span></span>
+            </a>
+            <nav class="flex items-center gap-1 rounded-full border border-neutral-700/40 bg-neutral-900/50 p-1 backdrop-blur-xl max-md:hidden" aria-label="Main">
+                <a href="#work" class="rounded-full px-4 py-2 text-sm font-medium text-neutral-400 transition-colors hover:bg-neutral-800 hover:text-white">Work</a>
+                <a href="games.html" class="rounded-full px-4 py-2 text-sm font-medium text-neutral-400 transition-colors hover:bg-neutral-800 hover:text-white">Game Design</a>
+                <a href="#codex" class="rounded-full px-4 py-2 text-sm font-medium text-neutral-400 transition-colors hover:bg-neutral-800 hover:text-white">Codex</a>
+                <a href="#process" class="rounded-full px-4 py-2 text-sm font-medium text-neutral-400 transition-colors hover:bg-neutral-800 hover:text-white">Process</a>
             </nav>
-            <div class="flex items-center gap-4">
-                <a href="#contact"
-                    class="bg-brand-600 text-white px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-brand-700 transition-all active:scale-95">Let's talk </a>
-            </div>
-        </header>
+            <a href="#contact" class="magnetic rounded-full bg-brand-600 px-5 py-2.5 text-sm font-semibold transition-colors hover:bg-brand-500">Let's talk</a>
+        </div>
+    </header>
 
-        <!-- Hero Section -->
-        <section
-            class="flex w-full max-w-7xl flex-col items-start justify-center px-12 pt-48 pb-32 relative max-md:px-4 max-md:pt-32 max-md:pb-20 z-10"
-            data-aos="fade-up">
-            <!-- Glow Effects -->
-            <div
-                class="h-[500px] w-[500px] rounded-full absolute -right-20 -top-20 bg-brand-600/20 blur-[120px] pointer-events-none">
-            </div>
-            <div
-                class="h-72 w-72 rounded-full absolute -left-20 bottom-0 bg-brand-700/20 blur-[80px] max-md:hidden pointer-events-none">
-            </div>
+    <main class="relative z-10">
 
-            <div class="flex max-w-[800px] flex-col items-start gap-6 relative z-10">
-                <div class="flex items-center gap-2 rounded-full border border-neutral-700/50 bg-neutral-900/80 backdrop-blur-sm px-4 py-2 shadow-sm"
-                    data-aos="fade-down" data-aos-delay="200">
-                    <div class="p-1 bg-green-500/20 text-green-400 rounded-full flex items-center justify-center">
-                        <i data-feather="zap" class="w-4 h-4"></i>
-                    </div>
-                    <span class="font-medium text-sm text-neutral-200">Available for new opportunities</span>
+        <!-- ============ Hero ============ -->
+        <section class="relative mx-auto grid min-h-[100svh] max-w-7xl items-center gap-12 px-6 pb-20 pt-32 md:px-10 lg:grid-cols-[1.15fr_1fr]">
+            <div class="pointer-events-none absolute -right-32 top-10 h-[520px] w-[520px] rounded-full bg-brand-600/20 blur-[130px]"></div>
+
+            <div class="relative">
+                <div class="rv mb-8 inline-flex items-center gap-2.5 rounded-full border border-brand-500/40 bg-neutral-900/90 px-4 py-2 shadow-[0_0_24px_rgba(99,102,241,0.25)]" style="--d:.1s">
+                    <svg class="h-4 w-4 text-brand-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"/></svg>
+                    <span class="text-sm font-semibold uppercase tracking-[0.2em] text-neutral-200"><span class="text-brand-300">2082</span> Supercharged</span>
                 </div>
-                <h1 class="font-heading text-6xl lg:text-7xl font-semibold leading-[1.1] tracking-tight text-white max-md:text-4xl"
-                    data-aos="fade-up" data-aos-delay="300"> Ethical UX &amp; Product Design </h1>
-                <div class="flex flex-col gap-4 mt-2" data-aos="fade-up" data-aos-delay="400">
-                    <p class="max-w-2xl text-xl text-neutral-200 leading-relaxed font-light">
-                        Honest interfaces that respect users and drive real results. 15+ years of craft, guided by a strict personal Code of Ethics.
-                    </p>
-                    <p class="max-w-xl text-lg text-neutral-400 leading-relaxed font-light">
-                        Open to consulting work. Let's pinpoint your UX pain points, honestly.
 
+                <h1 id="hero-title" class="font-heading text-[clamp(2.75rem,7vw,5.75rem)] font-bold leading-[1.02] tracking-tight">
+                    <span class="word"><span style="--d:.15s" class="grad-text">Ethical</span></span>
+                    <span class="word"><span style="--d:.25s">UX</span></span>
+                    <span class="word"><span style="--d:.32s">&amp;</span></span><br>
+                    <span class="word"><span style="--d:.4s">Product</span></span>
+                    <span class="word"><span style="--d:.48s">Design</span></span>
+                </h1>
 
-                    </p>
-                </div>
-                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-6" data-aos="fade-up"
-                    data-aos-delay="500">
-                    <a href="#work"
-                        class="bg-brand-600 text-white px-7 py-3.5 rounded-xl font-medium hover:bg-brand-700 hover:shadow-lg hover:shadow-brand-600/25 transition-all active:scale-95 flex items-center justify-center gap-2">
-                        View projects <i data-feather="arrow-right" class="w-4 h-4"></i>
+                <p class="rv mt-8 max-w-xl text-xl font-light leading-relaxed text-neutral-200" style="--d:.6s">
+                    Honest interfaces that respect users and drive real results. 15+ years of craft, guided by a strict personal Code of Ethics.
+                </p>
+                <p class="rv mt-3 max-w-xl text-lg font-light text-neutral-400" style="--d:.7s">Open to consulting work. Let's pinpoint your UX pain points, honestly.</p>
+
+                <div class="rv mt-10 flex flex-col gap-4 sm:flex-row" style="--d:.8s">
+                    <a href="#work" class="magnetic group inline-flex items-center justify-center gap-2 rounded-xl bg-brand-600 px-7 py-3.5 font-medium shadow-lg shadow-brand-600/25 transition-colors hover:bg-brand-500">
+                        View projects
+                        <svg class="h-4 w-4 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
                     </a>
-                    <a href="CV_Max_Alexandrov.pdf" download="CV_Max_Alexandrov.pdf"
-                        class="bg-neutral-800 text-white border border-neutral-700/50 px-7 py-3.5 rounded-xl font-medium hover:bg-neutral-700 transition-all active:scale-95 group flex items-center justify-center gap-2">
+                    <a href="CV_Max_Alexandrov.pdf" download="CV_Max_Alexandrov.pdf" class="magnetic group inline-flex items-center justify-center gap-2 rounded-xl border border-neutral-700/60 bg-neutral-900/70 px-7 py-3.5 font-medium transition-colors hover:bg-neutral-800">
                         Download CV
-                        <i data-feather="download"
-                            class="w-4 h-4 text-neutral-400 group-hover:text-white transition-colors"></i>
+                        <svg class="h-4 w-4 text-neutral-400 transition-colors group-hover:text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 4v12M6 11l6 6 6-6M5 20h14"/></svg>
                     </a>
                 </div>
             </div>
-        </section>
 
-        <!-- Selected Works Section -->
-        <section id="work"
-            class="flex w-full max-w-7xl items-start gap-16 px-12 py-24 max-md:flex-col max-md:gap-12 max-md:px-4 max-md:py-16 z-10">
-
-            <!-- Sticky Sidebar -->
-            <div class="flex flex-col items-start gap-4 sticky top-32 w-1/3 max-md:w-full max-md:relative max-md:top-0">
-                <h2 class="font-heading text-4xl lg:text-5xl font-semibold text-white" data-aos="fade-right">Selected Work</h2>
-                <p class="text-neutral-200 leading-relaxed text-lg" data-aos="fade-right" data-aos-delay="100">
-                    Recent projects: complex systems made simple, careful interaction design and measurable business results.
-                </p>
-                <div class="flex flex-col items-start gap-3 mt-10 max-md:hidden" data-aos="fade-in"
-                    data-aos-delay="300">
-                    <span class="font-bold text-xs text-brand-400 uppercase tracking-[0.2em]">Scroll to explore</span>
-                    <div class="h-16 w-[2px] bg-gradient-to-b from-brand-600 to-transparent rounded-full"></div>
+            <!-- 3D logo: stacked SVG layers give it real thickness; it tilts gently with the pointer -->
+            <div class="logo3d-stage relative mx-auto aspect-square w-full max-w-[460px] max-lg:max-w-[360px] max-sm:hidden" aria-hidden="true">
+                <div class="logo3d-halo"></div>
+                <div class="logo3d-float rv" style="--d:.4s">
+                    <div class="logo3d" id="logo3d">
+                        <!-- side layers are added by the script -->
+                        <svg class="logo3d-face" viewBox="0 0 48 48" fill="none">
+                            <defs>
+                                <linearGradient id="l3-face" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0" stop-color="#C7D2FE"/><stop offset=".5" stop-color="#818CF8"/><stop offset="1" stop-color="#4F46E5"/>
+                                </linearGradient>
+                                <linearGradient id="l3-sheen" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+                                    <stop offset=".45" stop-color="#fff" stop-opacity="0"/>
+                                    <stop offset=".5" stop-color="#fff" stop-opacity=".55"/>
+                                    <stop offset=".55" stop-color="#fff" stop-opacity="0"/>
+                                    <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+                                </linearGradient>
+                            </defs>
+                            <g stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M38.5 12.2 24 4 7 13.6v20.8L24 44l14.5-8.2M16 16.5 31.5 31.5M31.5 16.5 16 31.5" stroke="url(#l3-face)"/>
+                                <path id="l3-sheen-path" d="M38.5 12.2 24 4 7 13.6v20.8L24 44l14.5-8.2M16 16.5 31.5 31.5M31.5 16.5 16 31.5" stroke="url(#l3-sheen)"/>
+                            </g>
+                            <circle class="logo3d-spark" cx="40.5" cy="24" r="2.6" fill="#C7D2FE"/>
+                        </svg>
+                    </div>
                 </div>
+                <div class="logo3d-shadow"></div>
             </div>
 
-            <!-- Projects Grid -->
-            <div class="flex flex-col items-start gap-12 w-2/3 max-md:w-full">
+            <!-- stats -->
+            <dl class="rv grid grid-cols-2 gap-px overflow-hidden rounded-3xl border border-neutral-800 bg-neutral-800/60 sm:grid-cols-4 lg:col-span-2" style="--d:.9s">
+                <div class="bg-neutral-950 p-6"><dt class="text-sm text-neutral-400">Years in UX</dt><dd class="font-heading text-4xl font-bold"><span data-count="15">15</span>+</dd></div>
+                <div class="bg-neutral-950 p-6"><dt class="text-sm text-neutral-400">Clients worldwide</dt><dd class="font-heading text-4xl font-bold"><span data-count="80">80</span>+</dd></div>
+                <div class="bg-neutral-950 p-6"><dt class="text-sm text-neutral-400">Products built from scratch</dt><dd class="font-heading text-4xl font-bold"><span data-count="7">7</span></dd></div>
+                <div class="bg-neutral-950 p-6"><dt class="text-sm text-neutral-400">Realms created</dt><dd class="font-heading text-4xl font-bold"><span data-count="5">5</span></dd></div>
+            </dl>
+        </section>
 
-                <!-- Featured: Game Design (AXIOM) -->
-                <a href="games.html"
-                    class="group flex h-[500px] w-full flex-col items-start overflow-hidden rounded-[2rem] bg-neutral-900 relative cursor-pointer transition-all duration-500 hover:shadow-2xl hover:shadow-brand-900/20 hover:-translate-y-2 border border-transparent hover:border-neutral-700/50 max-md:h-96"
-                    data-aos="fade-up">
-                    <img class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-                        src="img/games/axiom/key-art.jpg" alt="AXIOM: Kade Reyes in front of the machine army">
-                    <span
-                        class="absolute top-8 left-10 z-10 inline-flex items-center gap-2 rounded-full border border-[#19E3FF]/50 bg-neutral-950/70 px-4 py-2 text-xs font-bold uppercase tracking-[0.15em] text-[#5CEBFF] backdrop-blur-md shadow-[0_0_24px_rgba(25,227,255,0.35)] transition-opacity duration-300 group-hover:opacity-0 max-md:top-5 max-md:left-6">
-                        <span class="relative flex h-2.5 w-2.5">
-                            <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#19E3FF] opacity-75"></span>
-                            <span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-[#19E3FF]"></span>
-                        </span>
-                        Live prototype
-                    </span>
-
-                    <div
-                        class="flex items-end px-10 py-10 absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/20 to-transparent transition-opacity duration-300 max-md:px-6">
-                        <div
-                            class="flex flex-col gap-2 transition-transform duration-500 group-hover:-translate-y-8 opacity-100 group-hover:opacity-0">
-                            <span class="text-brand-400 font-medium tracking-wide text-sm uppercase">Game Design</span>
-                            <h3 class="font-heading text-3xl font-semibold text-white drop-shadow-md">AXIOM + Five Game Concepts</h3>
-                        </div>
-                    </div>
-
-                    <div
-                        class="flex flex-col items-start justify-end px-10 py-10 absolute inset-0 bg-neutral-950/80 opacity-0 backdrop-blur-sm transition-all duration-400 ease-out group-hover:opacity-100 max-md:px-6">
-                        <div
-                            class="flex flex-col items-start gap-5 translate-y-8 transition-transform duration-500 ease-out group-hover:translate-y-0">
-                            <h3 class="font-heading text-4xl font-semibold text-white max-md:text-2xl pt-4">Game
-                                Design</h3>
-                            <p class="text-neutral-300 line-clamp-3 text-lg font-light leading-relaxed">
-                                AXIOM, a playable sci-fi slot prototype, plus five game concepts: worlds, lore, characters, items, full UI kits and pitch decks.
-                            </p>
-                            <div class="flex flex-wrap items-start gap-2 py-2">
-                                <span
-                                    class="text-xs font-medium text-neutral-300 rounded-full border border-neutral-700/50 bg-neutral-800/80 px-4 py-1.5">Live Prototype</span>
-                                <span
-                                    class="text-xs font-medium text-neutral-300 rounded-full border border-neutral-700/50 bg-neutral-800/80 px-4 py-1.5">Game
-                                    UI</span>
-                                <span
-                                    class="text-xs font-medium text-neutral-300 rounded-full border border-neutral-700/50 bg-neutral-800/80 px-4 py-1.5">World
-                                    Building</span>
-                                <span
-                                    class="text-xs font-medium text-neutral-300 rounded-full border border-neutral-700/50 bg-neutral-800/80 px-4 py-1.5">Art
-                                    Direction</span>
-                            </div>
-                            <span
-                                class="mt-4 inline-flex bg-white text-neutral-950 px-6 py-3 rounded-xl font-semibold items-center gap-2 group-hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all">
-                                Explore games <i data-feather="arrow-right"
-                                    class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
-                            </span>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- Project 1 -->
-                <a href="case1.html"
-                    class="group flex h-[500px] w-full flex-col items-start overflow-hidden rounded-[2rem] bg-neutral-900 relative cursor-pointer transition-all duration-500 hover:shadow-2xl hover:shadow-brand-900/20 hover:-translate-y-2 border border-transparent hover:border-neutral-700/50 max-md:h-96"
-                    data-aos="fade-up" data-aos-offset="200">
-                    <img class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-                        src="img/project1.jpg" alt="Casino platform back-office dashboard">
-
-                    <!-- Default State Overlay -->
-                    <div
-                        class="flex items-end px-10 py-10 absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/20 to-transparent transition-opacity duration-300 max-md:px-6">
-                        <div
-                            class="flex flex-col gap-2 transition-transform duration-500 group-hover:-translate-y-8 opacity-100 group-hover:opacity-0">
-                            <span class="text-brand-400 font-medium tracking-wide text-sm uppercase">Case Study</span>
-                            <h3 class="font-heading text-3xl font-semibold text-white drop-shadow-md">Casino Platform
-                                Redesign</h3>
-                        </div>
-                    </div>
-
-                    <!-- Hover State Content -->
-                    <div
-                        class="flex flex-col items-start justify-end px-10 py-10 absolute inset-0 bg-neutral-950/80 opacity-0 backdrop-blur-sm transition-all duration-400 ease-out group-hover:opacity-100 max-md:px-6">
-                        <div
-                            class="flex flex-col items-start gap-5 translate-y-8 transition-transform duration-500 ease-out group-hover:translate-y-0">
-                            <h3 class="font-heading text-4xl font-semibold text-white max-md:text-2xl pt-4">Casino
-                                Platform Redesign</h3>
-                            <p class="text-neutral-300 line-clamp-3 text-lg font-light leading-relaxed">
-                                100+ screens and 300+ flows rebuilt, cutting task time by 40%.
-                            </p>
-                            <div class="flex flex-wrap items-start gap-2 py-2">
-                                <span
-                                    class="text-xs font-medium text-neutral-300 rounded-full border border-neutral-700/50 bg-neutral-800/80 px-4 py-1.5">UX
-                                    Research</span>
-                                <span
-                                    class="text-xs font-medium text-neutral-300 rounded-full border border-neutral-700/50 bg-neutral-800/80 px-4 py-1.5">UI/UX
-                                    Design</span>
-                                <span
-                                    class="text-xs font-medium text-neutral-300 rounded-full border border-neutral-700/50 bg-neutral-800/80 px-4 py-1.5">Information
-                                    Architecture</span>
-                            </div>
-                            <span
-                                class="mt-4 inline-flex bg-white text-neutral-950 px-6 py-3 rounded-xl font-semibold items-center gap-2 group-hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all">
-                                Read case study <i data-feather="arrow-right"
-                                    class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
-                            </span>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- Project 2 -->
-                <a href="case2.html"
-                    class="group flex h-[500px] w-full flex-col items-start overflow-hidden rounded-[2rem] bg-neutral-900 relative cursor-pointer transition-all duration-500 hover:shadow-2xl hover:shadow-brand-900/20 hover:-translate-y-2 border border-transparent hover:border-neutral-700/50 max-md:h-96"
-                    data-aos="fade-up" data-aos-offset="200">
-                    <img class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-                        src="img/project2.jpg" alt="Jackpot platform back office">
-
-                    <div
-                        class="flex items-end px-10 py-10 absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/20 to-transparent transition-opacity duration-300 max-md:px-6">
-                        <div
-                            class="flex flex-col gap-2 transition-transform duration-500 group-hover:-translate-y-8 opacity-100 group-hover:opacity-0">
-                            <span class="text-brand-400 font-medium tracking-wide text-sm uppercase">Case Study</span>
-                            <h3 class="font-heading text-3xl font-semibold text-white drop-shadow-md">Jackpot Platform from Scratch</h3>
-                        </div>
-                    </div>
-
-                    <div
-                        class="flex flex-col items-start justify-end px-10 py-10 absolute inset-0 bg-neutral-950/80 opacity-0 backdrop-blur-sm transition-all duration-400 ease-out group-hover:opacity-100 max-md:px-6">
-                        <div
-                            class="flex flex-col items-start gap-5 translate-y-8 transition-transform duration-500 ease-out group-hover:translate-y-0">
-                            <h3 class="font-heading text-4xl font-semibold text-white max-md:text-2xl pt-4">Jackpot Platform from Scratch</h3>
-                            <p class="text-neutral-300 line-clamp-3 text-lg font-light leading-relaxed">
-                                100+ screens with unique flows. Full logic structure and UI/UX, architected from scratch.
-                            </p>
-                            <div class="flex flex-wrap items-start gap-2 py-2">
-                                <span
-                                    class="text-xs font-medium text-neutral-300 rounded-full border border-neutral-700/50 bg-neutral-800/80 px-4 py-1.5">Information
-                                    Architecture</span>
-                                <span
-                                    class="text-xs font-medium text-neutral-300 rounded-full border border-neutral-700/50 bg-neutral-800/80 px-4 py-1.5">Back-Office Design</span>
-                                <span
-                                    class="text-xs font-medium text-neutral-300 rounded-full border border-neutral-700/50 bg-neutral-800/80 px-4 py-1.5">UI/UX Design</span>
-                            </div>
-                            <span
-                                class="mt-4 inline-flex bg-white text-neutral-950 px-6 py-3 rounded-xl font-semibold items-center gap-2 group-hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all">
-                                Read case study <i data-feather="arrow-right"
-                                    class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
-                            </span>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- Project 3 -->
-                <a href="case3.html"
-                    class="group flex h-[500px] w-full flex-col items-start overflow-hidden rounded-[2rem] bg-neutral-900 relative cursor-pointer transition-all duration-500 hover:shadow-2xl hover:shadow-brand-900/20 hover:-translate-y-2 border border-transparent hover:border-neutral-700/50 max-md:h-96"
-                    data-aos="fade-up" data-aos-offset="200">
-                    <img class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-                        src="img/project3.jpg" alt="AI-powered gambling back-office dashboard">
-
-                    <div
-                        class="flex items-end px-10 py-10 absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/20 to-transparent transition-opacity duration-300 max-md:px-6">
-                        <div
-                            class="flex flex-col gap-2 transition-transform duration-500 group-hover:-translate-y-8 opacity-100 group-hover:opacity-0">
-                            <span class="text-brand-400 font-medium tracking-wide text-sm uppercase">Gallery</span>
-                            <h3 class="font-heading text-3xl font-semibold text-white drop-shadow-md">More Design Work</h3>
-                        </div>
-                    </div>
-
-                    <div
-                        class="flex flex-col items-start justify-end px-10 py-10 absolute inset-0 bg-neutral-950/80 opacity-0 backdrop-blur-sm transition-all duration-400 ease-out group-hover:opacity-100 max-md:px-6">
-                        <div
-                            class="flex flex-col items-start gap-5 translate-y-8 transition-transform duration-500 ease-out group-hover:translate-y-0">
-                            <h3 class="font-heading text-4xl font-semibold text-white max-md:text-2xl pt-4">More Design Work</h3>
-                            <p class="text-neutral-300 line-clamp-3 text-lg font-light leading-relaxed">
-                                Logos, websites, apps and back offices for brands across SaaS, fintech, health and betting.
-                            </p>
-                            <div class="flex flex-wrap items-start gap-2 py-2">
-                                <span
-                                    class="text-xs font-medium text-neutral-300 rounded-full border border-neutral-700/50 bg-neutral-800/80 px-4 py-1.5">Mobile
-                                    App</span>
-                                <span
-                                    class="text-xs font-medium text-neutral-300 rounded-full border border-neutral-700/50 bg-neutral-800/80 px-4 py-1.5">Website</span>
-                                 <span
-                                    class="text-xs font-medium text-neutral-300 rounded-full border border-neutral-700/50 bg-neutral-800/80 px-4 py-1.5">Information
-                                    Architecture</span>
-                                <span
-                                    class="text-xs font-medium text-neutral-300 rounded-full border border-neutral-700/50 bg-neutral-800/80 px-4 py-1.5">Back-Office Design</span>
-                                <span
-                                    class="text-xs font-medium text-neutral-300 rounded-full border border-neutral-700/50 bg-neutral-800/80 px-4 py-1.5">UI/UX Design</span>
-                            </div>
-                            <span
-                                class="mt-4 inline-flex bg-white text-neutral-950 px-6 py-3 rounded-xl font-semibold items-center gap-2 group-hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all">
-                                See the work <i data-feather="arrow-right"
-                                    class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
-                            </span>
-                        </div>
-                    </div>
-                </a>
-
+        <!-- ============ Skill set: terminal feed ============ -->
+        <section class="mx-auto max-w-7xl px-6 md:px-10" aria-labelledby="skills-title">
+            <h2 id="skills-title" class="sr-only">Skill set</h2>
+            <p class="sr-only">UX design: user research, usability testing, user journey mapping, user flows, information architecture, interaction design, UX copywriting, content design, microcopy, ethical UX with no dark patterns and accessibility (WCAG 2.2).
+                Product design: product discovery, discovery workshops, service design, wireframing, interactive prototyping, high-fidelity UI, design systems, mobile UX (iOS, Android) and agentic UX, across enterprise SaaS, back offices, iGaming, fintech and healthcare.
+                Shipped results: 40% shorter task time and 31% fewer operator errors in a back-office redesign, a fintech platform used by 10,000+ people daily, and a dating app with 150,000+ downloads in its first year.
+                Game design: game concept development, gamification, core gameplay loops, world building, storytelling, narrative design, game UX/UI, HUD and menu design, game UI kits, art direction, character and item design, pitch decks and playable prototypes.
+                AI: Claude, Gemini and Grok; prompt engineering, AI-assisted prototyping, AI-assisted research synthesis, AI image and video generation.
+                Tools: Figma, FigJam, Miro, Adobe XD, Sketch, Principle, Photoshop, Illustrator, HTML/CSS and basic React.
+                Leadership: stakeholder management, strategic facilitation, cross-functional leadership, design team leadership, mentoring, design storytelling and presentation.</p>
+            <div class="term rv overflow-hidden rounded-2xl border border-neutral-800 bg-[#0c0c10]/95 shadow-[0_20px_60px_-30px_rgba(79,70,229,0.5)]" aria-hidden="true">
+                <div class="flex items-center gap-2 border-b border-neutral-800/80 px-4 py-2.5">
+                    <span class="h-2.5 w-2.5 rounded-full bg-neutral-700"></span><span class="h-2.5 w-2.5 rounded-full bg-neutral-700"></span><span class="h-2.5 w-2.5 rounded-full bg-neutral-700"></span>
+                    <span class="ml-3 text-neutral-500">codexlab — skillset.log</span>
+                    <span class="ml-auto inline-flex items-center gap-1.5 text-[11px] uppercase tracking-[0.18em] text-green-400/80"><span class="h-1.5 w-1.5 rounded-full bg-green-400 term-pulse"></span>live</span>
+                </div>
+                <div id="term-body" class="term-body px-4 py-3"></div>
             </div>
         </section>
 
-
-
-
-        <!-- Process Section -->
-        <section id="process"
-            class="flex mx-4 md:mx-auto max-w-[95%] xl:max-w-7xl w-auto items-start py-32 max-md:py-20 z-10 relative rounded-[3rem] border border-neutral-700/30 bg-neutral-900/30 backdrop-blur-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] my-16 overflow-hidden transition-all">
-            <!-- Background Glow -->
-            <div class="absolute inset-0 flex items-center justify-center pointer-events-none -z-10">
-                <div class="h-[600px] w-full max-w-4xl bg-brand-600/5 blur-[100px] rounded-[100%]"></div>
+        <!-- ============ Selected work (bento) ============ -->
+        <section id="work" class="mx-auto max-w-7xl scroll-mt-24 px-6 py-28 md:px-10">
+            <div class="mb-14 flex flex-wrap items-end justify-between gap-6">
+                <div>
+                    <p class="rv mb-4 text-xs font-bold uppercase tracking-[0.25em] text-brand-400">01 · Selected work</p>
+                    <h2 class="rv font-heading text-4xl font-semibold md:text-6xl" style="--d:.1s">Complex made simple.</h2>
+                </div>
+                <p class="rv max-w-md text-lg text-neutral-400" style="--d:.2s">Recent projects: complex systems made simple, careful interaction design and measurable business results.</p>
             </div>
 
-            <div class="flex w-full flex-col items-center gap-20 px-12 mx-auto max-md:px-6 max-md:gap-12 relative z-10">
-                <div class="flex max-w-3xl flex-col items-center gap-6 text-center" data-aos="fade-up">
-                    <div
-                        class="flex items-center gap-2 rounded-full border border-brand-500/30 bg-brand-500/10 px-4 py-2 mb-2">
-                        <i data-feather="cpu" class="w-4 h-4 text-brand-400"></i>
-                        <span class="font-medium text-sm text-brand-300">Human Expertise + AI</span>
+            <div class="grid auto-rows-[minmax(260px,auto)] grid-cols-1 gap-5 md:grid-cols-6">
+
+                <!-- AXIOM -->
+                <a href="game-axiom.html" data-cursor="Play" class="spot tilt rv group relative overflow-hidden rounded-[2rem] border border-neutral-800 bg-neutral-900 md:col-span-4 md:row-span-2 max-md:h-[460px]">
+                    <img class="cover absolute inset-0 h-full w-full object-cover object-[42%_50%]" src="img/games/axiom/key-art.jpg" alt="AXIOM: Kade Reyes in front of the machine army">
+                    <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/30 to-transparent"></div>
+                    <span class="absolute left-7 top-7 z-10 inline-flex items-center gap-2 rounded-full border border-[#19E3FF]/50 bg-neutral-950/70 px-4 py-2 text-xs font-bold uppercase tracking-[0.15em] text-[#5CEBFF] shadow-[0_0_24px_rgba(25,227,255,0.35)]"><i class="live-dot"></i>Live prototype</span>
+                    <div class="absolute inset-x-0 bottom-0 z-10 p-8 md:p-10">
+                        <p class="mb-2 text-sm font-medium uppercase tracking-wide text-[#5CEBFF]">Game design · Video slot</p>
+                        <h3 class="sr-only">AXIOM</h3>
+                        <p class="mt-3 max-w-lg text-lg font-light text-neutral-300">A sci-fi slot case study with a playable browser prototype: free spins, a hack bonus and big-win moments.</p>
+                        <div class="mt-5 flex flex-wrap gap-2">
+                            <span class="rounded-full border border-neutral-700/60 bg-neutral-900/70 px-3.5 py-1.5 text-xs text-neutral-300">Live prototype</span>
+                            <span class="rounded-full border border-neutral-700/60 bg-neutral-900/70 px-3.5 py-1.5 text-xs text-neutral-300">Game UI</span>
+                            <span class="rounded-full border border-neutral-700/60 bg-neutral-900/70 px-3.5 py-1.5 text-xs text-neutral-300">Art direction</span>
+                        </div>
                     </div>
-                    <h2 class="font-heading text-5xl lg:text-6xl font-semibold text-white max-md:text-4xl">Experience
-                        Augmented</h2>
-                    <p class="text-xl text-neutral-400 font-light leading-relaxed">
-                        With 15+ years in UX, I combine human intuition and critical decision-making with the speed of AI. I don't let tools design for me; I use them to work faster and explore further.
-                    </p>
+                </a>
+
+                <!-- Case 1 -->
+                <a href="case1.html" data-cursor="Read" class="spot tilt rv group relative overflow-hidden rounded-[2rem] border border-neutral-800 bg-neutral-900 md:col-span-2 max-md:h-[380px]" style="--d:.1s">
+                    <img class="cover absolute inset-0 h-full w-full object-cover" src="img/project1.jpg" alt="Casino platform back-office dashboard">
+                    <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/85 via-45% to-neutral-950/20"></div>
+                    <div class="absolute inset-x-0 bottom-0 z-10 p-7">
+                        <p class="mb-2 text-xs font-medium uppercase tracking-wide text-brand-400">Case study</p>
+                        <h3 class="font-heading text-2xl font-semibold">Casino Platform Redesign</h3>
+                        <p class="mt-2 font-light text-neutral-300">100+ screens and 300+ flows rebuilt, cutting task time by 40%.</p>
+                    </div>
+                </a>
+
+                <!-- Case 2 -->
+                <a href="case2.html" data-cursor="Read" class="spot tilt rv group relative overflow-hidden rounded-[2rem] border border-neutral-800 bg-neutral-900 md:col-span-2 max-md:h-[380px]" style="--d:.2s">
+                    <img class="cover absolute inset-0 h-full w-full object-cover" src="img/project2.jpg" alt="Jackpot platform back office">
+                    <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/85 via-45% to-neutral-950/20"></div>
+                    <div class="absolute inset-x-0 bottom-0 z-10 p-7">
+                        <p class="mb-2 text-xs font-medium uppercase tracking-wide text-brand-400">Case study</p>
+                        <h3 class="font-heading text-2xl font-semibold">Jackpot Platform from Scratch</h3>
+                        <p class="mt-2 font-light text-neutral-300">100+ screens with unique flows. Full logic structure and UI/UX, architected from scratch.</p>
+                    </div>
+                </a>
+
+                <!-- Case 3 -->
+                <a href="case3.html" data-cursor="View" class="spot tilt rv group relative flex overflow-hidden rounded-[2rem] border border-neutral-800 bg-neutral-900 md:col-span-6 max-md:h-[380px] md:h-[300px]">
+                    <img class="cover absolute inset-0 h-full w-full object-cover md:left-[38%] md:w-[62%]" src="img/project3.jpg" alt="AI-powered gambling back-office dashboard">
+                    <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/50 to-transparent md:bg-gradient-to-r md:from-neutral-950 md:via-neutral-950/90 md:via-40% md:to-transparent"></div>
+                    <div class="relative z-10 mt-auto p-7 md:my-auto md:max-w-[46%] md:p-10">
+                        <p class="mb-2 text-xs font-medium uppercase tracking-wide text-brand-400">Gallery</p>
+                        <h3 class="font-heading text-3xl font-semibold">More Design Work</h3>
+                        <p class="mt-2 font-light text-neutral-300">Logos, websites, apps and back offices for brands across SaaS, fintech, health and betting.</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- ============ Game worlds rail ============ -->
+        <section class="relative py-24" aria-labelledby="worlds-title">
+            <div class="mx-auto mb-12 flex max-w-7xl flex-wrap items-end justify-between gap-6 px-6 md:px-10">
+                <div>
+                    <p class="rv mb-4 text-xs font-bold uppercase tracking-[0.25em] text-brand-400">02 · Game design</p>
+                    <h2 id="worlds-title" class="rv font-heading text-4xl font-semibold md:text-6xl" style="--d:.1s">Five worlds, built from lore up.</h2>
+                    <p class="rv mt-5 max-w-xl text-lg text-neutral-400" style="--d:.2s">Worlds, lore, characters, items, full UI kits and pitch decks.</p>
                 </div>
+                <div class="rv flex items-center gap-3" style="--d:.3s">
+                    <button type="button" class="rail-btn rounded-full border border-neutral-700 p-3 text-neutral-300 transition hover:border-brand-400 hover:text-white" data-dir="-1" aria-label="Scroll games left"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></button>
+                    <button type="button" class="rail-btn rounded-full border border-neutral-700 p-3 text-neutral-300 transition hover:border-brand-400 hover:text-white" data-dir="1" aria-label="Scroll games right"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+                    <a href="games.html" class="magnetic ml-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-neutral-950 transition hover:bg-brand-300">All games</a>
+                </div>
+            </div>
 
-                <div class="w-full grid grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1 gap-8">
-
-                    <!-- Card 1 -->
-                    <div class="flex flex-col items-start gap-6 rounded-[2rem] border border-neutral-700/50 bg-neutral-800/30 backdrop-blur-md p-10 transition-all duration-300 hover:border-brand-500/50 hover:bg-neutral-800/60 hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-900/10 group"
-                        data-aos="fade-up" data-aos-delay="100">
-                        <div
-                            class="p-4 bg-brand-500/10 text-brand-400 rounded-2xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:bg-brand-500 group-hover:text-white">
-                            <i data-feather="compass" class="w-7 h-7"></i>
-                        </div>
-                        <div class="flex flex-col items-start gap-3">
-                            <h3 class="font-heading text-2xl font-semibold text-white">Strategic Direction</h3>
-                            <p class="text-neutral-400 leading-relaxed font-light">Every project starts from your business goals. AI generates options; my judgment picks the <em>right</em> direction.</p>
-                        </div>
+            <div id="rail" class="rail flex gap-5 overflow-x-auto pb-4" data-cursor="Drag">
+                <a href="game-yggdrasil.html" data-cursor="Explore" class="game-card rv group relative h-[480px] w-[300px] shrink-0 overflow-hidden rounded-[1.75rem] border border-neutral-800 bg-neutral-900 transition-all duration-500" style="--accent:#22d3ee">
+                    <img class="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 group-hover:scale-110" src="img/games/yggdrasil/key-art.jpg" alt="Yggdrasil Tales key art" draggable="false">
+                    <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/40 to-transparent"></div>
+                    <img class="absolute left-1/2 top-8 w-[70%] -translate-x-1/2 drop-shadow-2xl" src="img/games/yggdrasil/logo.webp" alt="" draggable="false">
+                    <div class="absolute inset-x-0 bottom-0 p-6">
+                        <span class="accent-line mb-4 block h-0.5 w-10 transition-all duration-500 group-hover:w-20"></span>
+                        <p class="text-xs font-medium uppercase tracking-wide text-cyan-400">Merge RPG · Norse myth</p>
+                        <h3 class="mt-1 font-heading text-2xl font-semibold">Yggdrasil Tales</h3>
+                        <p class="mt-2 text-sm font-light text-neutral-300">The world tree is dimming. An axe-bearer from Midgard forges his way through nine frozen realms.</p>
                     </div>
-
-                    <!-- Card 2 -->
-                    <div class="flex flex-col items-start gap-6 rounded-[2rem] border border-neutral-700/50 bg-neutral-800/30 backdrop-blur-md p-10 transition-all duration-300 hover:border-brand-500/50 hover:bg-neutral-800/60 hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-900/10 group"
-                        data-aos="fade-up" data-aos-delay="200">
-                        <div
-                            class="p-4 bg-brand-500/10 text-brand-400 rounded-2xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:bg-brand-500 group-hover:text-white">
-                            <i data-feather="database" class="w-7 h-7"></i>
-                        </div>
-                        <div class="flex flex-col items-start gap-3">
-                            <h3 class="font-heading text-2xl font-semibold text-white">Brand &amp; Audience Fit</h3>
-                            <p class="text-neutral-400 leading-relaxed font-light">Generative tools produce endless possibilities. I listen to the brand and its audience, then shape those ideas into something coherent and emotionally resonant: design that doesn’t just work, but lasts.
-
-                            </p>
-                        </div>
+                </a>
+                <a href="game-beyond-veil.html" data-cursor="Explore" class="game-card rv group relative h-[480px] w-[300px] shrink-0 overflow-hidden rounded-[1.75rem] border border-neutral-800 bg-neutral-900 transition-all duration-500" style="--accent:#fbbf24; --d:.08s">
+                    <img class="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 group-hover:scale-110" src="img/games/beyond-veil/splash.jpg" alt="Beyond the Veil splash art" draggable="false">
+                    <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/40 to-transparent"></div>
+                    <img class="absolute left-1/2 top-8 w-[70%] -translate-x-1/2 drop-shadow-2xl" src="img/games/beyond-veil/logo.webp" alt="" draggable="false">
+                    <div class="absolute inset-x-0 bottom-0 p-6">
+                        <span class="accent-line mb-4 block h-0.5 w-10 transition-all duration-500 group-hover:w-20"></span>
+                        <p class="text-xs font-medium uppercase tracking-wide text-amber-400">Match-3 + hero · Low-poly 3D</p>
+                        <h3 class="mt-1 font-heading text-2xl font-semibold">Beyond the Veil</h3>
+                        <p class="mt-2 text-sm font-light text-neutral-300">Lyra and Glim cross Aurelia's floating islands to recover six relics before the Hollow breaks free.</p>
                     </div>
-
-                    <!-- Card 3 -->
-                    <div class="flex flex-col items-start gap-6 rounded-[2rem] border border-neutral-700/50 bg-neutral-800/30 backdrop-blur-md p-10 transition-all duration-300 hover:border-brand-500/50 hover:bg-neutral-800/60 hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-900/10 group"
-                        data-aos="fade-up" data-aos-delay="300">
-                        <div
-                            class="p-4 bg-brand-500/10 text-brand-400 rounded-2xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:bg-brand-500 group-hover:text-white">
-                            <i data-feather="aperture" class="w-7 h-7"></i>
-                        </div>
-                        <div class="flex flex-col items-start gap-3">
-                            <h3 class="font-heading text-2xl font-semibold text-white">Ethical Design</h3>
-                            <p class="text-neutral-400 leading-relaxed font-light">Design that’s honest: no dark patterns, transparent, and genuinely good for the user. I use generative tools responsibly, never to manipulate.</p>
-                        </div>
+                </a>
+                <a href="game-deepwake.html" data-cursor="Explore" class="game-card rv group relative h-[480px] w-[300px] shrink-0 overflow-hidden rounded-[1.75rem] border border-neutral-800 bg-neutral-900 transition-all duration-500" style="--accent:#FF8FAA; --d:.16s">
+                    <img class="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 group-hover:scale-110" src="img/games/deepwake/key-art.jpg" alt="Deepwake key art" draggable="false">
+                    <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/40 to-transparent"></div>
+                    <img class="absolute left-1/2 top-8 w-[70%] -translate-x-1/2 drop-shadow-2xl" src="img/games/deepwake/logo.webp" alt="" draggable="false">
+                    <div class="absolute inset-x-0 bottom-0 p-6">
+                        <span class="accent-line mb-4 block h-0.5 w-10 transition-all duration-500 group-hover:w-20"></span>
+                        <p class="text-xs font-medium uppercase tracking-wide text-[#FF8FAA]">Merge + collection · Sunken city</p>
+                        <h3 class="mt-1 font-heading text-2xl font-semibold">Deepwake</h3>
+                        <p class="mt-2 text-sm font-light text-neutral-300">Relight the dreamlanterns of a drowned city before the god beneath it wakes.</p>
                     </div>
-
-                    <!-- Card 4 -->
-                    <div class="flex flex-col items-start gap-6 rounded-[2rem] border border-neutral-700/50 bg-neutral-800/30 backdrop-blur-md p-10 transition-all duration-300 hover:border-brand-500/50 hover:bg-neutral-800/60 hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-900/10 group lg:col-span-1 max-lg:col-span-2 max-md:col-span-1"
-                        data-aos="fade-up" data-aos-delay="400">
-                        <div
-                            class="p-4 bg-brand-500/10 text-brand-400 rounded-2xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:bg-brand-500 group-hover:text-white">
-                            <i data-feather="crosshair" class="w-7 h-7"></i>
-                        </div>
-                        <div class="flex flex-col items-start gap-3">
-                            <h3 class="font-heading text-2xl font-semibold text-white">Critical Decision-Making</h3>
-                            <p class="text-neutral-400 leading-relaxed font-light">Algorithms can predict, but people empathize. Every wireframe, micro-interaction and user flow is checked against years of watching how real people use technology.</p>
-                        </div>
+                </a>
+                <a href="game-ironvigil.html" data-cursor="Explore" class="game-card rv group relative h-[480px] w-[300px] shrink-0 overflow-hidden rounded-[1.75rem] border border-neutral-800 bg-neutral-900 transition-all duration-500" style="--accent:#FF9A5A; --d:.24s">
+                    <img class="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 group-hover:scale-110" src="img/games/ironvigil/key-art.jpg" alt="IronVigil key art" draggable="false">
+                    <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/40 to-transparent"></div>
+                    <img class="absolute left-1/2 top-8 w-[70%] -translate-x-1/2 drop-shadow-2xl" src="img/games/ironvigil/logo.webp" alt="" draggable="false">
+                    <div class="absolute inset-x-0 bottom-0 p-6">
+                        <span class="accent-line mb-4 block h-0.5 w-10 transition-all duration-500 group-hover:w-20"></span>
+                        <p class="text-xs font-medium uppercase tracking-wide text-[#FF9A5A]">Run-and-gun · Gothic dieselpunk</p>
+                        <h3 class="mt-1 font-heading text-2xl font-semibold">IronVigil</h3>
+                        <p class="mt-2 text-sm font-light text-neutral-300">One rebel runs and guns from the ash mines to the throne of a colossal war-empire.</p>
                     </div>
-
-                    <!-- Card 5 -->
-                    <div class="flex flex-col items-start gap-6 rounded-[2rem] border border-neutral-700/50 bg-neutral-800/30 backdrop-blur-md p-10 transition-all duration-300 hover:border-brand-500/50 hover:bg-neutral-800/60 hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-900/10 group lg:col-span-2 max-lg:col-span-2 max-md:col-span-1"
-                        data-aos="fade-up" data-aos-delay="500">
-                        <div
-                            class="p-4 bg-brand-500/10 text-brand-400 rounded-2xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:bg-brand-500 group-hover:text-white">
-                            <i data-feather="layers" class="w-7 h-7"></i>
-                        </div>
-                        <div class="flex flex-col items-start gap-3">
-                            <h3 class="font-heading text-2xl font-semibold text-white">Human-Crafted Refinement</h3>
-                            <p class="text-neutral-400 leading-relaxed font-light">AI explores hundreds of directions fast. I bring the taste and brand intuition to pick the right one, then polish every detail, from typography rhythm to animation easing, until it feels unmistakably yours.
-
-
-                            </p>
-                        </div>
+                </a>
+                <a href="game-cogspire.html" data-cursor="Explore" class="game-card rv group relative h-[480px] w-[300px] shrink-0 overflow-hidden rounded-[1.75rem] border border-neutral-800 bg-neutral-900 transition-all duration-500" style="--accent:#FFC56E; --d:.32s">
+                    <img class="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 group-hover:scale-110" src="img/games/cogspire/key-art.jpg" alt="Cogspire key art" draggable="false">
+                    <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/40 to-transparent"></div>
+                    <img class="absolute left-1/2 top-8 w-[70%] -translate-x-1/2 drop-shadow-2xl" src="img/games/cogspire/logo.webp" alt="" draggable="false">
+                    <div class="absolute inset-x-0 bottom-0 p-6">
+                        <span class="accent-line mb-4 block h-0.5 w-10 transition-all duration-500 group-hover:w-20"></span>
+                        <p class="text-xs font-medium uppercase tracking-wide text-[#FFC56E]">Tower defense · Steampunk sky city</p>
+                        <h3 class="mt-1 font-heading text-2xl font-semibold">Cogspire</h3>
+                        <p class="mt-2 text-sm font-light text-neutral-300">Build and upgrade brass towers to defend the last clean city in the sky from the Soot Armada.</p>
                     </div>
+                </a>
+                <a href="games.html" data-cursor="Open" class="rv group relative flex h-[480px] w-[300px] shrink-0 flex-col justify-between overflow-hidden rounded-[1.75rem] border border-dashed border-neutral-700 bg-neutral-900/40 p-7 transition-colors hover:border-brand-400" style="--d:.4s">
+                    <img src="img/logo/codexlab-mark.svg" alt="" class="h-12 w-12 opacity-80">
+                    <div>
+                        <h3 class="font-heading text-2xl font-semibold">Pitch decks</h3>
+                        <p class="mt-2 text-sm font-light text-neutral-400">Every concept comes with a scroll-through pitch deck: hook, world, loop and art direction.</p>
+                        <span class="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-brand-300">Open the decks <svg class="h-4 w-4 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                    </div>
+                </a>
+            </div>
+        </section>
 
+        <!-- ============ The Codex ============ -->
+        <section id="codex" class="mx-auto max-w-7xl scroll-mt-24 px-6 py-28 md:px-10">
+            <div class="grid gap-16 lg:grid-cols-[1fr_1.4fr]">
+                <div class="lg:sticky lg:top-32 lg:self-start">
+                    <p class="rv mb-4 text-xs font-bold uppercase tracking-[0.25em] text-brand-400">03 · The Codex</p>
+                    <h2 class="rv font-heading text-4xl font-semibold leading-tight md:text-6xl" style="--d:.1s">Designing with a <span class="grad-text">Codex</span>.</h2>
+                    <p class="rv mt-6 text-lg font-light leading-relaxed text-neutral-400" style="--d:.2s">CodexLab is named after the rules I work by. Honest, transparent, human-first UX. No dark patterns.</p>
+                    <img src="img/logo/codexlab-mark.svg" alt="" class="rv mt-10 h-24 w-24 opacity-90 max-lg:hidden" style="--d:.3s">
+                </div>
+                <ol class="divide-y divide-neutral-800 border-y border-neutral-800">
+                    <li class="principle rv grid grid-cols-[4.5rem_1fr] gap-6 py-9 md:grid-cols-[6rem_1fr]">
+                        <span class="num text-5xl md:text-6xl">I</span>
+                        <div><h3 class="font-heading text-2xl font-semibold">No dark patterns</h3><p class="mt-2 font-light leading-relaxed text-neutral-400">No tricks, no hidden costs, no guilt-trips. If a flow only works by confusing people, it doesn't ship.</p></div>
+                    </li>
+                    <li class="principle rv grid grid-cols-[4.5rem_1fr] gap-6 py-9 md:grid-cols-[6rem_1fr]" style="--d:.08s">
+                        <span class="num text-5xl md:text-6xl">II</span>
+                        <div><h3 class="font-heading text-2xl font-semibold">Transparent by default</h3><p class="mt-2 font-light leading-relaxed text-neutral-400">People should always know what is happening, why, and what it will cost them.</p></div>
+                    </li>
+                    <li class="principle rv grid grid-cols-[4.5rem_1fr] gap-6 py-9 md:grid-cols-[6rem_1fr]" style="--d:.16s">
+                        <span class="num text-5xl md:text-6xl">III</span>
+                        <div><h3 class="font-heading text-2xl font-semibold">Human-first</h3><p class="mt-2 font-light leading-relaxed text-neutral-400">Interfaces that respect people's time, attention and money, and are genuinely good for them.</p></div>
+                    </li>
+                    <li class="principle rv grid grid-cols-[4.5rem_1fr] gap-6 py-9 md:grid-cols-[6rem_1fr]" style="--d:.24s">
+                        <span class="num text-5xl md:text-6xl">IV</span>
+                        <div><h3 class="font-heading text-2xl font-semibold">Results that last</h3><p class="mt-2 font-light leading-relaxed text-neutral-400">Trust is the metric behind the metrics. Honest design still has to move the numbers, and it does.</p></div>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- ============ Process ============ -->
+        <section id="process" class="mx-auto max-w-7xl scroll-mt-24 px-6 py-28 md:px-10">
+            <div class="mx-auto mb-16 max-w-3xl text-center">
+                <p class="rv mb-4 text-xs font-bold uppercase tracking-[0.25em] text-brand-400">04 · Human expertise + AI</p>
+                <h2 class="rv font-heading text-4xl font-semibold md:text-6xl" style="--d:.1s">Experience Augmented</h2>
+                <p class="rv mt-6 text-xl font-light leading-relaxed text-neutral-400" style="--d:.2s">With 15+ years in UX, I combine human intuition and critical decision-making with the speed of AI. I don't let tools design for me; I use them to work faster and explore further.</p>
+            </div>
+
+            <div class="grid gap-5 md:grid-cols-6">
+                <div class="spot rv rounded-[2rem] border border-neutral-800 bg-neutral-900/80 p-9 md:col-span-2">
+                    <div class="relative z-10"><span class="text-sm font-semibold text-brand-400">01</span><h3 class="mt-6 font-heading text-2xl font-semibold">Strategic Direction</h3><p class="mt-3 font-light leading-relaxed text-neutral-400">Every project starts from your business goals. AI generates options; my judgment picks the <em>right</em> direction.</p></div>
+                </div>
+                <div class="spot rv rounded-[2rem] border border-neutral-800 bg-neutral-900/80 p-9 md:col-span-2" style="--d:.08s">
+                    <div class="relative z-10"><span class="text-sm font-semibold text-brand-400">02</span><h3 class="mt-6 font-heading text-2xl font-semibold">Brand &amp; Audience Fit</h3><p class="mt-3 font-light leading-relaxed text-neutral-400">Generative tools produce endless possibilities. I listen to the brand and its audience, then shape those ideas into something coherent and emotionally resonant: design that doesn’t just work, but lasts.</p></div>
+                </div>
+                <div class="spot rv rounded-[2rem] border border-neutral-800 bg-neutral-900/80 p-9 md:col-span-2" style="--d:.16s">
+                    <div class="relative z-10"><span class="text-sm font-semibold text-brand-400">03</span><h3 class="mt-6 font-heading text-2xl font-semibold">Ethical Design</h3><p class="mt-3 font-light leading-relaxed text-neutral-400">Design that’s honest: no dark patterns, transparent, and genuinely good for the user. I use generative tools responsibly, never to manipulate.</p></div>
+                </div>
+                <div class="spot rv rounded-[2rem] border border-neutral-800 bg-neutral-900/80 p-9 md:col-span-3" style="--d:.08s">
+                    <div class="relative z-10"><span class="text-sm font-semibold text-brand-400">04</span><h3 class="mt-6 font-heading text-2xl font-semibold">Critical Decision-Making</h3><p class="mt-3 font-light leading-relaxed text-neutral-400">Algorithms can predict, but people empathize. Every wireframe, micro-interaction and user flow is checked against years of watching how real people use technology.</p></div>
+                </div>
+                <div class="spot rv rounded-[2rem] border border-neutral-800 bg-neutral-900/80 p-9 md:col-span-3" style="--d:.16s">
+                    <div class="relative z-10"><span class="text-sm font-semibold text-brand-400">05</span><h3 class="mt-6 font-heading text-2xl font-semibold">Human-Crafted Refinement</h3><p class="mt-3 font-light leading-relaxed text-neutral-400">AI explores hundreds of directions fast. I bring the taste and brand intuition to pick the right one, then polish every detail, from typography rhythm to animation easing, until it feels unmistakably yours.</p></div>
                 </div>
             </div>
         </section>
 
-        <!-- CTA & Footer Section -->
-        <section id="contact"
-            class="flex mx-4 md:mx-auto max-w-[95%] xl:max-w-7xl w-auto flex-col items-center justify-center pt-32 pb-8 relative z-10 max-md:pt-20 rounded-[3rem] border border-neutral-700/30 bg-neutral-900/30 backdrop-blur-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] overflow-hidden mt-12 mb-12 transition-all">
-            <!-- Decorative Glow -->
-            <div
-                class="h-96 w-96 rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-brand-600/5 blur-[120px] pointer-events-none">
-            </div>
-
-            <div class="flex max-w-[600px] flex-col items-center gap-6 px-12 text-center relative z-10 max-md:px-4"
-                data-aos="zoom-in" data-aos-duration="1000">
-                <img src="img/ava.png" alt="Max Alexandrov"
-                    class="w-24 h-24 rounded-full object-cover border-4 border-neutral-800 shadow-xl mb-2">
-
-                <p class="text-lg text-neutral-200 font-light leading-relaxed">
-                    Hi, I'm Max, an ethical UX specialist helping brands build interfaces that respect their users.
-                </p>
-                <p class="text-lg text-neutral-400 font-light leading-relaxed">
-                    Designing with a Codex: honest, transparent, human-first UX. No dark patterns.
-                </p>
-                <h2 class="font-heading text-4xl lg:text-5xl font-medium tracking-tight text-white max-md:text-3xl">
-                    Let's build something people can trust.
-                </h2>
-
-
-                <div class="mt-4 flex flex-col items-center gap-4">
-                    <a href="mailto:alexandrovlab@gmail.com"
-                        class="group relative inline-flex items-center gap-3 rounded-full bg-white px-8 py-4 font-medium text-neutral-950 transition-all hover:scale-105 active:scale-95 shadow-[0_4px_20px_rgba(255,255,255,0.15)] hover:shadow-[0_4px_30px_rgba(255,255,255,0.3)] text-lg">
-                        Let's talk <i data-feather="arrow-right"
-                            class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"></i>
-                    </a>
-                    <button onclick="navigator.clipboard.writeText('alexandrovlab@gmail.com').then(()=>{const el=document.getElementById('copy-feedback');el.textContent='Copied!';el.classList.remove('text-neutral-400');el.classList.add('text-green-400');setTimeout(()=>{el.textContent='alexandrovlab@gmail.com  ·  click to copy';el.classList.remove('text-green-400');el.classList.add('text-neutral-400')},2000)})"
-                        class="group inline-flex items-center gap-2.5 text-neutral-400 hover:text-white transition-colors cursor-pointer bg-transparent border-none outline-none">
-                        <i data-feather="mail" class="w-4 h-4 flex-shrink-0"></i>
-                        <span id="copy-feedback" class="text-sm font-medium tracking-wide">alexandrovlab@gmail.com  ·  click to copy</span>
-                        <i data-feather="copy" class="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0"></i>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Clients Carousel Section -->
-            <div class="w-full flex flex-col items-center mt-16 max-md:mt-8 relative z-10">
-                <span class="text-xs font-medium tracking-[0.2em] text-neutral-500 uppercase mb-8">Trusted by</span>
-
-                <div class="w-full py-4 overflow-hidden relative">
-                    <div class="flex flex-col gap-8">
-                        <!-- Row 1: Left to Right -->
-                        <div class="carousel-mask w-full overflow-hidden">
-                            <div class="flex animate-scroll-left whitespace-nowrap" style="--duration: 45s;">
-                                <div
-                                    class="flex gap-12 items-center pr-12 text-neutral-500/60 text-sm font-medium tracking-wide">
-                                    <span>Drakedigitall</span><span>B&W</span><span>SERCD</span><span>TrustWell</span><span>LVPartners</span><span>Wealth
-                                        Alliance</span><span>Walter&Reed</span><span>BergamShultz</span><span>LC
-                                        GROUP</span><span>HUME Capital</span><span>SYM Plan</span><span>Castle
-                                        Holdings</span><span>FlorinInvestment</span><span>Mirami</span><span>Tadaa</span><span>ORGChart</span><span>IPD
-                                        Produktentwicklung und Handel UG</span><span>4Sight
-                                        Solutions</span><span>Speaktopic ApS</span><span>TickerSoft</span><span>Maxmedia
-                                        Web Solutions Inc.</span><span>LightSpeed Games</span><span>Reality
-                                        Television</span><span>NEBEL TV</span><span>MegaWorldMedia</span><span>Krieseler
-                                        Holdings</span><span>BroadPeak</span><span>Byteback
-                                        Computing</span><span>Adventures in Business</span><span>Focused Apps
-                                        LLC</span><span>Monopolize Marketing</span><span>Bitsmedia Pte
-                                        Ltd</span><span>ZV3R</span><span>Soloten
-                                        LLC</span><span>GOTRIbal</span><span>Genius
-                                        Inc</span><span>Simplus</span><span>Elysium
-                                        Media</span><span>Kenesto</span><span>mpasse</span>
-                                </div>
-                                <div class="flex gap-12 items-center pr-12 text-neutral-500/60 text-sm font-medium tracking-wide"
-                                    aria-hidden="true">
-                                    <span>Drakedigitall</span><span>B&W</span><span>SERCD</span><span>TrustWell</span><span>LVPartners</span><span>Wealth
-                                        Alliance</span><span>Walter&Reed</span><span>BergamShultz</span><span>LC
-                                        GROUP</span><span>HUME Capital</span><span>SYM Plan</span><span>Castle
-                                        Holdings</span><span>FlorinInvestment</span><span>Mirami</span><span>Tadaa</span><span>ORGChart</span><span>IPD
-                                        Produktentwicklung und Handel UG</span><span>4Sight
-                                        Solutions</span><span>Speaktopic ApS</span><span>TickerSoft</span><span>Maxmedia
-                                        Web Solutions Inc.</span><span>LightSpeed Games</span><span>Reality
-                                        Television</span><span>NEBEL TV</span><span>MegaWorldMedia</span><span>Krieseler
-                                        Holdings</span><span>BroadPeak</span><span>Byteback
-                                        Computing</span><span>Adventures in Business</span><span>Focused Apps
-                                        LLC</span><span>Monopolize Marketing</span><span>Bitsmedia Pte
-                                        Ltd</span><span>ZV3R</span><span>Soloten
-                                        LLC</span><span>GOTRIbal</span><span>Genius
-                                        Inc</span><span>Simplus</span><span>Elysium
-                                        Media</span><span>Kenesto</span><span>mpasse</span>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Row 2: Right to Left -->
-                        <div class="carousel-mask w-full overflow-hidden">
-                            <div class="flex animate-scroll-right whitespace-nowrap" style="--duration: 42s;">
-                                <div
-                                    class="flex gap-12 items-center pr-12 text-neutral-500/60 text-sm font-medium tracking-wide">
-                                    <span>NuSpectra</span><span>Network Local</span><span>Chad Iman</span><span>Mutant
-                                        Bear Games</span><span>Obsydion</span><span>The Daily
-                                        Gentleman</span><span>SpinSci</span><span>FLC</span><span>RockyMountainVentures</span><span>InsideSales
-                                        Inc.</span><span>OpenSpend</span><span>Vice
-                                        Consulting</span><span>WirelessFieldService</span><span>Ice-Net
-                                        Technologies</span><span>WaterSlide</span><span>10xEngineer.me</span><span>Ingenio
-                                        Digital</span><span>PureAutomation</span><span>3DE</span><span>zilloindustries</span><span>BlueLight
-                                        analytics inc.</span><span>ContextWorks</span><span>Metric
-                                        Insights</span><span>Gotcha! Mobile
-                                        Solutions</span><span>DesyncedTech</span><span>Clipwire Games</span><span>SRDB,
-                                        LLC</span><span>SATI</span><span>Beast
-                                        Devices</span><span>MeagherDesign.com</span><span>RoadSoft</span><span>Kidimedia
-                                        BVBA</span><span>Bavolar
-                                        L.L.C</span><span>TiffinSolutions</span><span>Zmags</span><span>Leyton Solutions
-                                        Limited</span><span>Amber Consulting</span><span>BarDigg LLC</span><span>Lovely
-                                        Mart</span><span>Pressmatix</span><span>DrinkSUITE Group</span><span>ePageCity,
-                                        Inc</span><span>Greatwide TM</span><span>Blue Shores Solutions Pvt.
-                                        Ltd</span><span>Girnar Software SEZ Pvt Ltd</span>
-                                </div>
-                                <div class="flex gap-12 items-center pr-12 text-neutral-500/60 text-sm font-medium tracking-wide"
-                                    aria-hidden="true">
-                                    <span>NuSpectra</span><span>Network Local</span><span>Chad Iman</span><span>Mutant
-                                        Bear Games</span><span>Obsydion</span><span>The Daily
-                                        Gentleman</span><span>SpinSci</span><span>FLC</span><span>RockyMountainVentures</span><span>InsideSales
-                                        Inc.</span><span>OpenSpend</span><span>Vice
-                                        Consulting</span><span>WirelessFieldService</span><span>Ice-Net
-                                        Technologies</span><span>WaterSlide</span><span>10xEngineer.me</span><span>Ingenio
-                                        Digital</span><span>PureAutomation</span><span>3DE</span><span>zilloindustries</span><span>BlueLight
-                                        analytics inc.</span><span>ContextWorks</span><span>Metric
-                                        Insights</span><span>Gotcha! Mobile
-                                        Solutions</span><span>DesyncedTech</span><span>Clipwire Games</span><span>SRDB,
-                                        LLC</span><span>SATI</span><span>Beast
-                                        Devices</span><span>MeagherDesign.com</span><span>RoadSoft</span><span>Kidimedia
-                                        BVBA</span><span>Bavolar
-                                        L.L.C</span><span>TiffinSolutions</span><span>Zmags</span><span>Leyton Solutions
-                                        Limited</span><span>Amber Consulting</span><span>BarDigg LLC</span><span>Lovely
-                                        Mart</span><span>Pressmatix</span><span>DrinkSUITE Group</span><span>ePageCity,
-                                        Inc</span><span>Greatwide TM</span><span>Blue Shores Solutions Pvt.
-                                        Ltd</span><span>Girnar Software SEZ Pvt Ltd</span>
-                                </div>
-                            </div>
-                        </div>
+        <!-- ============ Contact ============ -->
+        <section id="contact" class="relative mx-auto max-w-7xl scroll-mt-24 px-6 pb-10 pt-20 md:px-10">
+            <div class="spot relative overflow-hidden rounded-[3rem] border border-neutral-800 bg-neutral-900/70 px-6 py-24 text-center md:px-16">
+                <div class="pointer-events-none absolute left-1/2 top-1/2 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-600/15 blur-[120px]"></div>
+                <div class="relative z-10 mx-auto flex max-w-3xl flex-col items-center">
+                    <img src="img/ava.png" alt="Max Alexandrov" class="rv mb-8 h-24 w-24 rounded-full border-4 border-neutral-800 object-cover shadow-xl">
+                    <p class="rv text-lg font-light text-neutral-300" style="--d:.1s">Hi, I'm Max, an ethical UX specialist helping brands build interfaces that respect their users.</p>
+                    <h2 class="rv mt-6 font-heading text-[clamp(2.25rem,6vw,4.5rem)] font-bold leading-[1.05] tracking-tight" style="--d:.2s">Let's build something people can <span class="grad-text">trust</span>.</h2>
+                    <div class="rv mt-10 flex flex-col items-center gap-5" style="--d:.3s">
+                        <a href="mailto:alexandrovlab@gmail.com" class="magnetic group inline-flex items-center gap-3 rounded-full bg-white px-9 py-4 text-lg font-semibold text-neutral-950 shadow-[0_4px_30px_rgba(255,255,255,0.15)] transition-shadow hover:shadow-[0_4px_40px_rgba(129,140,248,0.5)]">
+                            Let's talk
+                            <svg class="h-5 w-5 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                        </a>
+                        <button type="button" id="copy-email" class="group inline-flex items-center gap-2.5 text-neutral-400 transition-colors hover:text-white">
+                            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+                            <span id="copy-feedback" class="text-sm font-medium tracking-wide">alexandrovlab@gmail.com · click to copy</span>
+                        </button>
                     </div>
                 </div>
             </div>
 
+            <!-- Trusted by -->
+            <div class="mt-20 text-center">
+                <span class="text-xs font-medium uppercase tracking-[0.25em] text-neutral-500">Trusted by</span>
+                <div class="mask-x mt-8 flex flex-col gap-6 overflow-hidden text-sm font-medium tracking-wide text-neutral-500">
+                    <div class="marquee" style="--dur:60s">
+                        <div class="flex shrink-0 gap-12 pr-12" id="clients-a"></div>
+                        <div class="flex shrink-0 gap-12 pr-12" aria-hidden="true" data-clone="clients-a"></div>
+                    </div>
+                    <div class="marquee rev" style="--dur:56s">
+                        <div class="flex shrink-0 gap-12 pr-12" id="clients-b"></div>
+                        <div class="flex shrink-0 gap-12 pr-12" aria-hidden="true" data-clone="clients-b"></div>
+                    </div>
+                </div>
+            </div>
 
-            <footer
-                class="flex w-full max-w-6xl items-center justify-between border-t border-neutral-800/50 px-12 pt-8 pb-4 mt-16 relative z-10 max-md:flex-col-reverse max-md:gap-6 max-md:px-4 max-md:mt-8">
-                <span class="text-sm font-light text-neutral-500">© 2026 Max Alexandrov. All rights reserved.</span>
+            <footer class="mt-20 flex items-center justify-between gap-6 border-t border-neutral-800/70 pt-8 max-md:flex-col-reverse">
                 <div class="flex items-center gap-3">
-                    <a href="https://www.linkedin.com/in/maximus-a-83a1425/" target="_blank" rel="noopener noreferrer"
-                        class="p-2 text-neutral-400 bg-neutral-900/50 border border-neutral-800 hover:text-white hover:bg-brand-600 hover:border-brand-500 rounded-full transition-all focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 focus:ring-offset-neutral-950"
-                        aria-label="LinkedIn">
-                        <i data-feather="linkedin" class="w-4 h-4"></i>
+                    <img src="img/logo/codexlab-mark.svg" alt="" class="h-7 w-7">
+                    <span class="text-sm font-light text-neutral-500">© 2026 Max Alexandrov. All rights reserved.</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <a href="https://www.linkedin.com/in/maximus-a-83a1425/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="magnetic rounded-full border border-neutral-800 bg-neutral-900/60 p-2.5 text-neutral-400 transition-colors hover:border-brand-500 hover:bg-brand-600 hover:text-white">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
                     </a>
-                    <a href="mailto:alexandrovlab@gmail.com"
-                        class="p-2 text-neutral-400 bg-neutral-900/50 border border-neutral-800 hover:text-white hover:bg-brand-600 hover:border-brand-500 rounded-full transition-all focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 focus:ring-offset-neutral-950"
-                        aria-label="Email">
-                        <i data-feather="mail" class="w-4 h-4"></i>
+                    <a href="mailto:alexandrovlab@gmail.com" aria-label="Email" class="magnetic rounded-full border border-neutral-800 bg-neutral-900/60 p-2.5 text-neutral-400 transition-colors hover:border-brand-500 hover:bg-brand-600 hover:text-white">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
                     </a>
-                    
                 </div>
             </footer>
         </section>
-    </div>
+    </main>
 
-    <!-- Scripts -->
-    <script src="https://unpkg.com/feather-icons"></script>
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // Initialize Feather Icons
-        feather.replace();
+    (() => {
+        const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const finePointer = matchMedia('(hover: hover) and (pointer: fine)').matches;
+        const root = document.documentElement;
 
-        // Initialize AOS animations
-        AOS.init({
-            duration: 800,        // Animation duration
-            once: true,           // Whether animation should happen only once - while scrolling down
-            offset: 100,          // Offset (in px) from the original trigger point
-            easing: 'ease-out-cubic', // Default easing
-            disable: 'mobile'     // Optional: Disable on mobile if performance is an issue, but we want it unless laggy. Leaving enabled for now.
+        /* ---- clients (same list as the current home page) ---- */
+        const clientsA = ['Drakedigitall','B&W','SERCD','TrustWell','LVPartners','Wealth Alliance','Walter&Reed','BergamShultz','LC GROUP','HUME Capital','SYM Plan','Castle Holdings','FlorinInvestment','Mirami','Tadaa','ORGChart','IPD Produktentwicklung und Handel UG','4Sight Solutions','Speaktopic ApS','TickerSoft','Maxmedia Web Solutions Inc.','LightSpeed Games','Reality Television','NEBEL TV','MegaWorldMedia','Krieseler Holdings','BroadPeak','Byteback Computing','Adventures in Business','Focused Apps LLC','Monopolize Marketing','Bitsmedia Pte Ltd','ZV3R','Soloten LLC','GOTRIbal','Genius Inc','Simplus','Elysium Media','Kenesto','mpasse'];
+        const clientsB = ['NuSpectra','Network Local','Chad Iman','Mutant Bear Games','Obsydion','The Daily Gentleman','SpinSci','FLC','RockyMountainVentures','InsideSales Inc.','OpenSpend','Vice Consulting','WirelessFieldService','Ice-Net Technologies','WaterSlide','10xEngineer.me','Ingenio Digital','PureAutomation','3DE','zilloindustries','BlueLight analytics inc.','ContextWorks','Metric Insights','Gotcha! Mobile Solutions','DesyncedTech','Clipwire Games','SRDB, LLC','SATI','Beast Devices','MeagherDesign.com','RoadSoft','Kidimedia BVBA','Bavolar L.L.C','TiffinSolutions','Zmags','Leyton Solutions Limited','Amber Consulting','BarDigg LLC','Lovely Mart','Pressmatix','DrinkSUITE Group','ePageCity, Inc','Greatwide TM','Blue Shores Solutions Pvt. Ltd','Girnar Software SEZ Pvt Ltd'];
+        const fill = (id, list) => {
+            const el = document.getElementById(id);
+            list.forEach(n => { const s = document.createElement('span'); s.className = 'whitespace-nowrap'; s.textContent = n; el.appendChild(s); });
+            document.querySelector(`[data-clone="${id}"]`).innerHTML = el.innerHTML;
+        };
+        fill('clients-a', clientsA); fill('clients-b', clientsB);
+
+        /* ---- reveal on scroll ---- */
+        const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
+        document.querySelectorAll('.rv, #hero-title').forEach(el => io.observe(el));
+
+        /* ---- count-up stats ---- */
+        const counters = document.querySelectorAll('[data-count]');
+        const cio = new IntersectionObserver(es => es.forEach(e => {
+            if (!e.isIntersecting) return;
+            cio.unobserve(e.target);
+            if (reduce) return;
+            const end = +e.target.dataset.count, t0 = performance.now(), dur = 1400;
+            const step = t => { const p = Math.min(1, (t - t0) / dur); e.target.textContent = Math.round(end * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(step); };
+            e.target.textContent = '0'; requestAnimationFrame(step);
+        }), { threshold: .6 });
+        counters.forEach(c => cio.observe(c));
+
+        /* ---- scroll progress + header background ---- */
+        const bar = document.getElementById('progress'), head = document.getElementById('top-bar');
+        const onScroll = () => {
+            const max = root.scrollHeight - innerHeight;
+            bar.style.transform = `scaleX(${max > 0 ? scrollY / max : 0})`;
+            head.classList.toggle('bg-neutral-950/70', scrollY > 40);
+            head.classList.toggle('backdrop-blur-xl', scrollY > 40);
+            head.classList.toggle('border-b', scrollY > 40);
+            head.classList.toggle('border-neutral-800/60', scrollY > 40);
+        };
+        addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+        /* ---- email copy ---- */
+        document.getElementById('copy-email').addEventListener('click', () => {
+            const el = document.getElementById('copy-feedback');
+            navigator.clipboard.writeText('alexandrovlab@gmail.com').then(() => {
+                el.textContent = 'Copied!'; el.classList.add('text-green-400');
+                setTimeout(() => { el.textContent = 'alexandrovlab@gmail.com · click to copy'; el.classList.remove('text-green-400'); }, 2000);
+            });
         });
 
-        // Disable AOS on very small screens for better performance if needed
-        if (window.innerWidth < 768) {
-            AOS.init({ disable: true });
-        } else {
-            AOS.init({ disable: false });
-        }
-    </script>
-
-    <!-- Three.js Background Effect -->
-    <script type="module">
-        import * as THREE from 'three';
-        import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
-        import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
-        import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
-
-        // CONFIG
-        const COUNT = 8000;
-        const SPEED_MULT = 0.08;
-
-        // SETUP
-        const scene = new THREE.Scene();
-        scene.fog = new THREE.FogExp2(0x000000, 0.01);
-        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 2000);
-        camera.position.set(0, 0, 100);
-
-        const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance", alpha: true });
-        renderer.setClearColor(0x000000, 0); // Transparent background
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.getElementById('webgl-container').appendChild(renderer.domElement);
-
-        // POST PROCESSING
-        const composer = new EffectComposer(renderer);
-        const renderPass = new RenderPass(scene, camera);
-        renderPass.clearColor = new THREE.Color(0, 0, 0);
-        renderPass.clearAlpha = 0;
-        composer.addPass(renderPass);
-
-        const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.6, 0.5, 0.82);
-        // Premium bloom for "Best Version"
-        bloomPass.strength = 1.8;
-        bloomPass.radius = 1.0;
-        bloomPass.threshold = 0.1;
-        composer.addPass(bloomPass);
-
-        // SWARM OBJECTS
-        const dummy = new THREE.Object3D();
-        const color = new THREE.Color();
-        const target = new THREE.Vector3();
-
-        // INSTANCED MESH
-        const geometry = new THREE.SphereGeometry(0.35, 10, 10);
-        const material = new THREE.ShaderMaterial({
-            uniforms: {
-                uTime: { value: 0 }
-            },
-            vertexShader: `
-                varying vec3 vNormal;
-                varying vec3 vViewPosition;
-                varying vec3 vColor;
-                void main() {
-                    vec4 mvPosition = modelViewMatrix * instanceMatrix * vec4(position, 1.0);
-                    vNormal = normalize(normalMatrix * normal);
-                    vViewPosition = -mvPosition.xyz;
-                    vColor = instanceColor;
-                    gl_Position = projectionMatrix * mvPosition;
-                }
-            `,
-            fragmentShader: `
-                varying vec3 vNormal;
-                varying vec3 vViewPosition;
-                varying vec3 vColor;
-                uniform float uTime;
-                void main() {
-                    // Sleeker radial falloff for "hi-tech" energy blob
-                    float dotNV = dot(vNormal, normalize(vViewPosition));
-                    float radial = smoothstep(0.0, 1.0, dotNV);
-                    radial = pow(radial, 2.8); // Sharper core
-                    
-                    // Energy pulse flickering
-                    float flicker = sin(uTime * 15.0 + vColor.g * 50.0) * 0.1 + 0.9;
-                    float pulse = sin(uTime * 4.0 + vColor.g * 20.0) * 0.15 + 0.85;
-                    
-                    vec3 col = vColor * pulse * flicker;
-                    float alpha = radial * 0.45 * pulse * flicker;
-                    
-                    gl_FragColor = vec4(col, alpha);
-                }
-            `,
-            transparent: true, blending: THREE.AdditiveBlending, depthWrite: false
+        /* ---- game rail: arrows + drag to scroll ---- */
+        const rail = document.getElementById('rail');
+        document.querySelectorAll('.rail-btn').forEach(b => b.addEventListener('click', () => rail.scrollBy({ left: +b.dataset.dir * 320, behavior: 'smooth' })));
+        let down = false, startX = 0, startLeft = 0, moved = 0;
+        rail.addEventListener('pointerdown', e => { if (e.pointerType !== 'mouse') return; down = true; moved = 0; startX = e.clientX; startLeft = rail.scrollLeft; });
+        addEventListener('pointermove', e => {
+            if (!down) return;
+            const dx = e.clientX - startX; moved = Math.max(moved, Math.abs(dx));
+            if (moved > 5) { rail.classList.add('dragging'); rail.scrollLeft = startLeft - dx; }
         });
+        addEventListener('pointerup', () => { down = false; setTimeout(() => rail.classList.remove('dragging'), 0); });
+        rail.addEventListener('click', e => { if (moved > 5) e.preventDefault(); }, true);
 
-        const mesh = new THREE.InstancedMesh(geometry, material, COUNT);
-        mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
-        mesh.position.x = 25; // Premium X Balance
-        mesh.position.y = 15; // Premium Y Balance
-        scene.add(mesh);
 
-        // DATA ARRAYS
-        const positions = [];
-        for (let i = 0; i < COUNT; i++) {
-            positions.push(new THREE.Vector3((Math.random() - 0.5) * 100, (Math.random() - 0.5) * 100, (Math.random() - 0.5) * 100));
-            mesh.setColorAt(i, color.setHex(0x00ff88)); // Init Color
-        }
+        /* ---- terminal feed: streams the real skill set, pauses when off screen ---- */
+        (() => {
+            const body = document.getElementById('term-body'), MAX = 9;
+            const esc = t => t.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+            const now = () => new Date().toTimeString().slice(0, 8);
+            const pad = (t, n) => t + ' ' + '.'.repeat(Math.max(2, n - t.length)) + ' ';
+            const cmd = c => ({ cmd: c });
+            const ok = (key, val) => ({ html: `<span class="t-time">[{T}]</span> <span class="t-ok">ok</span>  <span class="t-key">${esc(key)}</span><span class="t-lead">${esc(pad('', 20 - key.length).slice(1))}</span><span class="t-dim t-val">${esc(val)}</span>` });
+            const out = (t, cls = 't-dim') => ({ html: `<span class="${cls}">${esc(t)}</span>` });
+            const script = [
+                cmd('codex --load ux-design'),
+                out('resolving modules from 15+ years of practice...'),
+                ok('ux/research', 'user research · usability testing · journey mapping'),
+                ok('ux/structure', 'user flows · information architecture · interaction design'),
+                ok('ux/writing', 'ux copywriting · content design · microcopy'),
+                ok('ux/ethics', 'ethical ux · no dark patterns · accessibility (wcag 2.2)'),
+                cmd('codex --load product-design'),
+                ok('product/discovery', 'product discovery · discovery workshops · service design'),
+                ok('product/build', 'wireframing · interactive prototyping · high-fidelity ui'),
+                ok('product/scale', 'design systems · mobile ux (ios, android) · agentic ux'),
+                ok('product/domains', 'enterprise saas · back offices · igaming · fintech · healthcare'),
+                cmd('codex --report shipped'),
+                ok('impact/speed', 'average task time −40% (back-office redesign)'),
+                ok('impact/quality', 'operator errors −31% (back-office redesign)'),
+                ok('impact/scale', '10,000+ daily users on a fintech platform'),
+                ok('impact/growth', '150,000+ downloads in year one (dating app)'),
+                cmd('codex --load game-design'),
+                ok('game/concept', 'game concept development · gamification · core loops'),
+                ok('game/worlds', 'world building · storytelling · narrative design'),
+                ok('game/genres', 'merge · match-3 · run-and-gun · tower defense · slots'),
+                ok('game/ui', 'game ux/ui · hud and menus · game ui kits'),
+                ok('game/art', 'art direction · character and item design · pitch decks'),
+                ok('game/proto', 'playable prototypes → AXIOM is live'),
+                cmd('codex --load ai --mode augment'),
+                ok('ai/models', 'claude · gemini · grok'),
+                ok('ai/workflow', 'prompt engineering · ai-assisted prototyping'),
+                ok('ai/research', 'ai-assisted research synthesis'),
+                ok('ai/media', 'ai image and video generation'),
+                out('note: ai explores, a human decides.', 't-warn'),
+                cmd('codex --tools'),
+                ok('design', 'figma · figjam · miro · adobe xd · sketch · principle'),
+                ok('craft', 'photoshop · illustrator · html/css · basic react'),
+                cmd('codex --load leadership'),
+                ok('people', 'stakeholder management · strategic facilitation'),
+                ok('teams', 'cross-functional leadership · design team leadership · mentoring'),
+                ok('voice', 'design storytelling · presentation'),
+                cmd('codex --status'),
+                out('  ethics ........ no dark patterns ✓', 't-white'),
+                out('  location ...... worldwide (remote)', 't-white'),
+                out('  realms ........ 5 built · 1 slot playable', 't-white'),
+                out('  mode .......... 2082 supercharged ⚡', 't-white'),
+                out(''),
+            ];
+            const push = html => {
+                const line = document.createElement('div'); line.innerHTML = (html || '&nbsp;').replace('{T}', now());
+                body.appendChild(line);
+                while (body.children.length > MAX) body.firstElementChild.remove();
+                return line;
+            };
+            const prompt = '<span class="t-prompt">max@codexlab</span><span class="t-dim">:~$</span> ';
 
-        const PARAMS = { "scale": 555, "consume": 0.25, "jetpwr": 0.95, "accdense": 2.4, "lensstr": 0.35, "framedrag": 0.12, "hawking": 0.7, "chaos": 1.6 };
-        const addControl = (id, label, min, max, val) => PARAMS[id] !== undefined ? PARAMS[id] : val;
-
-        // SCROLL ANIMATION VARIABLES
-        const START_ROTATION = -20 * (Math.PI / 180); // Premium Perspective
-        let targetRotationY = START_ROTATION;
-        let targetRotationX = 0;
-
-        window.addEventListener('scroll', () => {
-            const scrollPercent = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight || 1);
-            // Rotate with premium response
-            targetRotationY = START_ROTATION + scrollPercent * Math.PI * 1.8;
-            targetRotationX = scrollPercent * Math.PI * 0.4;
-        });
-
-        // ANIMATION LOOP
-        const clock = new THREE.Clock();
-
-        function animate() {
-            requestAnimationFrame(animate);
-            const time = clock.getElapsedTime() * SPEED_MULT;
-
-            // Apply scroll rotation with smooth lerp
-            mesh.rotation.y += (targetRotationY - mesh.rotation.y) * 0.06;
-            mesh.rotation.x += (targetRotationX - mesh.rotation.x) * 0.06;
-
-            // Idle floating & micro-rotation
-            mesh.rotation.y += 0.0015;
-            mesh.rotation.z += 0.0005;
-            mesh.position.y = 15 + Math.sin(time * 2.0) * 1.5; 
-
-            if (material.uniforms && material.uniforms.uTime) {
-                material.uniforms.uTime.value = time * 1.5;
+            if (reduce) {   // no animation: show a still snapshot
+                script.slice(0, MAX).forEach(s => push(s.cmd ? prompt + `<span class="t-white">${esc(s.cmd)}</span>` : s.html));
+                return;
             }
+            let i = 0, visible = false, timer = null;
+            const next = () => {
+                timer = null;
+                if (!visible) return;
+                const step = script[i]; i = (i + 1) % script.length;
+                if (!step.cmd) {
+                    push(step.html);
+                    const before = script[i].cmd ? 2200 + Math.random() * 1200 : 0;   // a pause to "read" before typing again
+                    timer = setTimeout(next, before || 900 + Math.random() * 700);
+                    return;
+                }
+                // type the command letter by letter
+                const line = push(prompt + '<span class="t-white"></span><span class="caret"></span>');
+                const target = line.querySelector('.t-white'); let k = 0;
+                const type = () => {
+                    if (!visible) { timer = setTimeout(type, 300); return; }
+                    target.textContent = step.cmd.slice(0, ++k);
+                    if (k < step.cmd.length) {
+                        const ch = step.cmd[k - 1];
+                        let d = 110 + Math.random() * 120;
+                        if (ch === ' ') d += 120 + Math.random() * 160;
+                        if (ch === '-' && step.cmd[k] === '-') d += 200;
+                        if (Math.random() < .06) d += 350;                      // the occasional hesitation
+                        timer = setTimeout(type, d);
+                    }
+                    else timer = setTimeout(() => { line.querySelector('.caret').remove(); next(); }, 700 + Math.random() * 400);   // "press enter"
+                };
+                timer = setTimeout(type, 600 + Math.random() * 400);
+            };
+            new IntersectionObserver(([e]) => {
+                visible = e.isIntersecting;
+                if (visible && !timer) next();
+            }).observe(body);
+        })();
 
-            const count = COUNT;
-            for (let i = 0; i < COUNT; i++) {
-                const scale = addControl("scale", "Scale", 15, 100, 55);
-                const consumeSpd = addControl("consume", "Infall Speed", 0, 3, 1.0);
-                const jetPower = addControl("jetpwr", "Jet Power", 0, 3, 1.4);
-                const accDensity = addControl("accdense", "Disk Density", 0, 3, 1.2);
-                const lensStr = addControl("lensstr", "Lens Warp", 0, 2, 0.8);
-                const frameDrag = addControl("framedrag", "Frame Drag", 0, 2, 0.6);
-                const hawkingT = addControl("hawking", "Hawking Temp", 0, 1, 0.5);
-                const chaos = addControl("chaos", "Chaos Field", 0, 2, 0.4);
-
-                const TAU = 6.28318530718;
-                const t = i / count;
-
-                const mDisk = t < 0.35 ? 1.0 : 0.0;
-                const mISCO = t >= 0.35 && t < 0.48 ? 1.0 : 0.0;
-                const mPhot = t >= 0.48 && t < 0.58 ? 1.0 : 0.0;
-                const mErgo = t >= 0.58 && t < 0.67 ? 1.0 : 0.0;
-                const mJet = t >= 0.67 && t < 0.76 ? 1.0 : 0.0;
-                const mSheath = t >= 0.76 && t < 0.84 ? 1.0 : 0.0;
-                const mLens = t >= 0.84 && t < 0.92 ? 1.0 : 0.0;
-                const mHawk = t >= 0.92 ? 1.0 : 0.0;
-
-                const dT = t / 0.35;
-                const arm = Math.floor(dT * 5.0);
-                const armT = (dT * 5.0) % 1.0;
-                const dAng = armT * TAU + arm * (TAU / 5.0) + time * (0.5 + armT * consumeSpd) + dT * TAU * 22.0;
-                const dRad = 7.5 + dT * dT * 38.0 * accDensity;
-                const dWarp = Math.sin(dT * TAU * 3.0 + time * 0.4) * (0.8 + arm * 0.12);
-                const dCurl = Math.cos(dAng * 0.5 + time * 0.2) * chaos * 2.0;
-                const dX = Math.cos(dAng + dCurl * 0.05) * dRad;
-                const dZ = Math.sin(dAng + dCurl * 0.05) * dRad;
-                const dY = dWarp + Math.sin(dT * TAU * 7.0 + time * 0.9) * 1.1 + dCurl * 0.3;
-
-                const iT = (t - 0.35) / 0.13;
-                const iAng = iT * TAU * 18.0 + time * (1.8 + iT * consumeSpd * 2.0);
-                const iRad = 7.5 * (1.0 - iT * 0.55) + Math.sin(iT * TAU * 5.0 + time) * 0.4;
-                const iX = Math.cos(iAng) * iRad;
-                const iZ = Math.sin(iAng) * iRad;
-                const iY = (iT - 0.5) * 1.2 + Math.sin(iAng * 3.0 + time * 2.0) * 0.3;
-
-                const pT = (t - 0.48) / 0.10;
-                const pPhi = pT * TAU * 31.0 + time * 1.4;
-                const pTheta = pT * TAU * 11.7 + time * 0.7;
-                const pRad = 9.75 + Math.sin(pT * TAU * 5.0 + time * 2.5) * 0.15;
-                const pX = Math.cos(pPhi) * Math.sin(pTheta) * pRad;
-                const pY = Math.cos(pTheta) * pRad;
-                const pZ = Math.sin(pPhi) * Math.sin(pTheta) * pRad;
-
-                const eT = (t - 0.58) / 0.09;
-                const eSpin = frameDrag * 2.8;
-                const eAng = eT * TAU * 14.0 + time * eSpin + eT * TAU * 8.0;
-                const eRad = 8.5 + Math.sin(eT * TAU * 4.0 + time * 0.5) * 1.5;
-                const eTilt = eT * Math.PI * 0.6 - Math.PI * 0.3;
-                const eX = Math.cos(eAng) * eRad;
-                const eZ = Math.sin(eAng) * eRad * Math.cos(eTilt * 0.3);
-                const eY = Math.sin(eAng) * eRad * Math.sin(eTilt * 0.3) + Math.sin(eT * TAU * 9.0 + time) * 0.8;
-
-                const jT = (t - 0.67) / 0.09;
-                const jSide = jT < 0.5 ? 1.0 : -1.0;
-                const jFrac = (jT % 0.5) / 0.5;
-                const jH = jSide * (1.0 + jFrac * jFrac * jFrac * 80.0 * jetPower);
-                const jAng = jFrac * TAU * 12.0 + time * (3.0 + jFrac * 4.0);
-                const jRad = Math.pow(1.0 - jFrac, 1.5) * 5.0 * jetPower + Math.sin(jFrac * TAU * 6.0 + time * 4.0) * 0.3 * jetPower;
-                const jKink = Math.sin(jH * 0.08 + time * 2.0) * chaos * 1.5;
-                const jX = Math.cos(jAng) * jRad + jKink;
-                const jZ = Math.sin(jAng) * jRad;
-                const jY = jH;
-
-                const sT = (t - 0.76) / 0.08;
-                const sSide = sT < 0.5 ? 1.0 : -1.0;
-                const sFrac = (sT % 0.5) / 0.5;
-                const sH = sSide * (2.0 + sFrac * 55.0 * jetPower * 0.7);
-                const sAng = sFrac * TAU * 6.0 + time * 1.5;
-                const sRad = (1.0 - sFrac * 0.4) * 8.0 * jetPower + Math.sin(sFrac * TAU * 3.0 + time * 2.0) * 1.0;
-                const sX = Math.cos(sAng) * sRad;
-                const sZ = Math.sin(sAng) * sRad;
-                const sY = sH;
-
-                const lT = (t - 0.84) / 0.08;
-                const lArc = Math.floor(lT * 8.0);
-                const lFrac = (lT * 8.0) % 1.0;
-                const lIncl = lArc * 0.39 + 0.2;
-                const lAng = lFrac * TAU * (0.65 + lArc * 0.08) + time * (0.15 + lArc * 0.06);
-                const lRad = 14.0 + lArc * 4.0 + Math.sin(time * 0.3 + lArc) * 1.5;
-                const lX0 = Math.cos(lAng) * lRad;
-                const lY0 = Math.sin(lAng) * lRad * Math.sin(lIncl);
-                const lZ0 = Math.sin(lAng) * lRad * Math.cos(lIncl);
-                const lDst = Math.sqrt(lX0 * lX0 + lY0 * lY0 + lZ0 * lZ0) + 0.001;
-                const lW = lensStr / (lDst * 0.6 + 1.5);
-                const lX = lX0 * (1.0 - lW);
-                const lY = lY0 * (1.0 - lW);
-                const lZ = lZ0 * (1.0 - lW);
-
-                const hT = (t - 0.92) / 0.08;
-                const hPhi = hT * TAU * 53.0 + time * (0.8 + hawkingT * 3.0);
-                const hThet = hT * TAU * 17.3 + time * (0.5 + hawkingT * 1.5);
-                const hRad = 9.5 + hawkingT * 8.0 + Math.sin(hT * TAU * 4.0 + time * 2.0) * hawkingT * 3.0;
-                const hJit = chaos * (Math.sin(hT * 197.3 + time * 5.0) * 2.0);
-                const hX = Math.cos(hPhi) * Math.sin(hThet) * hRad + hJit;
-                const hY = Math.cos(hThet) * hRad + hJit * 0.5;
-                const hZ = Math.sin(hPhi) * Math.sin(hThet) * hRad;
-
-                const rx = dX * mDisk + iX * mISCO + pX * mPhot + eX * mErgo + jX * mJet + sX * mSheath + lX * mLens + hX * mHawk;
-                const ry = dY * mDisk + iY * mISCO + pY * mPhot + eY * mErgo + jY * mJet + sY * mSheath + lY * mLens + hY * mHawk;
-                const rz = dZ * mDisk + iZ * mISCO + pZ * mPhot + eZ * mErgo + jZ * mJet + sZ * mSheath + lZ * mLens + hZ * mHawk;
-
-                target.set(rx * scale * 0.018, ry * scale * 0.018, rz * scale * 0.018);
-
-                const dist = Math.sqrt(rx * rx + ry * ry + rz * rz) + 0.01;
-                const heat = 1.0 / (dist * 0.045 + 0.28);
-                // Toned down heat for less brightness overall
-                const heatC = Math.min(heat * 0.7, 1.0);
-
-                // Base color: shifting to dark blues and indigos
-                // Hue: ~0.6 (blue) to ~0.7 (purple/indigo)
-                let hue = 0.65 - heatC * 0.1;
-                let sat = 0.80 - heatC * 0.3;
-                // Dimmer base lightness
-                let lite = 0.05 + heatC * 0.3;
-
-                // Photon sphere: deep cyan
-                hue += mPhot * (0.55 - hue) * 0.9;
-                sat += mPhot * (0.70 - sat) * 0.8;
-                lite += mPhot * 0.15;
-
-                // Ergosphere: subtle pulsing royal blue
-                const ergoPhase = Math.sin(time * 3.0 + t * TAU * 4.0) * 0.5 + 0.5;
-                hue += mErgo * (0.62 + ergoPhase * 0.05 - hue) * 0.6;
-                lite += mErgo * 0.08;
-
-                // Jets: ice blue fading to dark blue
-                hue += mJet * (0.58 - hue) * 0.5;
-                sat += mJet * (0.60 - sat) * 0.7;
-                lite += mJet * 0.20;
-
-                // Cocoon sheath: muted navy
-                hue += mSheath * (0.66 - hue) * 0.6;
-                lite += mSheath * 0.05;
-
-                // Lensing arcs: very faint ghostly blue
-                hue += mLens * (0.60 - hue) * 0.7;
-                sat += mLens * (0.40 - sat) * 0.6;
-                lite += mLens * 0.04;
-
-                // Hawking corona: sparse, subtle bright blue sparks
-                const hawkFlicker = Math.abs(Math.sin(t * 1337.7 + time * 8.0));
-                hue += mHawk * (0.60 - hue) * 0.8;
-                sat += mHawk * (0.60 - sat) * 0.7;
-                lite += mHawk * (hawkFlicker * 0.3 * hawkingT + 0.02);
-
-                color.setHSL((hue + 1.0) % 1.0, Math.max(0.0, sat), Math.min(1.0, lite));
-
-                positions[i].lerp(target, 0.1);
-                dummy.position.copy(positions[i]);
-                dummy.updateMatrix();
-                mesh.setMatrixAt(i, dummy.matrix);
-                mesh.setColorAt(i, color);
+        /* ---- 3D logo: stack darker copies behind the face to give it thickness ---- */
+        const logo = document.getElementById('logo3d');
+        if (logo) {
+            const LAYERS = 18, STEP = 2;     // px between layers
+            const shape = 'M38.5 12.2 24 4 7 13.6v20.8L24 44l14.5-8.2M16 16.5 31.5 31.5M31.5 16.5 16 31.5';
+            const from = [30, 27, 75], to = [67, 56, 202];   // deep indigo at the back → brand indigo near the face
+            const face = logo.querySelector('.logo3d-face');
+            for (let i = LAYERS; i >= 1; i--) {
+                const t = 1 - i / LAYERS, c = from.map((v, k) => Math.round(v + (to[k] - v) * t)).join(',');
+                const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                svg.setAttribute('viewBox', '0 0 48 48'); svg.setAttribute('fill', 'none');
+                svg.innerHTML = `<path d="${shape}" stroke="rgb(${c})" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="40.5" cy="24" r="2.6" fill="rgb(${c})"/>`;
+                svg.style.transform = `translateZ(${-i * STEP}px)`;
+                logo.insertBefore(svg, face);
             }
-            mesh.instanceMatrix.needsUpdate = true;
-            mesh.instanceColor.needsUpdate = true;
-
-            composer.render();
         }
-        animate();
 
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            composer.setSize(window.innerWidth, window.innerHeight);
+        const mio = new IntersectionObserver(es => es.forEach(e => e.target.querySelectorAll('.marquee').forEach(m => m.classList.toggle('paused', !e.isIntersecting))));
+        document.querySelectorAll('#contact').forEach(el => mio.observe(el));
+
+        if (!finePointer || reduce) return;   // everything below is pointer-only decoration
+
+        /* ---- pointer label over cards; the loop runs only while the bubble is moving ---- */
+        const ring = document.querySelector('.cursor-ring'), label = ring.querySelector('span');
+        let mx = 0, my = 0, rx = 0, ry = 0, running = false, active = null;
+        const tick = () => {
+            rx += (mx - rx) * .25; ry += (my - ry) * .25;
+            ring.style.transform = `translate(${rx}px, ${ry}px)`;
+            if (Math.abs(mx - rx) + Math.abs(my - ry) > .5) requestAnimationFrame(tick); else running = false;
+        };
+        addEventListener('pointermove', e => {
+            mx = e.clientX; my = e.clientY;
+            if (!active) return;
+            if (!running) { running = true; requestAnimationFrame(tick); }
+        }, { passive: true });
+        document.addEventListener('pointerover', e => {
+            const el = rail.classList.contains('dragging') ? rail : e.target.closest('[data-cursor]');
+            if (el === active) return;
+            active = el;
+            if (el) {
+                if (!ring.classList.contains('on')) { rx = mx; ry = my; ring.style.transform = `translate(${rx}px, ${ry}px)`; }
+                label.textContent = el.dataset.cursor;
+            }
+            ring.classList.toggle('on', !!el);
         });
+        document.addEventListener('pointerleave', () => { active = null; ring.classList.remove('on'); });
+
+        /* ---- spotlight cards: light follows the pointer ---- */
+        document.querySelectorAll('.spot').forEach(card => card.addEventListener('pointermove', e => {
+            const r = card.getBoundingClientRect();
+            card.style.setProperty('--x', (e.clientX - r.left) + 'px'); card.style.setProperty('--y', (e.clientY - r.top) + 'px');
+        }));
+
+        /* ---- tilt on work cards ---- */
+        document.querySelectorAll('.tilt').forEach(card => {
+            card.addEventListener('pointermove', e => {
+                const r = card.getBoundingClientRect(), px = (e.clientX - r.left) / r.width - .5, py = (e.clientY - r.top) / r.height - .5;
+                card.style.transform = `perspective(1000px) rotateX(${-py * 5}deg) rotateY(${px * 5}deg) translateY(-4px)`;
+            });
+            card.addEventListener('pointerleave', () => card.style.transform = '');
+        });
+
+        /* ---- magnetic buttons ---- */
+        document.querySelectorAll('.magnetic').forEach(b => {
+            b.style.transition = 'transform .4s cubic-bezier(.2,.8,.2,1), background-color .2s, box-shadow .3s, border-color .2s';
+            b.addEventListener('pointermove', e => {
+                const r = b.getBoundingClientRect();
+                b.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * .25}px, ${(e.clientY - r.top - r.height / 2) * .35}px)`;
+            });
+            b.addEventListener('pointerleave', () => b.style.transform = '');
+        });
+
+        /* ---- 3D logo tilts toward the pointer (max ~10°), eases home, sheen follows ---- */
+        if (logo) {
+            const sheen = document.getElementById('l3-sheen');
+            const BASE_X = 8, BASE_Y = -16, MAX = 10;
+            let tx = 0, ty = 0, cx = 0, cy = 0, moving = false;
+            const frame = () => {
+                cx += (tx - cx) * .08; cy += (ty - cy) * .08;
+                logo.style.transform = `rotateX(${BASE_X + cy}deg) rotateY(${BASE_Y + cx}deg)`;
+                const o = (cx / MAX) * 14;   // slide the highlight across the face
+                sheen.setAttribute('x1', o - 4); sheen.setAttribute('x2', o + 44);
+                if (Math.abs(tx - cx) + Math.abs(ty - cy) > .02) requestAnimationFrame(frame); else moving = false;
+            };
+            const kick = () => { if (!moving) { moving = true; requestAnimationFrame(frame); } };
+            addEventListener('pointermove', e => {
+                if (scrollY > innerHeight) return;
+                tx = (e.clientX / innerWidth - .5) * 2 * MAX;          // ±10° left/right
+                ty = -(e.clientY / innerHeight - .5) * 2 * MAX * .7;   // ±7° up/down
+                kick();
+            }, { passive: true });
+            document.addEventListener('pointerleave', () => { tx = 0; ty = 0; kick(); });
+        }
+    })();
     </script>
 </body>
 

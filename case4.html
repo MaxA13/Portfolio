@@ -72,6 +72,7 @@
         @keyframes live { 0% { box-shadow: 0 0 0 0 rgba(255, 77, 79, .6); } 70% { box-shadow: 0 0 0 7px rgba(255, 77, 79, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 77, 79, 0); } }
         @media (prefers-reduced-motion: reduce) { .live-dot { animation: none; } }
     </style>
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="c5802c43-19a1-4467-8fc4-cff970abae1f" data-domains="codexlab.vip"></script>
 </head>
 
 <body class="antialiased">
@@ -306,7 +307,7 @@
                 </p>
             </div>
             <div id="proto-box" class="reveal relative w-full overflow-hidden rounded-2xl border border-brand-500/30 bg-black shadow-[0_0_60px_rgba(59,130,246,0.15)]" style="aspect-ratio:16/10">
-                <button id="proto-start" type="button" class="group absolute inset-0 flex h-full w-full items-center justify-center" aria-label="Load the Ortex prototype">
+                <button id="proto-start" data-umami-event="Open prototype" data-umami-event-case="ortex" type="button" class="group absolute inset-0 flex h-full w-full items-center justify-center" aria-label="Load the Ortex prototype">
                     <img src="img/case4_1.jpg" alt="" class="absolute inset-0 h-full w-full object-cover opacity-50 transition-opacity duration-300 group-hover:opacity-70">
                     <span class="relative flex flex-col items-center gap-3">
                         <span class="flex h-20 w-20 items-center justify-center rounded-full bg-brand-500 text-white shadow-[0_0_40px_rgba(59,130,246,0.6)] transition-transform duration-300 group-hover:scale-110">
@@ -320,11 +321,11 @@
             <div class="reveal flex w-full flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
                 <p class="text-sm text-neutral-400 max-w-2xl">No backend: the chat is scripted and all data is simulated. The frame shows the desktop layout scaled down; full screen or a new tab shows it at full size.</p>
                 <div class="flex flex-shrink-0 items-center gap-5">
-                    <button id="proto-fullscreen" type="button"
+                    <button id="proto-fullscreen" data-umami-event="Prototype full screen" data-umami-event-case="ortex" type="button"
                         class="inline-flex items-center gap-2 rounded-full bg-brand-500 px-6 py-3 text-sm font-semibold text-white transition-all hover:shadow-[0_0_30px_rgba(59,130,246,0.5)] hover:-translate-y-0.5">
                         <i data-feather="maximize" class="h-4 w-4"></i> Full screen
                     </button>
-                    <a href="prototypes/ortex/index.html" target="_blank" rel="noopener"
+                    <a href="prototypes/ortex/index.html" target="_blank" data-umami-event="Prototype new tab" data-umami-event-case="ortex" rel="noopener"
                         class="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-400 transition-colors hover:text-white">
                         Open in new tab <i data-feather="arrow-up-right" class="h-4 w-4"></i>
                     </a>
@@ -427,7 +428,7 @@
             <span class="text-center text-lg text-neutral-400">
                 Bringing AI agents into a complex product?
             </span>
-            <a href="index.html#contact"
+            <a href="index.html#contact" data-umami-event="Get in touch" data-umami-event-page="case4"
                 class="group inline-flex items-center justify-center gap-2 rounded-full bg-white px-8 py-3.5 text-sm font-semibold text-neutral-950 transition-all hover:bg-neutral-200 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:-translate-y-0.5 active:translate-y-0">
                 Get in touch
                 <i data-feather="arrow-right"

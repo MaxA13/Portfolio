@@ -61,6 +61,7 @@
     <style>
         body { background-color: #07090D; }
     </style>
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="c5802c43-19a1-4467-8fc4-cff970abae1f" data-domains="codexlab.vip"></script>
 </head>
 
 <body class="antialiased">
@@ -118,7 +119,7 @@
                 </div>
             </div>
             <div id="proto-box" class="reveal relative w-full overflow-hidden rounded-2xl border border-brand-500/30 bg-black shadow-[0_0_60px_rgba(25,227,255,0.15)]" style="aspect-ratio:16/9">
-                <button id="proto-start" type="button" class="group absolute inset-0 flex h-full w-full items-center justify-center" aria-label="Load and play the AXIOM prototype">
+                <button id="proto-start" data-umami-event="Open prototype" data-umami-event-case="axiom" type="button" class="group absolute inset-0 flex h-full w-full items-center justify-center" aria-label="Load and play the AXIOM prototype">
                     <img src="img/games/axiom/key-art.jpg" alt="" class="absolute inset-0 h-full w-full object-cover opacity-70 transition-opacity duration-300 group-hover:opacity-90">
                     <span class="relative flex flex-col items-center gap-3">
                         <span class="flex h-20 w-20 items-center justify-center rounded-full bg-brand-500 text-neutral-950 shadow-[0_0_40px_rgba(25,227,255,0.6)] transition-transform duration-300 group-hover:scale-110">
@@ -133,11 +134,11 @@
                 <p class="text-sm text-neutral-400 max-w-2xl">No backend and a fake balance; the outcome math is tuned for demo moments:
                     a win about 1 in 3 spins, a Big Win about 1 in 25. Sound is off by default. Best on a desktop or a phone held sideways. Click the game once to use the keyboard shortcuts.</p>
                 <div class="flex flex-shrink-0 items-center gap-5">
-                    <button id="proto-fullscreen" type="button"
+                    <button id="proto-fullscreen" data-umami-event="Prototype full screen" data-umami-event-case="axiom" type="button"
                         class="inline-flex items-center gap-2 rounded-full bg-brand-500 px-6 py-3 text-sm font-semibold text-neutral-950 transition-all hover:shadow-[0_0_30px_rgba(25,227,255,0.5)] hover:-translate-y-0.5">
                         <i data-feather="maximize" class="h-4 w-4"></i> Full screen
                     </button>
-                    <a href="prototypes/axiom/index.html" target="_blank" rel="noopener"
+                    <a href="prototypes/axiom/index.html" target="_blank" data-umami-event="Prototype new tab" data-umami-event-case="axiom" rel="noopener"
                         class="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-400 transition-colors hover:text-white">
                         Open in new tab <i data-feather="arrow-up-right" class="h-4 w-4"></i>
                     </a>
@@ -536,7 +537,7 @@
                     class="inline-flex items-center justify-center gap-2 rounded-full border border-neutral-700 bg-neutral-800 px-8 py-3.5 text-sm font-semibold text-white transition-all hover:bg-neutral-700 hover:-translate-y-0.5">
                     <i data-feather="play" class="h-4 w-4"></i> Play the prototype
                 </a>
-                <a href="index.html#contact"
+                <a href="index.html#contact" data-umami-event="Get in touch" data-umami-event-page="game-axiom"
                     class="group inline-flex items-center justify-center gap-2 rounded-full bg-white px-8 py-3.5 text-sm font-semibold text-neutral-950 transition-all hover:bg-neutral-200 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:-translate-y-0.5">
                     Get in touch
                     <i data-feather="arrow-right" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"></i>

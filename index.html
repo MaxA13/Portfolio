@@ -242,6 +242,7 @@
         .live-dot { position: relative; display: inline-flex; width: 10px; height: 10px; }
         .live-dot::before, .live-dot::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: #19E3FF; }
         .live-dot::before { animation: ping 1.4s cubic-bezier(0, 0, .2, 1) infinite; opacity: .75; }
+        .live-dot.red::before, .live-dot.red::after { background: #ff4d4f; }
         @keyframes ping { 75%, 100% { transform: scale(2.2); opacity: 0; } }
 
         @media (prefers-reduced-motion: reduce) {
@@ -383,6 +384,23 @@
             </div>
 
             <div class="grid auto-rows-[minmax(260px,auto)] grid-cols-1 gap-5 md:grid-cols-6">
+
+                <!-- Case 4: Ortex -->
+                <a href="case4.html" data-cursor="Try it" class="spot tilt rv group relative flex overflow-hidden rounded-[2rem] border border-neutral-800 bg-neutral-900 md:col-span-6 max-md:h-[460px] md:h-[420px]">
+                    <img class="cover absolute inset-0 h-full w-full object-cover md:w-[64%]" src="img/project4.jpg" alt="Ortex AI back office: live dashboard with an AI copilot and a 2FA approval dialog">
+                    <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/50 to-transparent md:bg-gradient-to-l md:from-neutral-950 md:via-neutral-950/90 md:via-38% md:to-transparent"></div>
+                    <span class="absolute left-7 top-7 z-10 inline-flex items-center gap-2 rounded-full border border-[#ff4d4f]/50 bg-neutral-950/70 px-4 py-2 text-xs font-bold uppercase tracking-[0.15em] text-[#ff7875] shadow-[0_0_24px_rgba(255,77,79,0.3)]"><i class="live-dot red"></i>Live prototype</span>
+                    <div class="relative z-10 mt-auto p-7 md:my-auto md:ml-auto md:max-w-[42%] md:p-10">
+                        <p class="mb-2 text-xs font-medium uppercase tracking-wide text-[#f759ab]">Case study · AI product concept</p>
+                        <h3 class="font-heading text-3xl font-semibold">Ortex: AI Back Office</h3>
+                        <p class="mt-2 font-light text-neutral-300">An AI agent watches the numbers and proposes actions. A person approves every money move with 2FA.</p>
+                        <div class="mt-5 flex flex-wrap gap-2">
+                            <span class="rounded-full border border-neutral-700/60 bg-neutral-900/70 px-3.5 py-1.5 text-xs text-neutral-300">AI agent UX</span>
+                            <span class="rounded-full border border-neutral-700/60 bg-neutral-900/70 px-3.5 py-1.5 text-xs text-neutral-300">Ant Design</span>
+                            <span class="rounded-full border border-neutral-700/60 bg-neutral-900/70 px-3.5 py-1.5 text-xs text-neutral-300">Live data</span>
+                        </div>
+                    </div>
+                </a>
 
                 <!-- AXIOM -->
                 <a href="game-axiom.html" data-cursor="Play" class="spot tilt rv group relative overflow-hidden rounded-[2rem] border border-neutral-800 bg-neutral-900 md:col-span-4 md:row-span-2 max-md:h-[460px]">

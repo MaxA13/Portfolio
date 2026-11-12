@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ortex: AI Back Office with a Human in Charge – UX Case Study | Max Alexandrov</title>
+    <!-- SEO -->
+    <meta name="description" content="A concept iGaming back office where an AI agent watches the numbers and proposes actions, and a person approves every money move with 2FA. Live prototype built on Ant Design.">
+    <link rel="canonical" href="https://codexlab.vip/case4.html">
+    <meta name="author" content="Max Alexandrov">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="CodexLab">
+    <meta property="og:title" content="Ortex: AI Back Office with a Human in Charge – UX Case Study | Max Alexandrov">
+    <meta property="og:description" content="A concept iGaming back office where an AI agent proposes actions and a person approves every money move with 2FA. Live prototype built on Ant Design.">
+    <meta property="og:url" content="https://codexlab.vip/case4.html">
+    <meta property="og:image" content="https://codexlab.vip/img/project4.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Ortex: AI Back Office with a Human in Charge – UX Case Study | Max Alexandrov">
+    <meta name="twitter:description" content="A concept iGaming back office where an AI agent proposes actions and a person approves every money move with 2FA. Live prototype built on Ant Design.">
+    <meta name="twitter:image" content="https://codexlab.vip/img/project4.jpg">
+    <!-- /SEO -->
+    <link rel="icon" type="image/svg+xml" href="img/logo/codexlab-mark.svg">
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        neutral: {
+                            950: '#0a0a0a',
+                            900: '#171717',
+                            800: '#262626',
+                            700: '#404040',
+                            400: '#a3a3a3',
+                            300: '#d4d4d4',
+                        },
+                        brand: {
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                        },
+                        ai: {
+                            400: '#f759ab',
+                            500: '#eb2f96',
+                        }
+                    },
+                    spacing: {
+                        '72': '18rem',
+                        '112': '28rem',
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="css/style.css" rel="stylesheet">
+    <style>
+        /* The prototype renders at desktop size and scales to fit the box, so visitors see the docked copilot. */
+        #proto-box iframe { position: absolute; left: 0; top: 0; width: 1440px; height: 900px; border: 0; transform-origin: 0 0; }
+        .live-dot { width: 8px; height: 8px; border-radius: 50%; background: #ff4d4f; display: inline-block; animation: live 1.6s infinite; }
+        @keyframes live { 0% { box-shadow: 0 0 0 0 rgba(255, 77, 79, .6); } 70% { box-shadow: 0 0 0 7px rgba(255, 77, 79, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 77, 79, 0); } }
+        @media (prefers-reduced-motion: reduce) { .live-dot { animation: none; } }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <!-- Navigation -->
+    <nav
+        class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-4 py-4 bg-[#0a0a0a]/80 backdrop-blur-md border-b border-neutral-800/50 sm:px-12 reveal">
+        <a href="index.html"
+            class="group flex items-center gap-2 text-sm font-medium text-neutral-400 transition-all hover:text-white">
+            <i data-feather="arrow-left" class="h-4 w-4 transition-transform group-hover:-translate-x-1"></i> All work </a>
+        <div class="flex items-center gap-3">
+            <img src="img/logo/codexlab-mark.svg" alt="CodexLab logo" class="h-8 w-8">
+            <span class="font-semibold text-white tracking-wide text-sm hidden md:block">Codex<span class="font-normal text-neutral-400">Lab</span></span>
+        </div>
+    </nav>
+
+    <div
+        class="relative flex w-full flex-col items-center gap-10 px-4 pt-24 pb-12 md:gap-16 md:px-8 md:pt-32 md:pb-20 lg:pb-24 lg:pt-36 overflow-hidden">
+
+        <!-- Ambient Background Glows -->
+        <div class="fixed inset-0 z-0 bg-grid pointer-events-none opacity-40"></div>
+        <div
+            class="absolute right-[-10%] top-[5%] z-0 h-96 w-96 rounded-full bg-brand-600/20 blur-[100px] pointer-events-none">
+        </div>
+        <div
+            class="absolute left-[-10%] top-[40%] z-0 h-72 w-72 rounded-full bg-ai-500/15 blur-[90px] pointer-events-none">
+        </div>
+
+        <!-- Header Section -->
+        <div class="reveal relative z-10 flex w-full max-w-5xl flex-col items-center gap-6 text-center">
+            <div class="flex flex-wrap items-center justify-center gap-2">
+                <span
+                    class="inline-flex items-center gap-1 rounded-full bg-brand-500/10 px-3 py-1 text-sm font-medium text-brand-400 border border-brand-500/20">
+                    Case Study · Concept
+                </span>
+                <span
+                    class="inline-flex items-center gap-2 rounded-full bg-[#ff4d4f]/10 px-3 py-1 text-sm font-medium text-[#ff7875] border border-[#ff4d4f]/30">
+                    <i class="live-dot"></i> Live prototype
+                </span>
+            </div>
+            <h1 class="w-full text-3xl font-bold leading-tight tracking-tight text-white md:text-5xl lg:text-6xl">
+                Ortex: an AI back office where a person stays in charge
+            </h1>
+            <p class="w-full max-w-2xl text-base leading-relaxed text-neutral-400 md:text-lg lg:text-xl">
+                A concept for an iGaming back office with an AI agent that watches the numbers and suggests what to do. It can propose moving money, but it can't move a cent until a person approves with 2FA.
+            </p>
+            <a href="#play"
+                class="group inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3 text-sm font-semibold text-neutral-950 transition-all hover:bg-neutral-200 hover:-translate-y-0.5">
+                Try the prototype
+                <i data-feather="arrow-down" class="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5"></i>
+            </a>
+        </div>
+
+        <!-- Hero image -->
+        <div class="reveal relative z-10 w-full max-w-5xl">
+            <div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+                <img class="block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-[1.02]"
+                    src="img/case4_1.jpg" alt="Ortex dashboard: live KPIs, AI revenue forecast, top games, AI risk insights and the AI copilot" />
+            </div>
+        </div>
+
+        <!-- At a glance -->
+        <div class="relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-4">
+            <h2 class="reveal text-2xl font-semibold tracking-tight text-white">
+                At a Glance
+            </h2>
+            <div class="grid w-full grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
+                <div
+                    class="reveal flex flex-col items-center justify-center gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 text-center transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)]">
+                    <span class="text-3xl font-bold tracking-tight text-brand-400 md:text-4xl">2</span>
+                    <span class="text-sm text-neutral-400">Figma screens turned into a working app</span>
+                </div>
+                <div
+                    class="reveal delay-100 flex flex-col items-center justify-center gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 text-center transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_rgba(235,47,150,0.15)]">
+                    <span class="text-3xl font-bold tracking-tight text-ai-400 md:text-4xl">2FA</span>
+                    <span class="text-sm text-neutral-400">on every money move the agent proposes</span>
+                </div>
+                <div
+                    class="reveal delay-200 flex flex-col items-center justify-center gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 text-center transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)]">
+                    <span class="text-3xl font-bold tracking-tight text-brand-400 md:text-4xl">~1/s</span>
+                    <span class="text-sm text-neutral-400">simulated live events driving the KPIs</span>
+                </div>
+                <div
+                    class="reveal delay-300 flex flex-col items-center justify-center gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 text-center transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)]">
+                    <span class="text-3xl font-bold tracking-tight text-brand-400 md:text-4xl">400px</span>
+                    <span class="text-sm text-neutral-400">works from wide desktop down to phone width</span>
+                </div>
+            </div>
+            <div class="reveal grid w-full gap-4 md:grid-cols-3">
+                <div class="rounded-xl border border-neutral-800 bg-neutral-900/60 p-5">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-neutral-500">Role</p>
+                    <p class="mt-1 text-neutral-300">Concept, UX, UI and front-end prototype</p>
+                </div>
+                <div class="rounded-xl border border-neutral-800 bg-neutral-900/60 p-5">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-neutral-500">Tools</p>
+                    <p class="mt-1 text-neutral-300">Figma, Ant Design 5, React, Claude Code</p>
+                </div>
+                <div class="rounded-xl border border-neutral-800 bg-neutral-900/60 p-5">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-neutral-500">Type</p>
+                    <p class="mt-1 text-neutral-300">Personal concept. All data is fictional.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section: The idea -->
+        <div class="reveal relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-12">
+            <div class="flex w-full flex-col items-start gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-700 bg-neutral-800 shadow-sm">
+                        <i data-feather="compass" class="h-5 w-5 text-neutral-300"></i>
+                    </div>
+                    <span class="text-2xl font-semibold tracking-tight text-white"> The Idea </span>
+                </div>
+                <p class="text-base text-neutral-400 max-w-3xl">
+                    After years of designing casino and jackpot back offices, I kept seeing the same pattern: operators spend their day watching numbers and reacting to them. An AI agent can do the watching. The hard part is the reacting: in a business that moves real money, nobody wants a bot that acts on its own.
+                </p>
+                <p class="text-base text-neutral-400 max-w-3xl">
+                    So Ortex asks one question: <span class="text-white">how much can an agent do for an operator while the operator stays in charge of every decision that matters?</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- Section: Agent suggests, person decides -->
+        <div class="reveal relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-12">
+            <div class="flex w-full flex-col items-start gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="flex h-10 w-10 items-center justify-center rounded-lg border border-ai-500/30 bg-ai-500/10 shadow-sm">
+                        <i data-feather="shield" class="h-5 w-5 text-ai-400"></i>
+                    </div>
+                    <span class="text-2xl font-semibold tracking-tight text-white"> The Agent Suggests, a Person Decides </span>
+                </div>
+                <p class="text-base text-neutral-400 max-w-3xl">
+                    The copilot spots a liquidity risk for a Brazilian holiday weekend and recommends moving $500,000 into the withdrawal pool. It shows the recommendation as a card with three clear choices, and nothing happens until someone picks one.
+                </p>
+            </div>
+            <div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+                <img class="block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-[1.02]"
+                    src="img/case4_2.jpg" alt="The copilot recommends a $500,000 reserve transfer; approving it opens a 2FA dialog" loading="lazy" />
+            </div>
+            <div class="grid w-full gap-4 md:grid-cols-2">
+                <div class="rounded-xl border border-neutral-700 bg-neutral-800/50 p-5">
+                    <p class="font-semibold text-white">Approve needs 2FA</p>
+                    <p class="mt-1 text-sm text-neutral-400">The dialog repeats the amount, source, destination and mode, so the person confirms exactly what will happen.</p>
+                </div>
+                <div class="rounded-xl border border-neutral-700 bg-neutral-800/50 p-5">
+                    <p class="font-semibold text-white">Every decision leaves a trace</p>
+                    <p class="mt-1 text-sm text-neutral-400">Approve and Deny both add a "Checkpoint logged" line to the chat for the audit trail, and the agent says what it will do next.</p>
+                </div>
+                <div class="rounded-xl border border-neutral-700 bg-neutral-800/50 p-5">
+                    <p class="font-semibold text-white">"Check details" shows the reasoning</p>
+                    <p class="mt-1 text-sm text-neutral-400">The steps the agent took, the data it read and its confidence, so the operator can challenge the number instead of trusting it blindly.</p>
+                </div>
+                <div class="rounded-xl border border-neutral-700 bg-neutral-800/50 p-5">
+                    <p class="font-semibold text-white">Sandbox is a visible switch</p>
+                    <p class="mt-1 text-sm text-neutral-400">With "Sandboxed" on, approvals are simulated and labeled that way. Switching it off turns the label red: "Live".</p>
+                </div>
+            </div>
+            <div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+                <img class="block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-[1.02]"
+                    src="img/case4_3.jpg" alt="Left: the approved card with a logged checkpoint. Right: the agent's reasoning steps and data sources" loading="lazy" />
+            </div>
+        </div>
+
+        <!-- Section: Pink means AI -->
+        <div class="reveal relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-12">
+            <div class="flex w-full flex-col items-start gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="flex h-10 w-10 items-center justify-center rounded-lg border border-ai-500/30 bg-ai-500/10 shadow-sm">
+                        <i data-feather="droplet" class="h-5 w-5 text-ai-400"></i>
+                    </div>
+                    <span class="text-2xl font-semibold tracking-tight text-white"> Pink Means AI </span>
+                </div>
+                <p class="text-base text-neutral-400 max-w-3xl">
+                    Operators need to know at a glance what is fact and what is the machine's guess. So the interface has one rule: <span class="text-white">blue is real data and your actions, pink is anything the AI produced.</span> The revenue chart turns pink where actuals end and the forecast begins, with a widening band for its uncertainty. The same pink marks agent messages in the chat and the AI dot on cards.
+                </p>
+            </div>
+            <div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+                <img class="block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-[1.02]"
+                    src="img/case4_5.jpg" alt="Revenue chart: blue actuals until 09:00, then a pink AI forecast with a confidence band" loading="lazy" />
+            </div>
+        </div>
+
+        <!-- Section: Live -->
+        <div class="reveal relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-12">
+            <div class="flex w-full flex-col items-start gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-700 bg-neutral-800 shadow-sm">
+                        <i data-feather="activity" class="h-5 w-5 text-neutral-300"></i>
+                    </div>
+                    <span class="text-2xl font-semibold tracking-tight text-white"> It Feels Live </span>
+                </div>
+                <p class="text-base text-neutral-400 max-w-3xl">
+                    A back office for a casino is never still, and a static mockup hides that. In the prototype, bets, wins, deposits and withdrawals stream in about once a second. The KPIs move with them and flash green or red as they change, and a big win visibly dips GGR. Operators can pause the feed or open the full list with filters.
+                </p>
+            </div>
+            <div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+                <img class="block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-[1.02]"
+                    src="img/case4_4.jpg" alt="Glowing live KPI cards with the LIVE event strip, and the Live activity panel with filters" loading="lazy" />
+            </div>
+        </div>
+
+        <!-- Live prototype -->
+        <div id="play" class="relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-12 scroll-mt-24">
+            <div class="reveal flex w-full flex-col items-start gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="flex h-10 w-10 items-center justify-center rounded-lg border border-[#10b981]/20 bg-[#10b981]/10 shadow-sm">
+                        <i data-feather="play-circle" class="h-5 w-5 text-[#10b981]"></i>
+                    </div>
+                    <span class="text-2xl font-semibold tracking-tight text-white"> Try It Yourself </span>
+                </div>
+                <p class="text-base text-neutral-400 max-w-3xl">
+                    Click Approve Transfer in the chat (any 6 digits work), ask the copilot to "Generate ISR report April", hover the chart, or open Affiliates from the left rail.
+                </p>
+            </div>
+            <div id="proto-box" class="reveal relative w-full overflow-hidden rounded-2xl border border-brand-500/30 bg-black shadow-[0_0_60px_rgba(59,130,246,0.15)]" style="aspect-ratio:16/10">
+                <button id="proto-start" type="button" class="group absolute inset-0 flex h-full w-full items-center justify-center" aria-label="Load the Ortex prototype">
+                    <img src="img/case4_1.jpg" alt="" class="absolute inset-0 h-full w-full object-cover opacity-50 transition-opacity duration-300 group-hover:opacity-70">
+                    <span class="relative flex flex-col items-center gap-3">
+                        <span class="flex h-20 w-20 items-center justify-center rounded-full bg-brand-500 text-white shadow-[0_0_40px_rgba(59,130,246,0.6)] transition-transform duration-300 group-hover:scale-110">
+                            <i data-feather="play" class="h-9 w-9 translate-x-0.5"></i>
+                        </span>
+                        <span class="text-2xl font-semibold text-white drop-shadow">Open the prototype</span>
+                        <span class="text-xs text-neutral-300">Loads about 1.5 MB</span>
+                    </span>
+                </button>
+            </div>
+            <div class="reveal flex w-full flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+                <p class="text-sm text-neutral-400 max-w-2xl">No backend: the chat is scripted and all data is simulated. The frame shows the desktop layout scaled down; full screen or a new tab shows it at full size.</p>
+                <div class="flex flex-shrink-0 items-center gap-5">
+                    <button id="proto-fullscreen" type="button"
+                        class="inline-flex items-center gap-2 rounded-full bg-brand-500 px-6 py-3 text-sm font-semibold text-white transition-all hover:shadow-[0_0_30px_rgba(59,130,246,0.5)] hover:-translate-y-0.5">
+                        <i data-feather="maximize" class="h-4 w-4"></i> Full screen
+                    </button>
+                    <a href="prototypes/ortex/index.html" target="_blank" rel="noopener"
+                        class="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-400 transition-colors hover:text-white">
+                        Open in new tab <i data-feather="arrow-up-right" class="h-4 w-4"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section: Built on Ant Design -->
+        <div class="reveal relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-12">
+            <div class="flex w-full flex-col items-start gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-700 bg-neutral-800 shadow-sm">
+                        <i data-feather="layers" class="h-5 w-5 text-neutral-300"></i>
+                    </div>
+                    <span class="text-2xl font-semibold tracking-tight text-white"> Built on Ant Design, for Real </span>
+                </div>
+                <p class="text-base text-neutral-400 max-w-3xl">
+                    I designed Ortex on Ant Design's dark theme in Figma, then built the prototype with the real antd components instead of look-alikes, with a few token overrides for color and radius. The Affiliates page shows the everyday side of the product: sorting, tag search, filters, forms with validation, confirmations and a change log that records every edit.
+                </p>
+            </div>
+            <div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+                <img class="block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-[1.02]"
+                    src="img/case4_6.jpg" alt="Affiliates table with colored tags, progress bars and row actions" loading="lazy" />
+            </div>
+        </div>
+
+        <!-- Section: Details -->
+        <div class="reveal relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-12">
+            <div class="flex w-full flex-col items-start gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-700 bg-neutral-800 shadow-sm">
+                        <i data-feather="crosshair" class="h-5 w-5 text-neutral-300"></i>
+                    </div>
+                    <span class="text-2xl font-semibold tracking-tight text-white"> Details That Only Show Up in Code </span>
+                </div>
+                <p class="text-base text-neutral-400 max-w-3xl">
+                    Building the design for real exposed things a static mockup hides. I audited the result in the browser and measured every fix.
+                </p>
+            </div>
+            <div class="grid w-full gap-4 md:grid-cols-2">
+                <div class="rounded-xl border border-neutral-700 bg-neutral-800/50 p-5">
+                    <p class="font-semibold text-white">One spacing rhythm</p>
+                    <p class="mt-1 text-sm text-neutral-400">Three sections of the dashboard touched with no gap, and the copilot didn't line up with the first row of cards. Everything now follows three values: 16px between cards, 16px inside cards and 24px at the page edges.</p>
+                </div>
+                <div class="rounded-xl border border-neutral-700 bg-neutral-800/50 p-5">
+                    <p class="font-semibold text-white">Icons centered to the pixel</p>
+                    <p class="mt-1 text-sm text-neutral-400">The navigation rail icons sat 4px off center because of the component library's default padding. All of them now measure 0px off on both axes.</p>
+                </div>
+                <div class="rounded-xl border border-neutral-700 bg-neutral-800/50 p-5">
+                    <p class="font-semibold text-white">Fixes from the original file</p>
+                    <p class="mt-1 text-sm text-neutral-400">A typo in a card title and a chart axis that listed zero twice ("$0.0M" and "$0M") were caught and fixed while building.</p>
+                </div>
+                <div class="flex items-start gap-4 rounded-xl border border-neutral-700 bg-neutral-800/50 p-5">
+                    <svg class="h-12 w-12 flex-shrink-0" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#1668dc"/><g transform="rotate(45 16 16)"><path d="M14.8 14.8V5.6A10.4 10.4 0 0 0 5.6 14.8Z" fill="#fff"/><path d="M17.2 14.8V5.6A10.4 10.4 0 0 1 26.4 14.8Z" fill="#f759ab"/><path d="M17.2 17.2V26.4A10.4 10.4 0 0 0 26.4 17.2Z" fill="#fff"/><path d="M14.8 17.2V26.4A10.4 10.4 0 0 1 5.6 17.2Z" fill="#fff"/></g><circle cx="16" cy="16" r="3.4" fill="#1668dc"/></svg>
+                    <div>
+                        <p class="font-semibold text-white">A logo that follows the color rule</p>
+                        <p class="mt-1 text-sm text-neutral-400">An O split by an X: the first and last letters of ORTEX. One wedge is pink, the same color the interface uses for AI.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section: Phones -->
+        <div class="reveal relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-12">
+            <div class="flex w-full flex-col items-start gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-700 bg-neutral-800 shadow-sm">
+                        <i data-feather="smartphone" class="h-5 w-5 text-neutral-300"></i>
+                    </div>
+                    <span class="text-2xl font-semibold tracking-tight text-white"> Works on a Phone </span>
+                </div>
+                <p class="text-base text-neutral-400 max-w-3xl">
+                    Operators get alerts away from their desk. On a phone the KPIs stack, the copilot moves behind a floating button, and the approval flow works the same way.
+                </p>
+            </div>
+            <div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+                <img class="block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-[1.02]"
+                    src="img/case4_7.jpg" alt="Ortex on a phone: stacked KPI cards and the copilot with the approval card" loading="lazy" />
+            </div>
+        </div>
+
+        <!-- Section: How I built it -->
+        <div class="reveal relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-12">
+            <div class="flex w-full flex-col items-start gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="flex h-10 w-10 items-center justify-center rounded-lg border border-[#10b981]/20 bg-[#10b981]/10 shadow-sm">
+                        <i data-feather="code" class="h-5 w-5 text-[#10b981]"></i>
+                    </div>
+                    <span class="text-2xl font-semibold tracking-tight text-white"> From Figma to a Working Product </span>
+                </div>
+                <p class="text-base text-neutral-400 max-w-3xl">
+                    I designed two key screens in Figma and built the rest directly in code with Claude, using AI as a fast engineering partner while I made the design decisions. Working in the real medium let me test the parts a picture can't show: what an approval feels like, how a live number should behave, and whether the layout holds up at every screen width.
+                </p>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div
+            class="reveal relative z-10 mt-8 flex w-full max-w-5xl flex-col items-center gap-6 border-t border-neutral-800 pt-12 pb-8 md:mt-16 md:pt-16">
+            <span class="text-center text-lg text-neutral-400">
+                Bringing AI agents into a complex product?
+            </span>
+            <a href="index.html#contact"
+                class="group inline-flex items-center justify-center gap-2 rounded-full bg-white px-8 py-3.5 text-sm font-semibold text-neutral-950 transition-all hover:bg-neutral-200 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:-translate-y-0.5 active:translate-y-0">
+                Get in touch
+                <i data-feather="arrow-right"
+                    class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"></i>
+            </a>
+        </div>
+
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Initialize Feather Icons
+        feather.replace();
+
+        // Reveal animations on scroll
+        document.addEventListener("DOMContentLoaded", () => {
+            const reveals = document.querySelectorAll(".reveal");
+
+            const revealOnScroll = () => {
+                const windowHeight = window.innerHeight;
+                const elementVisible = 100;
+
+                reveals.forEach((reveal) => {
+                    const elementTop = reveal.getBoundingClientRect().top;
+                    if (elementTop < windowHeight - elementVisible) {
+                        reveal.classList.add("active");
+                    }
+                });
+            };
+
+            // Initial check
+            revealOnScroll();
+
+            // Check on scroll
+            window.addEventListener("scroll", revealOnScroll, { passive: true });
+        });
+
+        // Load the prototype only when asked. It renders at 1440×900 and scales to the box.
+        const PROTO = 'prototypes/ortex/index.html';
+        const box = document.getElementById('proto-box');
+        function fit(frame) {
+            const s = box.clientWidth / 1440;
+            frame.style.transform = `scale(${s})`;
+            frame.style.height = `${Math.round(box.clientHeight / s)}px`;
+        }
+        function loadPrototype() {
+            const existing = box.querySelector('iframe');
+            if (existing) return existing;
+            const frame = document.createElement('iframe');
+            frame.src = PROTO;
+            frame.title = 'Ortex AI back office prototype';
+            frame.allow = 'fullscreen';
+            frame.allowFullscreen = true;
+            document.getElementById('proto-start').replaceWith(frame);
+            fit(frame);
+            new ResizeObserver(() => { if (!document.fullscreenElement) fit(frame); }).observe(box);
+            return frame;
+        }
+        document.getElementById('proto-start').addEventListener('click', loadPrototype);
+
+        // Full screen: show the prototype at real size. Where a browser refuses (iPhone Safari,
+        // in-app browsers), open it on its own page instead.
+        document.getElementById('proto-fullscreen').addEventListener('click', function () {
+            const frame = loadPrototype();
+            let done = false;
+            const openPage = () => {
+                if (done || document.fullscreenElement || document.webkitFullscreenElement) return;
+                done = true;
+                location.href = PROTO;
+            };
+            const req = frame.requestFullscreen || frame.webkitRequestFullscreen;
+            if (!req || document.fullscreenEnabled === false) return openPage();
+            const granted = () => { done = true; frame.style.transform = 'none'; frame.style.width = '100%'; frame.style.height = '100%'; };
+            document.addEventListener('fullscreenchange', granted, { once: true });
+            document.addEventListener('webkitfullscreenchange', granted, { once: true });
+            document.addEventListener('fullscreenchange', function back() {
+                if (document.fullscreenElement) return;
+                document.removeEventListener('fullscreenchange', back);
+                frame.style.width = '1440px';
+                fit(frame);
+            });
+            try {
+                const p = req.call(frame);
+                if (p && typeof p.catch === 'function') p.catch(openPage);
+            } catch (e) { openPage(); }
+            setTimeout(openPage, 1200);
+        });
+    </script>
+</body>
+
+</html>

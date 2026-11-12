@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jetwire – A VPN Designed with AI | Max Alexandrov</title>
+    <!-- SEO -->
+    <meta name="description" content="A VPN app concept designed with AI and rebuilt by hand: leak alerts, aliases, a working kill switch, multi-hop routes and a privacy audit.">
+    <link rel="canonical" href="https://codexlab.vip/case-jetwire.html">
+    <meta name="author" content="Max Alexandrov">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="CodexLab">
+    <meta property="og:title" content="Jetwire – A VPN Designed with AI | Max Alexandrov">
+    <meta property="og:description" content="A VPN app concept designed with AI and rebuilt by hand: leak alerts, aliases, a working kill switch, multi-hop routes and a privacy audit.">
+    <meta property="og:url" content="https://codexlab.vip/case-jetwire.html">
+    <meta property="og:image" content="https://codexlab.vip/img/cases/jetwire/cover.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Jetwire – A VPN Designed with AI | Max Alexandrov">
+    <meta name="twitter:description" content="A VPN app concept designed with AI and rebuilt by hand: leak alerts, aliases, a working kill switch, multi-hop routes and a privacy audit.">
+    <meta name="twitter:image" content="https://codexlab.vip/img/cases/jetwire/cover.jpg">
+    <!-- /SEO -->
+    <link rel="icon" type="image/svg+xml" href="img/logo/codexlab-mark.svg">
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script>
+        // Jetwire's own palette: signal emerald from the app's "protected" state
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        neutral: { 950: '#0a0a0a', 900: '#171717', 800: '#262626', 700: '#404040', 400: '#a3a3a3', 300: '#d4d4d4' },
+                        brand: { 300: '#9dffc9', 400: '#3df29a', 500: '#00e676', 600: '#00b35c', 700: '#00894a', 900: '#04291a' },
+                        cyan: { 400: '#5ff6ff' }
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/games.css" rel="stylesheet">
+    <style>
+        .phone { border-radius: 2.6rem; padding: 10px; background: #05070b; box-shadow: 0 30px 70px -25px rgba(0, 0, 0, .8), 0 0 0 1px rgba(255, 255, 255, .08); }
+        .phone img { display: block; width: 100%; border-radius: 2rem; }
+        .live-dot { width: 8px; height: 8px; border-radius: 50%; background: #3df29a; display: inline-block; animation: live 1.6s infinite; }
+        @keyframes live { 0% { box-shadow: 0 0 0 0 rgba(61,242,154,.6); } 70% { box-shadow: 0 0 0 8px rgba(61,242,154,0); } 100% { box-shadow: 0 0 0 0 rgba(61,242,154,0); } }
+        @media (prefers-reduced-motion: reduce) { .live-dot { animation: none; } }
+        .tile { border-radius: 1rem; border: 1px solid #404040; background: rgba(38, 38, 38, .5); }
+        /* design-decision specimens: small before/after and spec strips drawn in HTML */
+        .mono { font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace; letter-spacing: .02em; }
+        .spec { display: flex; flex-direction: column; justify-content: center; gap: 12px; min-height: 180px; padding: 18px; border-radius: .875rem; background: #0a0d14; border: 1px solid rgba(255,255,255,.08); }
+        .spec-rule { height: 1px; background: rgba(255,255,255,.08); }
+        .spec-note { margin: 0; font-size: 12px; color: #737373; }
+        .pair { display: flex; align-items: center; gap: 12px; font-size: 15px; color: #fff; min-width: 0; }
+        .pair s { color: #b5b5b5; font-size: 13px; text-decoration-color: rgba(255,90,79,.55); text-decoration-thickness: 1px; }
+        .tag { flex: none; width: 44px; text-align: center; font-size: 11px; font-weight: 600; border-radius: 6px; padding: 3px 0; }
+        .tag.ai { color: #ff8a80; background: rgba(255,90,79,.12); }
+        .tag.me { color: #3df29a; background: rgba(0,230,118,.12); }
+        .pill { display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 12px; border-radius: 999px; font-size: 12px; font-weight: 600; color: var(--c); border: 1px solid color-mix(in srgb, var(--c) 35%, transparent); background: color-mix(in srgb, var(--c) 12%, transparent); }
+        .pill::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--c); }
+        .hit { width: 56px; height: 44px; display: grid; place-items: center; border: 1px dashed rgba(61,242,154,.55); border-radius: 8px; }
+        .toggle-demo { width: 48px; height: 24px; border-radius: 12px; background: rgba(0,230,118,.25); border: 1px solid rgba(0,230,118,.5); position: relative; }
+        .toggle-demo i { position: absolute; top: 2px; right: 3px; width: 18px; height: 18px; border-radius: 50%; background: #00e676; }
+        .btn-demo { height: 48px; padding: 0 20px; display: inline-flex; align-items: center; border-radius: 12px; background: #00f0ff; color: #00262a; font-size: 14px; font-weight: 600; }
+        .vline { width: 9px; height: 48px; border: 1px solid rgba(61,242,154,.7); border-left: 0; }
+        .dim { font-size: 11px; line-height: 1.3; color: #3df29a; font-weight: 600; }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <nav class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-4 py-4 bg-[#0a0a0a]/80 backdrop-blur-md border-b border-neutral-800/50 sm:px-12 reveal">
+        <a href="index.html#work" class="group flex items-center gap-2 text-sm font-medium text-neutral-400 transition-all hover:text-white">
+            <i data-feather="arrow-left" class="h-4 w-4 transition-transform group-hover:-translate-x-1"></i> All work </a>
+        <a href="index.html" class="flex items-center gap-3">
+            <img src="img/logo/codexlab-mark.svg" alt="CodexLab logo" class="h-8 w-8">
+            <span class="font-semibold text-white tracking-wide text-sm hidden md:block">Codex<span class="font-normal text-neutral-400">Lab</span></span>
+        </a>
+    </nav>
+
+    <div class="relative flex w-full flex-col items-center gap-16 px-4 pt-24 pb-16 md:gap-24 md:px-8 md:pt-32 lg:pt-36 overflow-hidden">
+
+        <div class="fixed inset-0 z-0 bg-grid pointer-events-none opacity-40"></div>
+        <div class="absolute right-[-10%] top-[4%] z-0 h-96 w-96 rounded-full bg-brand-600/20 blur-[110px] pointer-events-none"></div>
+        <div class="absolute left-[-10%] top-[40%] z-0 h-72 w-72 rounded-full bg-cyan-400/10 blur-[90px] pointer-events-none"></div>
+
+        <!-- Header -->
+        <header class="reveal relative z-10 flex w-full max-w-5xl flex-col items-center gap-6 text-center">
+            <div class="flex flex-wrap items-center justify-center gap-2">
+                <span class="inline-flex items-center gap-1 rounded-full bg-brand-500/10 px-3 py-1 text-sm font-medium text-brand-400 border border-brand-500/20">Case study · Cybersecurity</span>
+                <span class="inline-flex items-center gap-2 rounded-full bg-brand-400/10 px-3 py-1 text-sm font-medium text-brand-300 border border-brand-400/30"><i class="live-dot"></i> Live prototype</span>
+            </div>
+            <h1 class="w-full text-3xl font-bold leading-tight tracking-tight text-white md:text-5xl lg:text-6xl">
+                Jetwire: a VPN designed with AI for modern threats
+            </h1>
+            <p class="w-full max-w-2xl text-base leading-relaxed text-neutral-400 md:text-lg lg:text-xl">
+                Most VPNs still do one job: hide your IP address. Today's risks are leaked passwords, stolen sessions and tracking that follows your email. I used AI to design a VPN that handles those too, then rebuilt it by hand into a prototype you can try below.
+            </p>
+            <a href="#prototype"
+                class="group inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3 text-sm font-semibold text-neutral-950 transition-all hover:bg-neutral-200 hover:-translate-y-0.5">
+                Try the prototype
+                <i data-feather="arrow-down" class="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5"></i>
+            </a>
+        </header>
+
+        <div class="reveal relative z-10 w-full max-w-5xl overflow-hidden rounded-3xl border border-neutral-800">
+            <img src="img/cases/jetwire/cover.jpg" alt="Three Jetwire screens: multi-hop route, connected home and threat radar" class="w-full">
+        </div>
+
+        <!-- Live prototype -->
+        <section id="prototype" class="relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 scroll-mt-24">
+            <div class="reveal flex items-center gap-3">
+                <div class="flex h-10 w-10 items-center justify-center rounded-lg border border-brand-500/30 bg-brand-500/10 shadow-sm"><i data-feather="play-circle" class="h-5 w-5 text-brand-400"></i></div>
+                <h2 class="text-2xl font-semibold tracking-tight text-white">Try it yourself</h2>
+            </div>
+            <div id="proto-box" class="reveal relative w-full overflow-hidden rounded-2xl border border-brand-500/30 bg-[#06080d] shadow-[0_0_60px_rgba(0,230,118,0.12)] h-[740px] md:h-[910px]">
+                <button id="proto-start" type="button" class="group absolute inset-0 flex h-full w-full items-center justify-center bg-brand-900" aria-label="Load the Jetwire prototype">
+                    <img src="img/cases/jetwire/cover.jpg" alt="" class="absolute inset-0 h-full w-full object-cover opacity-50 transition-opacity duration-300 group-hover:opacity-70">
+                    <span class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(4,41,26,0.9)_0%,rgba(4,41,26,0.55)_35%,rgba(4,41,26,0)_70%)]"></span>
+                    <span class="relative flex flex-col items-center gap-3">
+                        <span class="flex h-20 w-20 items-center justify-center rounded-full bg-brand-400 text-brand-900 shadow-[0_0_40px_rgba(61,242,154,0.6)] transition-transform duration-300 group-hover:scale-110">
+                            <i data-feather="play" class="h-9 w-9 translate-x-0.5"></i>
+                        </span>
+                        <span class="text-2xl font-semibold text-white drop-shadow">Open the prototype</span>
+                        <span class="text-xs text-neutral-300">Loads about 0.25 MB</span>
+                    </span>
+                </button>
+            </div>
+            <div class="reveal flex w-full flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+                <p class="max-w-2xl text-sm text-neutral-400">All seven screens work, with no backend. Connect, build a two-country route, fix a data leak, create an email alias or run the privacy audit.
+                    On a wide screen, the screen map next to the phone can drop the network to show the kill switch at work. All data is fictional.</p>
+                <a href="prototypes/jetwire/index.html" target="_blank" rel="noopener" class="inline-flex flex-shrink-0 items-center gap-2 rounded-full bg-brand-400 px-6 py-3 text-sm font-semibold text-brand-900 transition-all hover:-translate-y-0.5 hover:shadow-[0_0_30px_rgba(61,242,154,0.5)]">
+                    Open in new tab <i data-feather="arrow-up-right" class="h-4 w-4"></i>
+                </a>
+            </div>
+        </section>
+
+        <!-- How I designed it with AI -->
+        <section class="relative z-10 flex w-full max-w-5xl flex-col gap-8">
+            <div class="reveal flex flex-col gap-4">
+                <div class="flex items-center gap-3"><div class="flex h-10 w-10 items-center justify-center rounded-lg border border-brand-500/30 bg-brand-500/10 shadow-sm"><i data-feather="cpu" class="h-5 w-5 text-brand-400"></i></div><h2 class="text-2xl font-semibold tracking-tight text-white">How I designed it with AI</h2></div>
+                <p class="max-w-3xl leading-relaxed text-neutral-400">I started with a brief, not a blank canvas. I described the product to Google Stitch, and in a few hours it gave me seven screens and a design system: dark surfaces, cyan for activity, emerald for safety.</p>
+                <p class="max-w-3xl leading-relaxed text-neutral-400">Then I did the part AI doesn't do: I tested it. The screens looked finished but broke in use. I kept the visual direction, fixed what was wrong, wrote all the copy and rebuilt every screen in React, so each button does something real.</p>
+            </div>
+            <div class="grid w-full gap-6 md:grid-cols-2">
+                <div class="reveal tile p-7">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-brand-400">AI gave me</span>
+                    <p class="mt-3 leading-relaxed text-neutral-300">Speed, a visual direction and a full set of screens to react to.</p>
+                </div>
+                <div class="reveal delay-100 tile p-7">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-brand-400">I added</span>
+                    <p class="mt-3 leading-relaxed text-neutral-300">Judgement, honest copy, real states and edge cases, a new logo and a working prototype.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Overview -->
+        <section class="relative z-10 flex w-full max-w-5xl flex-col items-start gap-8">
+            <div class="reveal flex items-center gap-3"><div class="flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-700 bg-neutral-800 shadow-sm"><i data-feather="grid" class="h-5 w-5 text-neutral-300"></i></div><h2 class="text-2xl font-semibold tracking-tight text-white">At a glance</h2></div>
+            <div class="grid w-full grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
+                <div class="reveal flex flex-col items-center justify-center gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 text-center transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600">
+                    <span class="text-3xl font-bold tracking-tight text-brand-400 md:text-4xl">7</span>
+                    <span class="text-sm text-neutral-400">screens designed with AI, then rebuilt by hand</span>
+                </div>
+                <div class="reveal delay-100 flex flex-col items-center justify-center gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 text-center transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600">
+                    <span class="text-3xl font-bold tracking-tight text-brand-400 md:text-4xl">5</span>
+                    <span class="text-sm text-neutral-400">kinds of protection beyond the tunnel</span>
+                </div>
+                <div class="reveal delay-200 flex flex-col items-center justify-center gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 text-center transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600">
+                    <span class="text-3xl font-bold tracking-tight text-brand-400 md:text-4xl">8</span>
+                    <span class="text-sm text-neutral-400">problems in the AI output I found and fixed</span>
+                </div>
+                <div class="reveal delay-300 flex flex-col items-center justify-center gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 text-center transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600">
+                    <span class="text-3xl font-bold tracking-tight text-brand-400 md:text-4xl">2</span>
+                    <span class="text-sm text-neutral-400">edge cases you can trigger yourself</span>
+                </div>
+            </div>
+            <div class="reveal grid w-full gap-4 md:grid-cols-3">
+                <div class="rounded-xl border border-neutral-800 bg-neutral-900/60 p-5">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-neutral-500">Role</p>
+                    <p class="mt-1 text-neutral-300">Product concept, AI-assisted design, UX audit, UX writing, logo and prototype</p>
+                </div>
+                <div class="rounded-xl border border-neutral-800 bg-neutral-900/60 p-5">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-neutral-500">Tools</p>
+                    <p class="mt-1 text-neutral-300">Google Stitch (AI), React</p>
+                </div>
+                <div class="rounded-xl border border-neutral-800 bg-neutral-900/60 p-5">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-neutral-500">Type</p>
+                    <p class="mt-1 text-neutral-300">Mobile VPN app concept</p>
+                </div>
+            </div>
+            <div class="grid w-full gap-6 md:grid-cols-2">
+                <div class="reveal tile p-7">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-brand-400">The challenge</span>
+                    <p class="mt-3 leading-relaxed text-neutral-300">Legacy VPNs were built for one threat: someone watching your Wi-Fi. Now your password can leak in another company's breach, a stolen cookie can sign in as you, and every sign-up form asks for your real email. A VPN that only hides your IP address misses all of that.</p>
+                </div>
+                <div class="reveal delay-100 tile p-7">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-brand-400">The goal</span>
+                    <p class="mt-3 leading-relaxed text-neutral-300">A VPN that protects the person as well as the connection. You can see at a glance whether you're safe. It warns you about leaks and helps fix them, keeps your real details out of forms, and lets you check its claims yourself.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- What the AI got wrong -->
+        <section class="relative z-10 flex w-full max-w-5xl flex-col gap-8">
+            <div class="reveal flex items-center gap-3"><div class="flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-700 bg-neutral-800 shadow-sm"><i data-feather="search" class="h-5 w-5 text-neutral-300"></i></div><h2 class="text-2xl font-semibold tracking-tight text-white">What the AI got wrong</h2></div>
+            <div class="grid items-start gap-10 md:grid-cols-[1fr_1fr] md:gap-12">
+                <div class="reveal relative overflow-hidden rounded-2xl border border-neutral-800 bg-[#0a0d14]">
+                    <img class="zoomable w-full" src="img/cases/jetwire/before-after.jpg" alt="The AI-generated Connect screen next to the rebuilt Jetwire Connect screen" loading="lazy">
+                    <div class="absolute top-4 left-4 rounded bg-black/60 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/10">Before</div>
+                    <div class="absolute top-4 right-4 rounded bg-black/60 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border border-white/10">After</div>
+                </div>
+                <ul class="reveal flex flex-col gap-4 text-neutral-400">
+                    <li class="flex gap-3"><i data-feather="x-circle" class="mt-0.5 h-5 w-5 flex-none text-red-400"></i><span><b class="font-semibold text-white">Broken logo.</b> The image is missing on every screen, so the header shows its alt text instead.</span></li>
+                    <li class="flex gap-3"><i data-feather="x-circle" class="mt-0.5 h-5 w-5 flex-none text-red-400"></i><span><b class="font-semibold text-white">Crowded header.</b> The protocol pill runs into the “Protected” badge.</span></li>
+                    <li class="flex gap-3"><i data-feather="x-circle" class="mt-0.5 h-5 w-5 flex-none text-red-400"></i><span><b class="font-semibold text-white">Cut-off data.</b> Server and city names are truncated: the details people check most.</span></li>
+                    <li class="flex gap-3"><i data-feather="x-circle" class="mt-0.5 h-5 w-5 flex-none text-red-400"></i><span><b class="font-semibold text-white">Monospace capitals everywhere.</b> Labels, buttons and data all look the same.</span></li>
+                    <li class="flex gap-3"><i data-feather="x-circle" class="mt-0.5 h-5 w-5 flex-none text-red-400"></i><span><b class="font-semibold text-white">Copy that overclaims.</b> “Military-grade”, “untraceable”, a “synthetic billing address” for tax purposes. I rewrote or removed all of it.</span></li>
+                    <li class="flex gap-3"><i data-feather="x-circle" class="mt-0.5 h-5 w-5 flex-none text-red-400"></i><span><b class="font-semibold text-white">No grid, missing states.</b> Uneven spacing, no connecting, disconnect or failure states, and splash text that overlaps.</span></li>
+                </ul>
+            </div>
+            <p class="reveal text-sm text-neutral-500">Left: the AI screen. Right: my rebuild. Click to enlarge.</p>
+        </section>
+
+        <!-- Key flows -->
+        <section class="relative z-10 flex w-full max-w-5xl flex-col gap-20 md:gap-28">
+            <div class="reveal flex items-center gap-3"><div class="flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-700 bg-neutral-800 shadow-sm"><i data-feather="map" class="h-5 w-5 text-neutral-300"></i></div><h2 class="text-2xl font-semibold tracking-tight text-white">Key flows</h2></div>
+
+            <div class="grid items-center gap-10 md:grid-cols-[300px_1fr] md:gap-16">
+                <div class="reveal phone mx-auto w-[260px] md:w-[300px]"><img class="zoomable" src="img/cases/jetwire/connect.webp" alt="Connected: green ring, connection timer, location and hidden IP" loading="lazy"></div>
+                <div class="reveal flex flex-col gap-4">
+                    <span class="text-sm font-semibold text-brand-400">01 · Connect</span>
+                    <h3 class="text-xl font-semibold tracking-tight text-white md:text-2xl">Protected or not, at a glance</h3>
+                    <p class="leading-relaxed text-neutral-400">The ring has three states: grey when you're exposed, cyan while it connects, green when you're protected. Your real IP and the IP sites see sit side by side, so “protected” means something concrete.</p>
+                </div>
+            </div>
+
+            <div class="grid items-center gap-10 md:grid-cols-[1fr_300px] md:gap-16">
+                <div class="reveal phone mx-auto w-[260px] md:order-2 md:w-[300px]"><img class="zoomable" src="img/cases/jetwire/killswitch.webp" alt="Kill switch holding traffic while the network is down" loading="lazy"></div>
+                <div class="reveal flex flex-col gap-4 md:order-1">
+                    <span class="text-sm font-semibold text-brand-400">02 · Kill switch</span>
+                    <h3 class="text-xl font-semibold tracking-tight text-white md:text-2xl">A safety net you can watch working</h3>
+                    <p class="leading-relaxed text-neutral-400">Drop the network and the app turns amber, holds all traffic and marks your IP as paused. When the network comes back, it reconnects and confirms that nothing leaked.</p>
+                </div>
+            </div>
+
+            <div class="grid items-center gap-10 md:grid-cols-[300px_1fr] md:gap-16">
+                <div class="reveal phone mx-auto w-[260px] md:w-[300px]"><img class="zoomable" src="img/cases/jetwire/route.webp" alt="Multi-hop route: four modes and an editable chain of servers" loading="lazy"></div>
+                <div class="reveal flex flex-col gap-4">
+                    <span class="text-sm font-semibold text-brand-400">03 · Multi-hop route</span>
+                    <h3 class="text-xl font-semibold tracking-tight text-white md:text-2xl">More privacy, with the delay shown up front</h3>
+                    <p class="leading-relaxed text-neutral-400">Four modes, each with a one-line trade-off. The route is drawn from your phone to the exit server, and the estimated delay updates with every hop you add.</p>
+                </div>
+            </div>
+
+            <div class="grid items-center gap-10 md:grid-cols-[1fr_300px] md:gap-16">
+                <div class="reveal phone mx-auto w-[260px] md:order-2 md:w-[300px]"><img class="zoomable" src="img/cases/jetwire/breach.webp" alt="Data leak: what leaked and a fix plan with checkboxes" loading="lazy"></div>
+                <div class="reveal flex flex-col gap-4 md:order-1">
+                    <span class="text-sm font-semibold text-brand-400">04 · Data leak</span>
+                    <h3 class="text-xl font-semibold tracking-tight text-white md:text-2xl">The VPN tells you your password leaked, then helps fix it</h3>
+                    <p class="leading-relaxed text-neutral-400">A legacy VPN wouldn't notice this. Jetwire shows what leaked and how risky it is, then offers a fix plan: three steps it can do for you and one only you can do. The password is never shown.</p>
+                </div>
+            </div>
+
+            <div class="grid items-center gap-10 md:grid-cols-[300px_1fr] md:gap-16">
+                <div class="reveal phone mx-auto w-[260px] md:w-[300px]"><img class="zoomable" src="img/cases/jetwire/altid.webp" alt="Alt ID: masked one-time card and email aliases" loading="lazy"></div>
+                <div class="reveal flex flex-col gap-4">
+                    <span class="text-sm font-semibold text-brand-400">05 · Alt ID</span>
+                    <h3 class="text-xl font-semibold tracking-tight text-white md:text-2xl">Aliases, so forms never get your real details</h3>
+                    <p class="leading-relaxed text-neutral-400">Legacy VPNs hide where you are. Alt ID also hides who you are, with email and phone aliases and a one-time card that needs your fingerprint to reveal.</p>
+                </div>
+            </div>
+
+            <div class="grid items-center gap-10 md:grid-cols-[1fr_300px] md:gap-16">
+                <div class="reveal phone mx-auto w-[260px] md:order-2 md:w-[300px]"><img class="zoomable" src="img/cases/jetwire/audit.webp" alt="Privacy audit: five checks with passed badges" loading="lazy"></div>
+                <div class="reveal flex flex-col gap-4 md:order-1">
+                    <span class="text-sm font-semibold text-brand-400">06 · Privacy audit</span>
+                    <h3 class="text-xl font-semibold tracking-tight text-white md:text-2xl">Proof you can run yourself</h3>
+                    <p class="leading-relaxed text-neutral-400">Five leak tests run while you watch. Run them while disconnected and three fail, and the app explains why. A check that can fail is easier to trust than a badge that always says A+.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Logo -->
+        <section class="relative z-10 flex w-full max-w-5xl flex-col gap-8">
+            <div class="reveal flex items-center gap-3"><div class="flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-700 bg-neutral-800 shadow-sm"><i data-feather="pen-tool" class="h-5 w-5 text-neutral-300"></i></div><h2 class="text-2xl font-semibold tracking-tight text-white">A new logo</h2></div>
+            <div class="reveal grid items-center gap-10 rounded-3xl border border-neutral-800 bg-[#0a0d14] p-8 md:grid-cols-[auto_1fr] md:p-12">
+                <div class="flex items-end justify-center gap-6">
+                    <img src="img/cases/jetwire/jetwire-mark.svg" alt="Jetwire logo: two wires form a J with a white dot inside" class="h-32 w-32 md:h-40 md:w-40">
+                    <img src="img/cases/jetwire/jetwire-mark.svg" alt="" class="h-12 w-12">
+                    <img src="img/cases/jetwire/jetwire-mark.svg" alt="" class="h-6 w-6">
+                </div>
+                <p class="leading-relaxed text-neutral-400">The AI used a lightning bolt, which plenty of other apps already use. I drew a J from two parallel wires, the tunnel, with a white dot inside it, the data. It stays readable at 16 px.</p>
+            </div>
+        </section>
+
+        <!-- Design decisions -->
+        <section class="relative z-10 flex w-full max-w-5xl flex-col gap-8">
+            <div class="reveal flex items-center gap-3"><div class="flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-700 bg-neutral-800 shadow-sm"><i data-feather="compass" class="h-5 w-5 text-neutral-300"></i></div><h2 class="text-2xl font-semibold tracking-tight text-white">Design decisions</h2></div>
+            <!-- Each card shows its decision as a small before/after or spec, built in HTML so it stays sharp -->
+            <div class="grid gap-5 md:grid-cols-2">
+                <div class="reveal tile flex flex-col gap-5 p-7">
+                    <div class="spec">
+                        <div class="pair"><span class="tag ai">AI</span><s class="mono">OFFLINE // EXPOSED</s></div>
+                        <div class="pair"><span class="tag me">Mine</span><span>Sites can see your real IP address</span></div>
+                        <div class="spec-rule"></div>
+                        <div class="pair"><span class="tag ai">AI</span><s class="mono">UNTRACEABLE EXIT</s></div>
+                        <div class="pair"><span class="tag me">Mine</span><span>Harder to trace</span></div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-white">Plain words, no overclaiming</h3>
+                        <p class="mt-2 leading-relaxed text-neutral-400">A security app earns trust by being exact. Every label says what's happening, nothing more.</p>
+                    </div>
+                </div>
+                <div class="reveal delay-100 tile flex flex-col gap-5 p-7">
+                    <div class="spec">
+                        <div class="flex flex-wrap gap-2">
+                            <span class="pill" style="--c:#00e676">Protected</span>
+                            <span class="pill" style="--c:#00f0ff">Connecting</span>
+                            <span class="pill" style="--c:#ffb020">Reconnecting</span>
+                            <span class="pill" style="--c:#ff5a4f">Not protected</span>
+                        </div>
+                        <p class="spec-note">Header · connect button · IP card</p>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-white">One status, everywhere</h3>
+                        <p class="mt-2 leading-relaxed text-neutral-400">Each state has one colour and one word, used the same way in the header, the connect button and the IP card.</p>
+                    </div>
+                </div>
+                <div class="reveal tile flex flex-col gap-5 p-7">
+                    <div class="spec">
+                        <div class="pair"><span class="tag ai">AI</span><s class="mono">ACTIVE INGRESS NODE</s></div>
+                        <div class="spec-rule"></div>
+                        <div class="pair items-start"><span class="tag me">Mine</span>
+                            <span class="flex flex-col gap-1"><span class="text-sm text-neutral-400">Location</span><span class="mono text-white">203.0.113.5 · 14 ms</span></span>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-white">Monospace only for data</h3>
+                        <p class="mt-2 leading-relaxed text-neutral-400">The AI set every label in monospace capitals. Now labels use Inter, and only IPs, delays and card numbers use monospace, so the data stands out.</p>
+                    </div>
+                </div>
+                <div class="reveal delay-100 tile flex flex-col gap-5 p-7">
+                    <div class="spec">
+                        <div class="flex flex-wrap items-center gap-8">
+                            <div class="flex items-center gap-2">
+                                <div class="hit"><span class="toggle-demo"><i></i></span></div>
+                                <span class="dim">44 px<br>tap area</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="btn-demo">Connect</span>
+                                <span class="vline"></span>
+                                <span class="dim">48 px<br>button</span>
+                            </div>
+                        </div>
+                        <p class="spec-note">4 px grid · 16 px padding · 12 / 16 / 24 gaps</p>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-white">Real tap targets on a 4 px grid</h3>
+                        <p class="mt-2 leading-relaxed text-neutral-400">I checked every screen at 390 px for overflow, clipped text and targets that are too small to hit.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Next -->
+        <section class="reveal relative z-10 flex w-full max-w-5xl flex-col gap-4 rounded-3xl border border-brand-500/20 bg-brand-900/30 p-8 md:p-12">
+            <span class="text-xs font-semibold uppercase tracking-wider text-brand-400">What's next</span>
+            <h2 class="text-2xl font-semibold tracking-tight text-white">Desktop, onboarding and plans</h2>
+            <p class="max-w-3xl leading-relaxed text-neutral-300">The AI design system already describes a desktop layout with a live log and a route graph. That comes next, along with onboarding and a plans screen that's clear about price and cancelling.</p>
+        </section>
+
+        <!-- Call to Action -->
+        <div class="reveal relative z-10 flex w-full max-w-5xl flex-col items-center gap-6 border-t border-neutral-800 pt-12 pb-8 md:pt-16">
+            <span class="text-center text-lg text-neutral-400">Building a security product, or want to design faster with AI?</span>
+            <a href="index.html#contact"
+                class="group inline-flex items-center justify-center gap-2 rounded-full bg-white px-8 py-3.5 text-sm font-semibold text-neutral-950 transition-all hover:bg-neutral-200 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:-translate-y-0.5">
+                Get in touch
+                <i data-feather="arrow-right" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"></i>
+            </a>
+        </div>
+    </div>
+
+    <script src="js/games.js"></script>
+    <script>
+        // Click to load: the prototype only downloads when someone wants it.
+        // Once open, a Close button puts the cover back and unloads the prototype.
+        const box = document.getElementById('proto-box');
+        const start = document.getElementById('proto-start');
+        const close = document.createElement('button');
+        close.type = 'button';
+        close.className = 'absolute right-3 top-3 z-20 inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-neutral-950/80 px-4 py-2 text-sm font-semibold text-white shadow-lg backdrop-blur transition-colors hover:bg-neutral-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400';
+        close.setAttribute('aria-label', 'Close the prototype');
+        close.innerHTML = '<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>Close';
+
+        start.addEventListener('click', function () {
+            const frame = document.createElement('iframe');
+            frame.src = 'prototypes/jetwire/index.html';
+            frame.title = 'Jetwire VPN app prototype';
+            frame.className = 'absolute inset-0 h-full w-full border-0';
+            start.replaceWith(frame);
+            box.appendChild(close);
+        });
+        close.addEventListener('click', function () {
+            const frame = box.querySelector('iframe');
+            if (frame) frame.replaceWith(start);
+            close.remove();
+            start.focus();
+            box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+    </script>
+</body>
+
+</html>

@@ -240,7 +240,7 @@
         .principle:hover .num { color: #818cf8; text-shadow: 0 0 30px rgba(99, 102, 241, .6); }
 
         .live-dot { position: relative; display: inline-flex; width: 10px; height: 10px; }
-        .live-dot::before, .live-dot::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: #19E3FF; }
+        .live-dot::before, .live-dot::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: var(--c, #19E3FF); }
         .live-dot::before { animation: ping 1.4s cubic-bezier(0, 0, .2, 1) infinite; opacity: .75; }
         .live-dot.red::before, .live-dot.red::after { background: #ff4d4f; }
         @keyframes ping { 75%, 100% { transform: scale(2.2); opacity: 0; } }
@@ -293,8 +293,8 @@
                     <span class="word"><span style="--d:.15s" class="grad-text">Ethical</span></span>
                     <span class="word"><span style="--d:.25s">UX</span></span>
                     <span class="word"><span style="--d:.32s">&amp;</span></span><br>
-                    <span class="word"><span style="--d:.4s">Product</span></span>
-                    <span class="word"><span style="--d:.48s">Design</span></span>
+                    <span class="word"><span style="--d:.4s">product</span></span>
+                    <span class="word"><span style="--d:.48s">design</span></span>
                 </h1>
 
                 <p class="rv mt-8 max-w-xl text-xl font-light leading-relaxed text-neutral-200" style="--d:.6s">
@@ -392,12 +392,32 @@
                     <span class="absolute left-7 top-7 z-10 inline-flex items-center gap-2 rounded-full border border-[#ff4d4f]/50 bg-neutral-950/70 px-4 py-2 text-xs font-bold uppercase tracking-[0.15em] text-[#ff7875] shadow-[0_0_24px_rgba(255,77,79,0.3)]"><i class="live-dot red"></i>Live prototype</span>
                     <div class="relative z-10 mt-auto p-7 md:my-auto md:ml-auto md:max-w-[42%] md:p-10">
                         <p class="mb-2 text-xs font-medium uppercase tracking-wide text-[#f759ab]">Case study · AI product concept</p>
-                        <h3 class="font-heading text-3xl font-semibold">Ortex: AI Back Office</h3>
+                        <h3 class="font-heading text-3xl font-semibold">Ortex: AI back office</h3>
                         <p class="mt-2 font-light text-neutral-300">An AI agent watches the numbers and proposes actions. A person approves every money move with 2FA.</p>
                         <div class="mt-5 flex flex-wrap gap-2">
                             <span class="rounded-full border border-neutral-700/60 bg-neutral-900/70 px-3.5 py-1.5 text-xs text-neutral-300">AI agent UX</span>
                             <span class="rounded-full border border-neutral-700/60 bg-neutral-900/70 px-3.5 py-1.5 text-xs text-neutral-300">Ant Design</span>
                             <span class="rounded-full border border-neutral-700/60 bg-neutral-900/70 px-3.5 py-1.5 text-xs text-neutral-300">Live data</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- CarePath -->
+                <a href="case-carepath.html" data-cursor="Try it" class="spot tilt rv group relative overflow-hidden rounded-[2rem] border border-neutral-800 bg-[#04332f] md:col-span-2 md:row-span-2 max-md:h-[520px]" style="--d:.1s">
+                    <div class="absolute inset-0 bg-[radial-gradient(120%_80%_at_70%_0%,#00685f_0%,#04332f_55%,#062420_100%)]"></div>
+                    <div class="cover absolute left-1/2 top-[4.5rem] w-[62%] max-w-[240px] -translate-x-1/2 rounded-[1.9rem] bg-[#0e1214] p-[7px] shadow-[0_30px_60px_-20px_rgba(0,0,0,0.8)] transition-transform duration-700 group-hover:-translate-y-2">
+                        <img class="block w-full rounded-[1.5rem]" src="img/cases/carepath/home.webp" alt="CarePath patient app home screen">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/70 via-30% to-transparent to-60%"></div>
+                    <span class="absolute left-7 top-7 z-10 inline-flex items-center gap-2 rounded-full border border-[#89f5e7]/50 bg-neutral-950/70 px-4 py-2 text-xs font-bold uppercase tracking-[0.15em] text-[#89f5e7] shadow-[0_0_24px_rgba(137,245,231,0.3)]"><i class="live-dot" style="--c:#89f5e7"></i>Live prototype</span>
+                    <div class="absolute inset-x-0 bottom-0 z-10 p-7">
+                        <p class="mb-2 text-xs font-medium uppercase tracking-wide text-[#89f5e7]">Case study · Healthcare</p>
+                        <h3 class="font-heading text-2xl font-semibold">CarePath patient app</h3>
+                        <p class="mt-2 font-light text-neutral-300">Visits, refills, video calls and lab results in one calm app. All 10 screens are clickable.</p>
+                        <div class="mt-5 flex flex-wrap gap-2">
+                            <span class="rounded-full border border-neutral-700/60 bg-neutral-900/70 px-3.5 py-1.5 text-xs text-neutral-300">Healthcare UX</span>
+                            <span class="rounded-full border border-neutral-700/60 bg-neutral-900/70 px-3.5 py-1.5 text-xs text-neutral-300">UX writing</span>
+                            <span class="rounded-full border border-neutral-700/60 bg-neutral-900/70 px-3.5 py-1.5 text-xs text-neutral-300">Mobile app</span>
                         </div>
                     </div>
                 </a>
@@ -408,9 +428,9 @@
                     <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/30 to-transparent"></div>
                     <span class="absolute left-7 top-7 z-10 inline-flex items-center gap-2 rounded-full border border-[#19E3FF]/50 bg-neutral-950/70 px-4 py-2 text-xs font-bold uppercase tracking-[0.15em] text-[#5CEBFF] shadow-[0_0_24px_rgba(25,227,255,0.35)]"><i class="live-dot"></i>Live prototype</span>
                     <div class="absolute inset-x-0 bottom-0 z-10 p-8 md:p-10">
-                        <p class="mb-2 text-sm font-medium uppercase tracking-wide text-[#5CEBFF]">Game design · Video slot</p>
-                        <h3 class="sr-only">AXIOM</h3>
-                        <p class="mt-3 max-w-lg text-lg font-light text-neutral-300">A sci-fi slot case study with a playable browser prototype: free spins, a hack bonus and big-win moments.</p>
+                        <p class="mb-2 text-xs font-medium uppercase tracking-wide text-[#5CEBFF]">Case study · Game design</p>
+                        <h3 class="font-heading text-3xl font-semibold">AXIOM: sci-fi video slot</h3>
+                        <p class="mt-2 max-w-lg font-light text-neutral-300">A playable browser prototype with free spins, a hack bonus and big-win moments.</p>
                         <div class="mt-5 flex flex-wrap gap-2">
                             <span class="rounded-full border border-neutral-700/60 bg-neutral-900/70 px-3.5 py-1.5 text-xs text-neutral-300">Live prototype</span>
                             <span class="rounded-full border border-neutral-700/60 bg-neutral-900/70 px-3.5 py-1.5 text-xs text-neutral-300">Game UI</span>
@@ -420,24 +440,34 @@
                 </a>
 
                 <!-- Case 1 -->
-                <a href="case1.html" data-cursor="Read" class="spot tilt rv group relative overflow-hidden rounded-[2rem] border border-neutral-800 bg-neutral-900 md:col-span-2 max-md:h-[380px]" style="--d:.1s">
+                <a href="case1.html" data-cursor="Read" class="spot tilt rv group relative overflow-hidden rounded-[2rem] border border-neutral-800 bg-neutral-900 md:col-span-3 max-md:h-[380px]" style="--d:.1s">
                     <img class="cover absolute inset-0 h-full w-full object-cover" src="img/project1.jpg" alt="Casino platform back-office dashboard">
                     <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/85 via-45% to-neutral-950/20"></div>
                     <div class="absolute inset-x-0 bottom-0 z-10 p-7">
                         <p class="mb-2 text-xs font-medium uppercase tracking-wide text-brand-400">Case study</p>
-                        <h3 class="font-heading text-2xl font-semibold">Casino Platform Redesign</h3>
+                        <h3 class="font-heading text-2xl font-semibold">Casino platform redesign</h3>
                         <p class="mt-2 font-light text-neutral-300">100+ screens and 300+ flows rebuilt, cutting task time by 40%.</p>
+                        <div class="mt-5 flex flex-wrap gap-2">
+                            <span class="rounded-full border border-neutral-700/60 bg-neutral-900/70 px-3.5 py-1.5 text-xs text-neutral-300">User research</span>
+                            <span class="rounded-full border border-neutral-700/60 bg-neutral-900/70 px-3.5 py-1.5 text-xs text-neutral-300">Information architecture</span>
+                            <span class="rounded-full border border-neutral-700/60 bg-neutral-900/70 px-3.5 py-1.5 text-xs text-neutral-300">Back office</span>
+                        </div>
                     </div>
                 </a>
 
                 <!-- Case 2 -->
-                <a href="case2.html" data-cursor="Read" class="spot tilt rv group relative overflow-hidden rounded-[2rem] border border-neutral-800 bg-neutral-900 md:col-span-2 max-md:h-[380px]" style="--d:.2s">
+                <a href="case2.html" data-cursor="Read" class="spot tilt rv group relative overflow-hidden rounded-[2rem] border border-neutral-800 bg-neutral-900 md:col-span-3 max-md:h-[380px]" style="--d:.2s">
                     <img class="cover absolute inset-0 h-full w-full object-cover" src="img/project2.jpg" alt="Jackpot platform back office">
                     <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/85 via-45% to-neutral-950/20"></div>
                     <div class="absolute inset-x-0 bottom-0 z-10 p-7">
                         <p class="mb-2 text-xs font-medium uppercase tracking-wide text-brand-400">Case study</p>
-                        <h3 class="font-heading text-2xl font-semibold">Jackpot Platform from Scratch</h3>
+                        <h3 class="font-heading text-2xl font-semibold">Jackpot platform from scratch</h3>
                         <p class="mt-2 font-light text-neutral-300">100+ screens with unique flows. Full logic structure and UI/UX, architected from scratch.</p>
+                        <div class="mt-5 flex flex-wrap gap-2">
+                            <span class="rounded-full border border-neutral-700/60 bg-neutral-900/70 px-3.5 py-1.5 text-xs text-neutral-300">Design system</span>
+                            <span class="rounded-full border border-neutral-700/60 bg-neutral-900/70 px-3.5 py-1.5 text-xs text-neutral-300">Material Design</span>
+                            <span class="rounded-full border border-neutral-700/60 bg-neutral-900/70 px-3.5 py-1.5 text-xs text-neutral-300">Back office</span>
+                        </div>
                     </div>
                 </a>
 
@@ -447,8 +477,13 @@
                     <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/50 to-transparent md:bg-gradient-to-r md:from-neutral-950 md:via-neutral-950/90 md:via-40% md:to-transparent"></div>
                     <div class="relative z-10 mt-auto p-7 md:my-auto md:max-w-[46%] md:p-10">
                         <p class="mb-2 text-xs font-medium uppercase tracking-wide text-brand-400">Gallery</p>
-                        <h3 class="font-heading text-3xl font-semibold">More Design Work</h3>
+                        <h3 class="font-heading text-3xl font-semibold">More design work</h3>
                         <p class="mt-2 font-light text-neutral-300">Logos, websites, apps and back offices for brands across SaaS, fintech, health and betting.</p>
+                        <div class="mt-5 flex flex-wrap gap-2">
+                            <span class="rounded-full border border-neutral-700/60 bg-neutral-900/70 px-3.5 py-1.5 text-xs text-neutral-300">Logos</span>
+                            <span class="rounded-full border border-neutral-700/60 bg-neutral-900/70 px-3.5 py-1.5 text-xs text-neutral-300">Websites</span>
+                            <span class="rounded-full border border-neutral-700/60 bg-neutral-900/70 px-3.5 py-1.5 text-xs text-neutral-300">Apps</span>
+                        </div>
                     </div>
                 </a>
             </div>
@@ -570,25 +605,25 @@
         <section id="process" class="mx-auto max-w-7xl scroll-mt-24 px-6 py-28 md:px-10">
             <div class="mx-auto mb-16 max-w-3xl text-center">
                 <p class="rv mb-4 text-xs font-bold uppercase tracking-[0.25em] text-brand-400">04 · Human expertise + AI</p>
-                <h2 class="rv font-heading text-4xl font-semibold md:text-6xl" style="--d:.1s">Experience Augmented</h2>
+                <h2 class="rv font-heading text-4xl font-semibold md:text-6xl" style="--d:.1s">Experience augmented</h2>
                 <p class="rv mt-6 text-xl font-light leading-relaxed text-neutral-400" style="--d:.2s">With 15+ years in UX, I combine human intuition and critical decision-making with the speed of AI. I don't let tools design for me; I use them to work faster and explore further.</p>
             </div>
 
             <div class="grid gap-5 md:grid-cols-6">
                 <div class="spot rv rounded-[2rem] border border-neutral-800 bg-neutral-900/80 p-9 md:col-span-2">
-                    <div class="relative z-10"><span class="text-sm font-semibold text-brand-400">01</span><h3 class="mt-6 font-heading text-2xl font-semibold">Strategic Direction</h3><p class="mt-3 font-light leading-relaxed text-neutral-400">Every project starts from your business goals. AI generates options; my judgment picks the <em>right</em> direction.</p></div>
+                    <div class="relative z-10"><span class="text-sm font-semibold text-brand-400">01</span><h3 class="mt-6 font-heading text-2xl font-semibold">Strategic direction</h3><p class="mt-3 font-light leading-relaxed text-neutral-400">Every project starts from your business goals. AI generates options; my judgment picks the <em>right</em> direction.</p></div>
                 </div>
                 <div class="spot rv rounded-[2rem] border border-neutral-800 bg-neutral-900/80 p-9 md:col-span-2" style="--d:.08s">
-                    <div class="relative z-10"><span class="text-sm font-semibold text-brand-400">02</span><h3 class="mt-6 font-heading text-2xl font-semibold">Brand &amp; Audience Fit</h3><p class="mt-3 font-light leading-relaxed text-neutral-400">Generative tools produce endless possibilities. I listen to the brand and its audience, then shape those ideas into something coherent and emotionally resonant: design that doesn’t just work, but lasts.</p></div>
+                    <div class="relative z-10"><span class="text-sm font-semibold text-brand-400">02</span><h3 class="mt-6 font-heading text-2xl font-semibold">Brand &amp; audience fit</h3><p class="mt-3 font-light leading-relaxed text-neutral-400">Generative tools produce endless possibilities. I listen to the brand and its audience, then shape those ideas into something coherent and emotionally resonant: design that doesn’t just work, but lasts.</p></div>
                 </div>
                 <div class="spot rv rounded-[2rem] border border-neutral-800 bg-neutral-900/80 p-9 md:col-span-2" style="--d:.16s">
-                    <div class="relative z-10"><span class="text-sm font-semibold text-brand-400">03</span><h3 class="mt-6 font-heading text-2xl font-semibold">Ethical Design</h3><p class="mt-3 font-light leading-relaxed text-neutral-400">Design that’s honest: no dark patterns, transparent, and genuinely good for the user. I use generative tools responsibly, never to manipulate.</p></div>
+                    <div class="relative z-10"><span class="text-sm font-semibold text-brand-400">03</span><h3 class="mt-6 font-heading text-2xl font-semibold">Ethical design</h3><p class="mt-3 font-light leading-relaxed text-neutral-400">Design that’s honest: no dark patterns, transparent, and genuinely good for the user. I use generative tools responsibly, never to manipulate.</p></div>
                 </div>
                 <div class="spot rv rounded-[2rem] border border-neutral-800 bg-neutral-900/80 p-9 md:col-span-3" style="--d:.08s">
-                    <div class="relative z-10"><span class="text-sm font-semibold text-brand-400">04</span><h3 class="mt-6 font-heading text-2xl font-semibold">Critical Decision-Making</h3><p class="mt-3 font-light leading-relaxed text-neutral-400">Algorithms can predict, but people empathize. Every wireframe, micro-interaction and user flow is checked against years of watching how real people use technology.</p></div>
+                    <div class="relative z-10"><span class="text-sm font-semibold text-brand-400">04</span><h3 class="mt-6 font-heading text-2xl font-semibold">Critical decision-making</h3><p class="mt-3 font-light leading-relaxed text-neutral-400">Algorithms can predict, but people empathize. Every wireframe, micro-interaction and user flow is checked against years of watching how real people use technology.</p></div>
                 </div>
                 <div class="spot rv rounded-[2rem] border border-neutral-800 bg-neutral-900/80 p-9 md:col-span-3" style="--d:.16s">
-                    <div class="relative z-10"><span class="text-sm font-semibold text-brand-400">05</span><h3 class="mt-6 font-heading text-2xl font-semibold">Human-Crafted Refinement</h3><p class="mt-3 font-light leading-relaxed text-neutral-400">AI explores hundreds of directions fast. I bring the taste and brand intuition to pick the right one, then polish every detail, from typography rhythm to animation easing, until it feels unmistakably yours.</p></div>
+                    <div class="relative z-10"><span class="text-sm font-semibold text-brand-400">05</span><h3 class="mt-6 font-heading text-2xl font-semibold">Human-crafted refinement</h3><p class="mt-3 font-light leading-relaxed text-neutral-400">AI explores hundreds of directions fast. I bring the taste and brand intuition to pick the right one, then polish every detail, from typography rhythm to animation easing, until it feels unmistakably yours.</p></div>
                 </div>
             </div>
         </section>

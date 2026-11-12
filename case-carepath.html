@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CarePath – Patient App UX Case Study &amp; Prototype | Max Alexandrov</title>
+    <!-- SEO -->
+    <meta name="description" content="A clickable patient app for a medical group: booking, prescriptions, telehealth, lab results, AI insights and support chat, designed in Figma and built in React.">
+    <link rel="canonical" href="https://codexlab.vip/case-carepath.html">
+    <meta name="author" content="Max Alexandrov">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="CodexLab">
+    <meta property="og:title" content="CarePath – Patient App UX Case Study &amp; Prototype | Max Alexandrov">
+    <meta property="og:description" content="A clickable patient app for a medical group: booking, prescriptions, telehealth, lab results, AI insights and support chat, designed in Figma and built in React.">
+    <meta property="og:url" content="https://codexlab.vip/case-carepath.html">
+    <meta property="og:image" content="https://codexlab.vip/img/cases/carepath/cover.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="CarePath – Patient App UX Case Study &amp; Prototype | Max Alexandrov">
+    <meta name="twitter:description" content="A clickable patient app for a medical group: booking, prescriptions, telehealth, lab results, AI insights and support chat, designed in Figma and built in React.">
+    <meta name="twitter:image" content="https://codexlab.vip/img/cases/carepath/cover.jpg">
+    <!-- /SEO -->
+    <link rel="icon" type="image/svg+xml" href="img/logo/codexlab-mark.svg">
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script>
+        // CarePath's own palette: deep teal, mint and the app's soft blue
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        neutral: { 950: '#0a0a0a', 900: '#171717', 800: '#262626', 700: '#404040', 400: '#a3a3a3', 300: '#d4d4d4' },
+                        brand: { 300: '#b6f9ef', 400: '#89f5e7', 500: '#2fc9b6', 600: '#0b7d72', 700: '#00685f', 900: '#04332f' },
+                        sky: { 400: '#7cc4f2' }
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/games.css" rel="stylesheet">
+    <style>
+        .phone { border-radius: 2.6rem; padding: 10px; background: #0e1214; box-shadow: 0 30px 70px -25px rgba(0, 0, 0, .8), 0 0 0 1px rgba(255, 255, 255, .06); }
+        .phone img { display: block; width: 100%; border-radius: 2rem; }
+        .live-dot { width: 8px; height: 8px; border-radius: 50%; background: #89f5e7; display: inline-block; animation: live 1.6s infinite; }
+        @keyframes live { 0% { box-shadow: 0 0 0 0 rgba(137,245,231,.6); } 70% { box-shadow: 0 0 0 8px rgba(137,245,231,0); } 100% { box-shadow: 0 0 0 0 rgba(137,245,231,0); } }
+        @media (prefers-reduced-motion: reduce) { .live-dot { animation: none; } }
+        .tile { border-radius: 1rem; border: 1px solid #404040; background: rgba(38, 38, 38, .5); }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <nav class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-4 py-4 bg-[#0a0a0a]/80 backdrop-blur-md border-b border-neutral-800/50 sm:px-12 reveal">
+        <a href="index.html#work" class="group flex items-center gap-2 text-sm font-medium text-neutral-400 transition-all hover:text-white">
+            <i data-feather="arrow-left" class="h-4 w-4 transition-transform group-hover:-translate-x-1"></i> All work </a>
+        <a href="index.html" class="flex items-center gap-3">
+            <img src="img/logo/codexlab-mark.svg" alt="CodexLab logo" class="h-8 w-8">
+            <span class="font-semibold text-white tracking-wide text-sm hidden md:block">Codex<span class="font-normal text-neutral-400">Lab</span></span>
+        </a>
+    </nav>
+
+    <div class="relative flex w-full flex-col items-center gap-16 px-4 pt-24 pb-16 md:gap-24 md:px-8 md:pt-32 lg:pt-36 overflow-hidden">
+
+        <div class="fixed inset-0 z-0 bg-grid pointer-events-none opacity-40"></div>
+        <div class="absolute right-[-10%] top-[4%] z-0 h-96 w-96 rounded-full bg-brand-600/25 blur-[110px] pointer-events-none"></div>
+        <div class="absolute left-[-10%] top-[40%] z-0 h-72 w-72 rounded-full bg-brand-700/20 blur-[90px] pointer-events-none"></div>
+
+        <!-- Header -->
+        <header class="reveal relative z-10 flex w-full max-w-5xl flex-col items-center gap-6 text-center">
+            <div class="flex flex-wrap items-center justify-center gap-2">
+                <span class="inline-flex items-center gap-1 rounded-full bg-brand-500/10 px-3 py-1 text-sm font-medium text-brand-400 border border-brand-500/20">Case study · Healthcare</span>
+                <span class="inline-flex items-center gap-2 rounded-full bg-brand-400/10 px-3 py-1 text-sm font-medium text-brand-300 border border-brand-400/30"><i class="live-dot"></i> Live prototype</span>
+            </div>
+            <h1 class="w-full text-3xl font-bold leading-tight tracking-tight text-white md:text-5xl lg:text-6xl">
+                CarePath: all of a patient's care in one calm app
+            </h1>
+            <p class="w-full max-w-2xl text-base leading-relaxed text-neutral-400 md:text-lg lg:text-xl">
+                Visits, prescriptions, video calls, lab results and support chat for a Denver medical group, designed in Figma and built into a clickable prototype you can try below.
+            </p>
+            <a href="#prototype"
+                class="group inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3 text-sm font-semibold text-neutral-950 transition-all hover:bg-neutral-200 hover:-translate-y-0.5">
+                Try the prototype
+                <i data-feather="arrow-down" class="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5"></i>
+            </a>
+        </header>
+
+        <div class="reveal relative z-10 w-full max-w-5xl overflow-hidden rounded-3xl border border-neutral-800">
+            <img src="img/cases/carepath/cover.jpg" alt="Three CarePath screens: records, home and telehealth" class="w-full">
+        </div>
+
+        <!-- Live prototype -->
+        <section id="prototype" class="relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 scroll-mt-24">
+            <div class="reveal flex items-center gap-3">
+                <div class="flex h-10 w-10 items-center justify-center rounded-lg border border-brand-500/30 bg-brand-500/10 shadow-sm"><i data-feather="play-circle" class="h-5 w-5 text-brand-400"></i></div>
+                <h2 class="text-2xl font-semibold tracking-tight text-white">Try it yourself</h2>
+            </div>
+            <div id="proto-box" class="reveal relative w-full overflow-hidden rounded-2xl border border-brand-500/30 bg-[#eceef4] shadow-[0_0_60px_rgba(47,201,182,0.15)] h-[740px] md:h-[910px]">
+                <button id="proto-start" type="button" class="group absolute inset-0 flex h-full w-full items-center justify-center bg-brand-900" aria-label="Load the CarePath prototype">
+                    <img src="img/cases/carepath/cover.jpg" alt="" class="absolute inset-0 h-full w-full object-cover opacity-60 transition-opacity duration-300 group-hover:opacity-80">
+                    <span class="relative flex flex-col items-center gap-3">
+                        <span class="flex h-20 w-20 items-center justify-center rounded-full bg-brand-400 text-brand-900 shadow-[0_0_40px_rgba(137,245,231,0.6)] transition-transform duration-300 group-hover:scale-110">
+                            <i data-feather="play" class="h-9 w-9 translate-x-0.5"></i>
+                        </span>
+                        <span class="text-2xl font-semibold text-white drop-shadow">Open the prototype</span>
+                        <span class="text-xs text-neutral-300">Loads about 0.7 MB</span>
+                    </span>
+                </button>
+            </div>
+            <div class="reveal flex w-full flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+                <p class="max-w-2xl text-sm text-neutral-400">All 10 screens work, with no backend. Sign in with “Use demo account”, then book a visit, order a refill, start a video call or upload a file.
+                    On a wide screen, the screen map beside the phone jumps to any screen and can simulate going offline. All people and records are fictional.</p>
+                <a href="prototypes/carepath/index.html" target="_blank" rel="noopener" class="inline-flex flex-shrink-0 items-center gap-2 rounded-full bg-brand-400 px-6 py-3 text-sm font-semibold text-brand-900 transition-all hover:-translate-y-0.5 hover:shadow-[0_0_30px_rgba(137,245,231,0.5)]">
+                    Open in new tab <i data-feather="arrow-up-right" class="h-4 w-4"></i>
+                </a>
+            </div>
+        </section>
+
+        <!-- Overview -->
+        <section class="relative z-10 flex w-full max-w-5xl flex-col items-start gap-8">
+            <div class="reveal flex items-center gap-3"><div class="flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-700 bg-neutral-800 shadow-sm"><i data-feather="grid" class="h-5 w-5 text-neutral-300"></i></div><h2 class="text-2xl font-semibold tracking-tight text-white">At a glance</h2></div>
+            <div class="grid w-full grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
+                <div class="reveal flex flex-col items-center justify-center gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 text-center transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600">
+                    <span class="text-3xl font-bold tracking-tight text-brand-400 md:text-4xl">10</span>
+                    <span class="text-sm text-neutral-400">screens, from sign-in to offline</span>
+                </div>
+                <div class="reveal delay-100 flex flex-col items-center justify-center gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 text-center transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600">
+                    <span class="text-3xl font-bold tracking-tight text-brand-400 md:text-4xl">9</span>
+                    <span class="text-sm text-neutral-400">working flows, end to end</span>
+                </div>
+                <div class="reveal delay-200 flex flex-col items-center justify-center gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 text-center transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600">
+                    <span class="text-3xl font-bold tracking-tight text-brand-400 md:text-4xl">2</span>
+                    <span class="text-sm text-neutral-400">navigation hubs: care and health</span>
+                </div>
+                <div class="reveal delay-300 flex flex-col items-center justify-center gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 text-center transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600">
+                    <span class="text-3xl font-bold tracking-tight text-brand-400 md:text-4xl">0</span>
+                    <span class="text-sm text-neutral-400">dead ends: every screen leads somewhere</span>
+                </div>
+            </div>
+            <div class="reveal grid w-full gap-4 md:grid-cols-3">
+                <div class="rounded-xl border border-neutral-800 bg-neutral-900/60 p-5">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-neutral-500">Role</p>
+                    <p class="mt-1 text-neutral-300">Product design, UX writing and the prototype</p>
+                </div>
+                <div class="rounded-xl border border-neutral-800 bg-neutral-900/60 p-5">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-neutral-500">Tools</p>
+                    <p class="mt-1 text-neutral-300">Figma, React</p>
+                </div>
+                <div class="rounded-xl border border-neutral-800 bg-neutral-900/60 p-5">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-neutral-500">Type</p>
+                    <p class="mt-1 text-neutral-300">Mobile patient app for a medical group</p>
+                </div>
+            </div>
+            <div class="grid w-full gap-6 md:grid-cols-2">
+                <div class="reveal tile p-7">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-brand-400">The challenge</span>
+                    <p class="mt-3 leading-relaxed text-neutral-300">A patient's care is spread across visits, pharmacies, labs, video calls and billing. Each usually lives in its own portal, and every one asks people to work it out again, often on a bad day.</p>
+                </div>
+                <div class="reveal delay-100 tile p-7">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-brand-400">The goal</span>
+                    <p class="mt-3 leading-relaxed text-neutral-300">One app where the next step is always obvious: what's coming up, what needs action and how to reach a person. Calm, plain language, and safe when it matters.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Key flows -->
+        <section class="relative z-10 flex w-full max-w-5xl flex-col gap-20 md:gap-28">
+            <div class="reveal flex items-center gap-3"><div class="flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-700 bg-neutral-800 shadow-sm"><i data-feather="map" class="h-5 w-5 text-neutral-300"></i></div><h2 class="text-2xl font-semibold tracking-tight text-white">Key flows</h2></div>
+
+            <div class="grid items-center gap-10 md:grid-cols-[300px_1fr] md:gap-16">
+                <div class="reveal phone mx-auto w-[260px] md:w-[300px]"><img class="zoomable" src="img/cases/carepath/home.webp" alt="CarePath home: upcoming visit, preventive care reminder and quick actions" loading="lazy"></div>
+                <div class="reveal flex flex-col gap-4">
+                    <span class="text-sm font-semibold text-brand-400">01 · Home</span>
+                    <h3 class="text-xl font-semibold tracking-tight text-white md:text-2xl">The next step, front and centre</h3>
+                    <p class="leading-relaxed text-neutral-400">Home answers one question: what do I need to do now? The next visit comes first, with directions, reschedule and cancel. Cancelling asks for confirmation and offers Undo. Below are a preventive-care reminder and six quick actions.</p>
+                </div>
+            </div>
+
+            <div class="grid items-center gap-10 md:grid-cols-[1fr_300px] md:gap-16">
+                <div class="reveal phone mx-auto w-[260px] md:order-2 md:w-[300px]"><img class="zoomable" src="img/cases/carepath/book-visit.webp" alt="Booking: specialty chips, dates, time slots and providers" loading="lazy"></div>
+                <div class="reveal flex flex-col gap-4 md:order-1">
+                    <span class="text-sm font-semibold text-brand-400">02 · Booking</span>
+                    <h3 class="text-xl font-semibold tracking-tight text-white md:text-2xl">Specialty, day, time, doctor. Done.</h3>
+                    <p class="leading-relaxed text-neutral-400">Four choices and a confirmation. Clinic and insurance filters keep the list to in-network options, and fully booked days look booked rather than failing later. Each doctor card shows the copay before you confirm. The new visit appears on Home straight away.</p>
+                </div>
+            </div>
+
+            <div class="grid items-center gap-10 md:grid-cols-[300px_1fr] md:gap-16">
+                <div class="reveal phone mx-auto w-[260px] md:w-[300px]"><img class="zoomable" src="img/cases/carepath/prescriptions.webp" alt="Prescriptions: supply bars, order refill and request renewal" loading="lazy"></div>
+                <div class="reveal flex flex-col gap-4">
+                    <span class="text-sm font-semibold text-brand-400">03 · Prescriptions</span>
+                    <h3 class="text-xl font-semibold tracking-tight text-white md:text-2xl">Refills before you run out</h3>
+                    <p class="leading-relaxed text-neutral-400">A supply bar on every medication shows how many days are left and turns red when it's time to act. Order refill offers delivery or pickup. When a prescription has run out, the same button becomes Request renewal, with a note to the doctor.</p>
+                </div>
+            </div>
+
+            <div class="grid items-center gap-10 md:grid-cols-[1fr_300px] md:gap-16">
+                <div class="reveal phone mx-auto w-[260px] md:order-2 md:w-[300px]"><img class="zoomable" src="img/cases/carepath/telehealth.webp" alt="Telehealth: see a doctor now, messages and the next video visit" loading="lazy"></div>
+                <div class="reveal flex flex-col gap-4 md:order-1">
+                    <span class="text-sm font-semibold text-brand-400">04 · Telehealth</span>
+                    <h3 class="text-xl font-semibold tracking-tight text-white md:text-2xl">A doctor in about 15 minutes</h3>
+                    <p class="leading-relaxed text-neutral-400">“See a doctor now” shows how many doctors are online, then starts a video call with a timer, live captions and clear mute, camera and end controls. Scheduled visits explain when the room opens and offer a camera and sound test beforehand.</p>
+                </div>
+            </div>
+
+            <div class="grid items-center gap-10 md:grid-cols-[300px_1fr] md:gap-16">
+                <div class="reveal phone mx-auto w-[260px] md:w-[300px]"><img class="zoomable" src="img/cases/carepath/records.webp" alt="Records: results summary, filters and a blood count with reference ranges" loading="lazy"></div>
+                <div class="reveal flex flex-col gap-4">
+                    <span class="text-sm font-semibold text-brand-400">05 · Records and labs</span>
+                    <h3 class="text-xl font-semibold tracking-tight text-white md:text-2xl">Results people can read</h3>
+                    <p class="leading-relaxed text-neutral-400">“All results in range” comes before any numbers. Every value sits next to its reference range, and Trends charts a marker over time. Filters by year and type show their counts, so empty filters never surprise anyone. Patients can upload their own files too.</p>
+                </div>
+            </div>
+
+            <div class="grid items-center gap-10 md:grid-cols-[1fr_300px] md:gap-16">
+                <div class="reveal phone mx-auto w-[260px] md:order-2 md:w-[300px]"><img class="zoomable" src="img/cases/carepath/ai-insights.webp" alt="AI insights: wellness score and personal health findings" loading="lazy"></div>
+                <div class="reveal flex flex-col gap-4 md:order-1">
+                    <span class="text-sm font-semibold text-brand-400">06 · AI insights</span>
+                    <h3 class="text-xl font-semibold tracking-tight text-white md:text-2xl">AI that knows its place</h3>
+                    <p class="leading-relaxed text-neutral-400">A wellness score and plain-language findings from labs, vitals and visit notes, each marked as reviewed by the patient's doctors. Findings come with one action, such as booking an overdue Tdap booster in one tap, with Undo. The assistant suggests questions so nobody faces a blank box.</p>
+                </div>
+            </div>
+
+            <div class="grid items-center gap-10 md:grid-cols-[300px_1fr] md:gap-16">
+                <div class="reveal phone mx-auto w-[260px] md:w-[300px]"><img class="zoomable" src="img/cases/carepath/support-chat.webp" alt="Support chat with an always-visible emergency banner" loading="lazy"></div>
+                <div class="reveal flex flex-col gap-4">
+                    <span class="text-sm font-semibold text-brand-400">07 · Support chat</span>
+                    <h3 class="text-xl font-semibold tracking-tight text-white md:text-2xl">A person, with 911 one tap away</h3>
+                    <p class="leading-relaxed text-neutral-400">The concierge answers billing, coverage and referral questions in plain words, with suggested replies for the common ones. An emergency banner stays pinned at the top of the chat. Calling 911 asks for confirmation, so it's quick but never accidental.</p>
+                </div>
+            </div>
+
+            <div class="grid items-center gap-10 md:grid-cols-[1fr_300px] md:gap-16">
+                <div class="reveal phone mx-auto w-[260px] md:order-2 md:w-[300px]"><img class="zoomable" src="img/cases/carepath/offline.webp" alt="Offline state: saved records, retry and urgent care advice" loading="lazy"></div>
+                <div class="reveal flex flex-col gap-4 md:order-1">
+                    <span class="text-sm font-semibold text-brand-400">08 · Offline</span>
+                    <h3 class="text-xl font-semibold tracking-tight text-white md:text-2xl">Designed for a bad connection</h3>
+                    <p class="leading-relaxed text-neutral-400">Clinics and basements have weak signal. Instead of an error, the app says what still works: records and prescriptions saved on the phone, when it last synced, and simple things to try. Urgent-care advice stays on screen.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- More screens -->
+        <section class="relative z-10 flex w-full max-w-5xl flex-col gap-8">
+            <div class="reveal flex items-center gap-3"><div class="flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-700 bg-neutral-800 shadow-sm"><i data-feather="image" class="h-5 w-5 text-neutral-300"></i></div><h2 class="text-2xl font-semibold tracking-tight text-white">More screens</h2></div>
+            <div class="reveal grid w-full max-w-2xl grid-cols-2 gap-6 self-center md:gap-10">
+                <figure class="flex flex-col gap-3"><div class="phone"><img class="zoomable" src="img/cases/carepath/sign-in.webp" alt="Sign in with demo account, Face ID and MyChart" loading="lazy"></div><figcaption class="text-center text-sm text-neutral-400">Sign in: Face ID and MyChart</figcaption></figure>
+                <figure class="flex flex-col gap-3"><div class="phone"><img class="zoomable" src="img/cases/carepath/nutrition.webp" alt="Nutrition: daily goal, water and foods to eat more of" loading="lazy"></div><figcaption class="text-center text-sm text-neutral-400">Nutrition: a plan set by the doctor</figcaption></figure>
+            </div>
+        </section>
+
+        <!-- Design decisions -->
+        <section class="relative z-10 flex w-full max-w-5xl flex-col gap-8">
+            <div class="reveal flex items-center gap-3"><div class="flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-700 bg-neutral-800 shadow-sm"><i data-feather="compass" class="h-5 w-5 text-neutral-300"></i></div><h2 class="text-2xl font-semibold tracking-tight text-white">Design decisions</h2></div>
+            <div class="grid gap-5 md:grid-cols-2">
+                <div class="reveal tile p-7">
+                    <i data-feather="git-merge" class="h-6 w-6 text-brand-400"></i>
+                    <h3 class="mt-4 text-xl font-semibold text-white">Two tab bars, one app</h3>
+                    <p class="mt-2 leading-relaxed text-neutral-400">The design had two different tab bars: one for care (book, refills, telehealth, records) and one for the health hub (insights, nutrition, chat). I kept both and joined them: Home links into the hub, and the avatar menu reaches everything, so no screen is a dead end.</p>
+                </div>
+                <div class="reveal delay-100 tile p-7">
+                    <i data-feather="shield" class="h-6 w-6 text-brand-400"></i>
+                    <h3 class="mt-4 text-xl font-semibold text-white">Clinical safety first</h3>
+                    <p class="mt-2 leading-relaxed text-neutral-400">AI answers say who checked them. 911 is one tap away in chat and on the offline screen, with a confirmation step. Payments and calls in the demo are clearly labelled as demo, so nothing can be mistaken for the real thing.</p>
+                </div>
+                <div class="reveal tile p-7">
+                    <i data-feather="type" class="h-6 w-6 text-brand-400"></i>
+                    <h3 class="mt-4 text-xl font-semibold text-white">Plain-language UX writing</h3>
+                    <p class="mt-2 leading-relaxed text-neutral-400">Sentence case everywhere, shorter doctor titles, results and diagnoses in everyday words, and buttons that say what they do: “Order refill”, “Request renewal”, “Book visit”.</p>
+                </div>
+                <div class="reveal delay-100 tile p-7">
+                    <i data-feather="layout" class="h-6 w-6 text-brand-400"></i>
+                    <h3 class="mt-4 text-xl font-semibold text-white">One system, not ten screens</h3>
+                    <p class="mt-2 leading-relaxed text-neutral-400">A shared top bar, page header, card header, list rows and action tiles, with one icon size and colour. A consistency pass after the first build turned ten screens into one product.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- From Figma to prototype -->
+        <section class="relative z-10 flex w-full max-w-5xl flex-col gap-8">
+            <div class="reveal flex flex-col gap-3">
+                <div class="flex items-center gap-3"><div class="flex h-10 w-10 items-center justify-center rounded-lg border border-brand-500/30 bg-brand-500/10 shadow-sm"><i data-feather="code" class="h-5 w-5 text-brand-400"></i></div><h2 class="text-2xl font-semibold tracking-tight text-white">From Figma to a working prototype</h2></div>
+                <p class="max-w-3xl leading-relaxed text-neutral-400">I designed all ten screens in Figma, then built them in React so every button does something real: forms validate, lists filter, a booked visit lands on Home, a logged meal moves the daily goal. Building it showed where the design needed work. That led to a second pass on consistency and copy, and a new brand mark and launch screen.</p>
+            </div>
+            <div class="reveal overflow-hidden rounded-2xl border border-neutral-800 bg-[#3a3a3a]">
+                <img class="zoomable w-full" src="img/cases/carepath/figma-screens.jpg" alt="All ten CarePath screens in the Figma file" loading="lazy">
+            </div>
+            <p class="reveal text-sm text-neutral-500">The Figma file: all ten screens. Click to enlarge.</p>
+        </section>
+
+        <!-- Next -->
+        <section class="reveal relative z-10 flex w-full max-w-5xl flex-col gap-4 rounded-3xl border border-brand-500/20 bg-brand-900/30 p-8 md:p-12">
+            <span class="text-xs font-semibold uppercase tracking-wider text-brand-400">What's next</span>
+            <h2 class="text-2xl font-semibold tracking-tight text-white">The doctor's side</h2>
+            <p class="max-w-3xl leading-relaxed text-neutral-300">The other half of CarePath is for doctors: the schedule, patient notes and replies to the messages patients send here. It's the next part to design.</p>
+        </section>
+
+        <!-- Call to Action -->
+        <div class="reveal relative z-10 flex w-full max-w-5xl flex-col items-center gap-6 border-t border-neutral-800 pt-12 pb-8 md:pt-16">
+            <span class="text-center text-lg text-neutral-400">Working on a health product?</span>
+            <a href="index.html#contact"
+                class="group inline-flex items-center justify-center gap-2 rounded-full bg-white px-8 py-3.5 text-sm font-semibold text-neutral-950 transition-all hover:bg-neutral-200 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:-translate-y-0.5">
+                Get in touch
+                <i data-feather="arrow-right" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"></i>
+            </a>
+        </div>
+    </div>
+
+    <script src="js/games.js"></script>
+    <script>
+        // Click to load: the prototype only downloads when someone wants it.
+        // Once open, a Close button puts the cover back and unloads the prototype.
+        const box = document.getElementById('proto-box');
+        const start = document.getElementById('proto-start');
+        const close = document.createElement('button');
+        close.type = 'button';
+        close.className = 'absolute right-3 top-3 z-20 inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-neutral-950/80 px-4 py-2 text-sm font-semibold text-white shadow-lg backdrop-blur transition-colors hover:bg-neutral-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400';
+        close.setAttribute('aria-label', 'Close the prototype');
+        close.innerHTML = '<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>Close';
+
+        start.addEventListener('click', function () {
+            const frame = document.createElement('iframe');
+            frame.src = 'prototypes/carepath/index.html';
+            frame.title = 'CarePath patient app prototype';
+            frame.className = 'absolute inset-0 h-full w-full border-0';
+            start.replaceWith(frame);
+            box.appendChild(close);
+        });
+        close.addEventListener('click', function () {
+            const frame = box.querySelector('iframe');
+            if (frame) frame.replaceWith(start);
+            close.remove();
+            start.focus();
+            box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+    </script>
+</body>
+
+</html>

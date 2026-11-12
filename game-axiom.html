@@ -549,6 +549,20 @@
     <script src="js/games.js"></script>
     <script>
                 // Load the prototype only when asked: it pulls ~3.5 MB of art.
+        // Once open, a Close button unloads the prototype and puts the cover back.
+        const protoStart = document.getElementById('proto-start');
+        const protoClose = document.createElement('button');
+        protoClose.type = 'button';
+        protoClose.className = 'absolute right-3 top-3 z-20 inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-neutral-950/80 px-4 py-2 text-sm font-semibold text-white shadow-lg backdrop-blur transition-colors hover:bg-neutral-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400';
+        protoClose.setAttribute('aria-label', 'Close the prototype');
+        protoClose.innerHTML = '<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>Close';
+        protoClose.addEventListener('click', function () {
+            const frame = document.querySelector('#proto-box iframe');
+            if (frame) frame.replaceWith(protoStart);
+            protoClose.remove();
+            protoStart.focus();
+            document.getElementById('proto-box').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
         function loadPrototype() {
             const existing = document.querySelector('#proto-box iframe');
             if (existing) return existing;
@@ -558,11 +572,12 @@
             frame.allow = 'fullscreen; autoplay';
             frame.allowFullscreen = true;
             frame.className = 'absolute inset-0 h-full w-full border-0';
-            document.getElementById('proto-start').replaceWith(frame);
+            protoStart.replaceWith(frame);
+            document.getElementById('proto-box').appendChild(protoClose);
             frame.addEventListener('load', function () { frame.focus(); });
             return frame;
         }
-        document.getElementById('proto-start').addEventListener('click', loadPrototype);
+        protoStart.addEventListener('click', loadPrototype);
 
         // Full screen: expand the player in place. Where a browser refuses or never answers
         // (iPhone Safari, in-app browsers), open the game on its own page instead.

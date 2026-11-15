@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Axo – A Mockup Maker for Designers | Max Alexandrov</title>
+    <!-- SEO -->
+    <meta name="description" content="A browser tool I built with AI: drop in up to 15 screenshots and get a glass-framed 2.5D or isometric mockup as an image or a short video.">
+    <link rel="canonical" href="https://codexlab.vip/case-axo.html">
+    <meta name="author" content="Max Alexandrov">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="CodexLab">
+    <meta property="og:title" content="Axo – A Mockup Maker for Designers | Max Alexandrov">
+    <meta property="og:description" content="A browser tool I built with AI: drop in up to 15 screenshots and get a glass-framed 2.5D or isometric mockup as an image or a short video.">
+    <meta property="og:url" content="https://codexlab.vip/case-axo.html">
+    <meta property="og:image" content="https://codexlab.vip/img/cases/axo/cover.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Axo – A Mockup Maker for Designers | Max Alexandrov">
+    <meta name="twitter:description" content="A browser tool I built with AI: drop in up to 15 screenshots and get a glass-framed 2.5D or isometric mockup as an image or a short video.">
+    <meta name="twitter:image" content="https://codexlab.vip/img/cases/axo/cover.jpg">
+    <!-- /SEO -->
+    <link rel="icon" type="image/svg+xml" href="img/logo/codexlab-mark.svg">
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script>
+        // Axo's own palette: the violet and mint of its logo
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        neutral: { 950: '#0a0a0a', 900: '#171717', 800: '#262626', 700: '#404040', 400: '#a3a3a3', 300: '#d4d4d4' },
+                        brand: { 300: '#c3bcff', 400: '#9d93ff', 500: '#6d5ef6', 600: '#5546d9', 700: '#4034ad', 900: '#141033' },
+                        mint: { 400: '#7cf5e0' }
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/games.css" rel="stylesheet">
+    <style>
+        .live-dot { width: 8px; height: 8px; border-radius: 50%; background: #7cf5e0; display: inline-block; animation: live 1.6s infinite; }
+        @keyframes live { 0% { box-shadow: 0 0 0 0 rgba(124,245,224,.6); } 70% { box-shadow: 0 0 0 8px rgba(124,245,224,0); } 100% { box-shadow: 0 0 0 0 rgba(124,245,224,0); } }
+        @media (prefers-reduced-motion: reduce) { .live-dot { animation: none; } }
+        .tile { border-radius: 1rem; border: 1px solid #404040; background: rgba(38, 38, 38, .5); }
+        .shot { overflow: hidden; border-radius: 1rem; border: 1px solid #262626; background: #0b0c11; }
+        .shot img { display: block; width: 100%; }
+    </style>
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="c5802c43-19a1-4467-8fc4-cff970abae1f" data-domains="codexlab.vip"></script>
+</head>
+
+<body class="antialiased">
+
+    <nav class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-4 py-4 bg-[#0a0a0a]/80 backdrop-blur-md border-b border-neutral-800/50 sm:px-12 reveal">
+        <a href="index.html#work" class="group flex items-center gap-2 text-sm font-medium text-neutral-400 transition-all hover:text-white">
+            <i data-feather="arrow-left" class="h-4 w-4 transition-transform group-hover:-translate-x-1"></i> All work </a>
+        <a href="index.html" class="flex items-center gap-3">
+            <img src="img/logo/codexlab-mark.svg" alt="CodexLab logo" class="h-8 w-8">
+            <span class="font-semibold text-white tracking-wide text-sm hidden md:block">Codex<span class="font-normal text-neutral-400">Lab</span></span>
+        </a>
+    </nav>
+
+    <div class="relative flex w-full flex-col items-center gap-16 px-4 pt-24 pb-16 md:gap-24 md:px-8 md:pt-32 lg:pt-36 overflow-hidden">
+
+        <div class="fixed inset-0 z-0 bg-grid pointer-events-none opacity-40"></div>
+        <div class="absolute right-[-10%] top-[4%] z-0 h-96 w-96 rounded-full bg-brand-600/20 blur-[110px] pointer-events-none"></div>
+        <div class="absolute left-[-10%] top-[40%] z-0 h-72 w-72 rounded-full bg-mint-400/10 blur-[90px] pointer-events-none"></div>
+
+        <!-- Header -->
+        <header class="reveal relative z-10 flex w-full max-w-5xl flex-col items-center gap-6 text-center">
+            <div class="flex flex-wrap items-center justify-center gap-2">
+                <span class="inline-flex items-center gap-1 rounded-full bg-brand-500/10 px-3 py-1 text-sm font-medium text-brand-400 border border-brand-500/20">Case study · Design tool</span>
+                <span class="inline-flex items-center gap-2 rounded-full bg-mint-400/10 px-3 py-1 text-sm font-medium text-mint-400 border border-mint-400/30"><i class="live-dot"></i> Live tool</span>
+            </div>
+            <h1 class="w-full text-3xl font-bold leading-tight tracking-tight text-white md:text-5xl lg:text-6xl">
+                Axo: a mockup maker I built for my own portfolio
+            </h1>
+            <p class="w-full max-w-2xl text-base leading-relaxed text-neutral-400 md:text-lg lg:text-xl">
+                Every case study needs a cover image, and I was building each one by hand. So I made a browser tool that turns up to 15 screenshots into a glass-framed 2.5D or isometric scene and saves it as an image or a short video. You can use it below, free: no watermark, no paywall and no sign-up.
+            </p>
+            <a href="#prototype"
+                class="group inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3 text-sm font-semibold text-neutral-950 transition-all hover:bg-neutral-200 hover:-translate-y-0.5">
+                Try the tool
+                <i data-feather="arrow-down" class="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5"></i>
+            </a>
+        </header>
+
+        <!-- Live tool -->
+        <section id="prototype" class="relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 scroll-mt-24">
+            <div class="reveal flex items-center gap-3">
+                <div class="flex h-10 w-10 items-center justify-center rounded-lg border border-brand-500/30 bg-brand-500/10 shadow-sm"><i data-feather="play-circle" class="h-5 w-5 text-brand-400"></i></div>
+                <h2 class="text-2xl font-semibold tracking-tight text-white">Try it yourself</h2>
+            </div>
+            <div id="proto-box" class="reveal relative w-full overflow-hidden rounded-2xl border border-brand-500/30 bg-[#0b0c11] shadow-[0_0_60px_rgba(109,94,246,0.16)] h-[740px] md:h-[760px]">
+                <button id="proto-start" data-umami-event="Open prototype" data-umami-event-case="axo" type="button" class="group absolute inset-0 flex h-full w-full items-center justify-center bg-brand-900" aria-label="Load the Axo tool">
+                    <img src="img/cases/axo/cover.jpg" alt="" class="absolute inset-0 h-full w-full object-cover opacity-50 transition-opacity duration-300 group-hover:opacity-70">
+                    <span class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(20,16,51,0.9)_0%,rgba(20,16,51,0.55)_35%,rgba(20,16,51,0)_70%)]"></span>
+                    <span class="relative flex flex-col items-center gap-3">
+                        <span class="flex h-20 w-20 items-center justify-center rounded-full bg-mint-400 text-brand-900 shadow-[0_0_40px_rgba(124,245,224,0.6)] transition-transform duration-300 group-hover:scale-110">
+                            <i data-feather="play" class="h-9 w-9 translate-x-0.5"></i>
+                        </span>
+                        <span class="text-2xl font-semibold text-white drop-shadow">Open the tool</span>
+                        <span class="text-xs text-neutral-300">Loads about 0.6 MB</span>
+                    </span>
+                </button>
+            </div>
+            <div class="reveal flex w-full flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+                <p class="max-w-2xl text-sm text-neutral-400">It opens with three demo screens. Drop in your own images, pick a layout and a view, or press Randomize. Nothing is uploaded: your images stay in your browser.
+                    Every image on this page was made with it. It has the most room in its own tab.</p>
+                <a href="prototypes/axo/index.html" target="_blank" data-umami-event="Prototype new tab" data-umami-event-case="axo" rel="noopener" class="inline-flex flex-shrink-0 items-center gap-2 rounded-full bg-mint-400 px-6 py-3 text-sm font-semibold text-brand-900 transition-all hover:-translate-y-0.5 hover:shadow-[0_0_30px_rgba(124,245,224,0.5)]">
+                    Open in new tab <i data-feather="arrow-up-right" class="h-4 w-4"></i>
+                </a>
+            </div>
+        </section>
+
+        <!-- How I built it with AI -->
+        <section class="relative z-10 flex w-full max-w-5xl flex-col gap-8">
+            <div class="reveal flex flex-col gap-4">
+                <div class="flex items-center gap-3"><div class="flex h-10 w-10 items-center justify-center rounded-lg border border-brand-500/30 bg-brand-500/10 shadow-sm"><i data-feather="cpu" class="h-5 w-5 text-brand-400"></i></div><h2 class="text-2xl font-semibold tracking-tight text-white">How I built it with AI</h2></div>
+                <p class="max-w-3xl leading-relaxed text-neutral-400">This is an old idea of mine: a tool that makes design work look good in a presentation. Now it's live, and anyone can use it. I wrote the brief, decided what the tool should and shouldn't do, and tested every version. Claude Code wrote the rendering code.</p>
+                <p class="max-w-3xl leading-relaxed text-neutral-400">My part was scope and judgement: which controls earn a place, what the defaults are, and what breaks in real use. I found that recording after a preview never finished, and that Firefox couldn't save a video at all. Both are fixed.</p>
+            </div>
+            <div class="grid w-full gap-6 md:grid-cols-2">
+                <div class="reveal tile p-7">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-brand-400">AI gave me</span>
+                    <p class="mt-3 leading-relaxed text-neutral-300">Working graphics code in hours: the glass blur, the camera and the video encoder.</p>
+                </div>
+                <div class="reveal delay-100 tile p-7">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-brand-400">I added</span>
+                    <p class="mt-3 leading-relaxed text-neutral-300">The idea, the scope, the defaults and the bug reports from using it on my own cases.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Overview -->
+        <section class="relative z-10 flex w-full max-w-5xl flex-col items-start gap-8">
+            <div class="reveal flex items-center gap-3"><div class="flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-700 bg-neutral-800 shadow-sm"><i data-feather="grid" class="h-5 w-5 text-neutral-300"></i></div><h2 class="text-2xl font-semibold tracking-tight text-white">At a glance</h2></div>
+            <div class="grid w-full grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
+                <div class="reveal flex flex-col items-center justify-center gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 text-center transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600">
+                    <span class="text-3xl font-bold tracking-tight text-brand-400 md:text-4xl">15</span>
+                    <span class="text-sm text-neutral-400">images in one scene, of any shape</span>
+                </div>
+                <div class="reveal delay-100 flex flex-col items-center justify-center gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 text-center transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600">
+                    <span class="text-3xl font-bold tracking-tight text-brand-400 md:text-4xl">8</span>
+                    <span class="text-sm text-neutral-400">layouts, from a simple row to an endless wall</span>
+                </div>
+                <div class="reveal delay-200 flex flex-col items-center justify-center gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 text-center transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600">
+                    <span class="text-3xl font-bold tracking-tight text-brand-400 md:text-4xl">3</span>
+                    <span class="text-sm text-neutral-400">views: flat, 2.5D and isometric</span>
+                </div>
+                <div class="reveal delay-300 flex flex-col items-center justify-center gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 text-center transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600">
+                    <span class="text-3xl font-bold tracking-tight text-brand-400 md:text-4xl">24</span>
+                    <span class="text-sm text-neutral-400">backgrounds, plus your own colour or image</span>
+                </div>
+            </div>
+            <div class="reveal grid w-full gap-4 md:grid-cols-3">
+                <div class="rounded-xl border border-neutral-800 bg-neutral-900/60 p-5">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-neutral-500">Role</p>
+                    <p class="mt-1 text-neutral-300">Product concept, scope, interface decisions and testing</p>
+                </div>
+                <div class="rounded-xl border border-neutral-800 bg-neutral-900/60 p-5">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-neutral-500">Tools</p>
+                    <p class="mt-1 text-neutral-300">Claude Code (AI), WebGL, WebCodecs</p>
+                </div>
+                <div class="rounded-xl border border-neutral-800 bg-neutral-900/60 p-5">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-neutral-500">Type</p>
+                    <p class="mt-1 text-neutral-300">Browser tool for designers</p>
+                </div>
+            </div>
+            <div class="grid w-full gap-4 md:grid-cols-3">
+                <div class="reveal flex items-start gap-3 rounded-xl border border-mint-400/20 bg-mint-400/5 p-5">
+                    <i data-feather="check-circle" class="mt-0.5 h-5 w-5 flex-none text-mint-400"></i>
+                    <div>
+                        <p class="font-semibold text-white">No watermark</p>
+                        <p class="mt-1 text-sm text-neutral-400">Images and videos export clean, at full size.</p>
+                    </div>
+                </div>
+                <div class="reveal delay-100 flex items-start gap-3 rounded-xl border border-mint-400/20 bg-mint-400/5 p-5">
+                    <i data-feather="check-circle" class="mt-0.5 h-5 w-5 flex-none text-mint-400"></i>
+                    <div>
+                        <p class="font-semibold text-white">No paywall</p>
+                        <p class="mt-1 text-sm text-neutral-400">Every feature is free. There is no paid tier.</p>
+                    </div>
+                </div>
+                <div class="reveal delay-200 flex items-start gap-3 rounded-xl border border-mint-400/20 bg-mint-400/5 p-5">
+                    <i data-feather="check-circle" class="mt-0.5 h-5 w-5 flex-none text-mint-400"></i>
+                    <div>
+                        <p class="font-semibold text-white">No sign-up</p>
+                        <p class="mt-1 text-sm text-neutral-400">Open the page and start. No account, no email.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="grid w-full gap-6 md:grid-cols-2">
+                <div class="reveal tile p-7">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-brand-400">The challenge</span>
+                    <p class="mt-3 leading-relaxed text-neutral-300">Most mockup tools are built around one screenshot in one device frame. A case study needs several screens in one shot, and they're rarely the same shape. I liked Screenstab, a free tool that tilts a single screenshot, and wanted the same ease for a whole set.</p>
+                </div>
+                <div class="reveal delay-100 tile p-7">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-brand-400">The goal</span>
+                    <p class="mt-3 leading-relaxed text-neutral-300">Drop in a set of screens and get a finished cover in about a minute. No device frames to match, no account and no upload.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- What it does -->
+        <section class="relative z-10 flex w-full max-w-5xl flex-col gap-16 md:gap-24">
+            <div class="reveal flex items-center gap-3"><div class="flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-700 bg-neutral-800 shadow-sm"><i data-feather="layers" class="h-5 w-5 text-neutral-300"></i></div><h2 class="text-2xl font-semibold tracking-tight text-white">What it does</h2></div>
+
+            <div class="grid items-center gap-8 md:grid-cols-[1.5fr_1fr] md:gap-12">
+                <div class="reveal shot"><img class="zoomable" src="img/cases/axo/any-image.jpg" alt="Ten screens of different shapes, phone and desktop, in one grid" loading="lazy"></div>
+                <div class="reveal flex flex-col gap-4">
+                    <span class="text-sm font-semibold text-brand-400">01 · Any image</span>
+                    <h3 class="text-xl font-semibold tracking-tight text-white md:text-2xl">The frame fits the image, not the other way round</h3>
+                    <p class="leading-relaxed text-neutral-400">There's no device to match. Each image gets a frame in its own shape, and every card takes up the same area, so a phone screen and a desktop dashboard sit together without one dwarfing the other.</p>
+                </div>
+            </div>
+
+            <div class="grid items-center gap-8 md:grid-cols-[1fr_1.5fr] md:gap-12">
+                <div class="reveal shot md:order-2"><img class="zoomable" src="img/cases/axo/views.jpg" alt="The same three screens in flat, 2.5D and isometric views" loading="lazy"></div>
+                <div class="reveal flex flex-col gap-4 md:order-1">
+                    <span class="text-sm font-semibold text-brand-400">02 · Three views</span>
+                    <h3 class="text-xl font-semibold tracking-tight text-white md:text-2xl">Flat, 2.5D or isometric, and any angle between</h3>
+                    <p class="leading-relaxed text-neutral-400">The three views are one camera in three positions, so switching between them animates. Drag the canvas to find your own angle, and scroll to zoom.</p>
+                </div>
+            </div>
+
+            <div class="grid items-center gap-8 md:grid-cols-[1.5fr_1fr] md:gap-12">
+                <div class="reveal shot"><img class="zoomable" src="img/cases/axo/glass.jpg" alt="Close-up of three overlapping screens whose glass frames blur the cards behind them" loading="lazy"></div>
+                <div class="reveal flex flex-col gap-4">
+                    <span class="text-sm font-semibold text-brand-400">03 · Glass frames</span>
+                    <h3 class="text-xl font-semibold tracking-tight text-white md:text-2xl">Glass that blurs what's behind it</h3>
+                    <p class="leading-relaxed text-neutral-400">Each frame blurs whatever sits behind it, including the other cards, the way frosted glass would. You set its thickness, corners and blur, or switch to a solid frame or none.</p>
+                </div>
+            </div>
+
+            <div class="grid items-center gap-8 md:grid-cols-[1fr_1.5fr] md:gap-12">
+                <div class="reveal shot md:order-2"><img class="zoomable" src="img/cases/axo/shadow-glow.jpg" alt="The same row of screens with a soft shadow on a light background and a mint glow on a dark one" loading="lazy"></div>
+                <div class="reveal flex flex-col gap-4 md:order-1">
+                    <span class="text-sm font-semibold text-brand-400">04 · Shadow or glow</span>
+                    <h3 class="text-xl font-semibold tracking-tight text-white md:text-2xl">Lift the cards, or light them</h3>
+                    <p class="leading-relaxed text-neutral-400">Elevation moves the shadow away from the card and softens it. Spread grows or shrinks it. On dark backgrounds, switch to a glow in any colour.</p>
+                </div>
+            </div>
+
+            <div class="grid items-center gap-8 md:grid-cols-[1.5fr_1fr] md:gap-12">
+                <div class="reveal shot"><img class="zoomable" src="img/cases/axo/looks.jpg" alt="Four different scenes made from the same kind of screens" loading="lazy"></div>
+                <div class="reveal flex flex-col gap-4">
+                    <span class="text-sm font-semibold text-brand-400">05 · Randomize</span>
+                    <h3 class="text-xl font-semibold tracking-tight text-white md:text-2xl">One button to find a direction</h3>
+                    <p class="leading-relaxed text-neutral-400">Randomize picks a new view, layout, frame and background while keeping your images. In a video, the Shuffle motion does the same thing on a timer.</p>
+                </div>
+            </div>
+
+            <div class="grid items-center gap-8 md:grid-cols-[1fr_1.5fr] md:gap-12">
+                <div class="reveal shot md:order-2"><img class="zoomable" src="img/cases/axo/ui.jpg" alt="The Axo interface: controls on the left, the scene on the right" loading="lazy"></div>
+                <div class="reveal flex flex-col gap-4 md:order-1">
+                    <span class="text-sm font-semibold text-brand-400">06 · Export</span>
+                    <h3 class="text-xl font-semibold tracking-tight text-white md:text-2xl">An image or a short video</h3>
+                    <p class="leading-relaxed text-neutral-400">Save a PNG up to 3840 px wide, or a video of 3 to 10 seconds in five canvas shapes, from 16:9 to 9:16. The video is drawn frame by frame, so it stays smooth on a slow computer.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Logo -->
+        <section class="relative z-10 flex w-full max-w-5xl flex-col gap-8">
+            <div class="reveal flex items-center gap-3"><div class="flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-700 bg-neutral-800 shadow-sm"><i data-feather="pen-tool" class="h-5 w-5 text-neutral-300"></i></div><h2 class="text-2xl font-semibold tracking-tight text-white">Name and logo</h2></div>
+            <div class="reveal grid items-center gap-10 rounded-3xl border border-neutral-800 bg-[#0b0c11] p-8 md:grid-cols-[auto_1fr] md:p-12">
+                <div class="flex items-end justify-center gap-6">
+                    <img src="img/cases/axo/axo-mark.svg" alt="Axo logo: three rounded plates stacked at an isometric angle" class="h-32 w-32 md:h-40 md:w-40">
+                    <img src="img/cases/axo/axo-mark.svg" alt="" class="h-12 w-12">
+                    <img src="img/cases/axo/axo-mark.svg" alt="" class="h-6 w-6">
+                </div>
+                <p class="leading-relaxed text-neutral-400">Axo is short for axonometric, the family of projections that isometric belongs to. The logo is the product in miniature: three screens, stacked, seen at an angle. It stays readable at 16 px.</p>
+            </div>
+        </section>
+
+        <!-- Design decisions -->
+        <section class="relative z-10 flex w-full max-w-5xl flex-col gap-8">
+            <div class="reveal flex items-center gap-3"><div class="flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-700 bg-neutral-800 shadow-sm"><i data-feather="compass" class="h-5 w-5 text-neutral-300"></i></div><h2 class="text-2xl font-semibold tracking-tight text-white">Design decisions</h2></div>
+            <div class="grid gap-5 md:grid-cols-2">
+                <div class="reveal tile p-7">
+                    <h3 class="text-xl font-semibold text-white">Finished before you touch anything</h3>
+                    <p class="mt-2 leading-relaxed text-neutral-400">The tool opens on a scene that already looks good, built from demo screens. Your first upload replaces them, so you start from a result, not an empty canvas.</p>
+                </div>
+                <div class="reveal delay-100 tile p-7">
+                    <h3 class="text-xl font-semibold text-white">Nothing leaves your browser</h3>
+                    <p class="mt-2 leading-relaxed text-neutral-400">Images are processed on your own computer and never uploaded. That matters when the work is under NDA, and it means there's no account to create.</p>
+                </div>
+                <div class="reveal tile p-7">
+                    <h3 class="text-xl font-semibold text-white">Video drawn frame by frame</h3>
+                    <p class="mt-2 leading-relaxed text-neutral-400">The first version recorded the screen live, and a slow computer saved a three-second clip with five frames in it. Now every frame is drawn and encoded one at a time, however long that takes.</p>
+                </div>
+                <div class="reveal delay-100 tile p-7">
+                    <h3 class="text-xl font-semibold text-white">It tells you what went wrong</h3>
+                    <p class="mt-2 leading-relaxed text-neutral-400">Firefox can't make MP4 video, so the tool saves WebM there instead of failing. Recording has a Stop button, and if an export fails the message names the reason.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to Action -->
+        <div class="reveal relative z-10 flex w-full max-w-5xl flex-col items-center gap-6 border-t border-neutral-800 pt-12 pb-8 md:pt-16">
+            <span class="text-center text-lg text-neutral-400">Need a designer who can take an idea to a working product?</span>
+            <a href="index.html#contact" data-umami-event="Get in touch" data-umami-event-page="case-axo"
+                class="group inline-flex items-center justify-center gap-2 rounded-full bg-white px-8 py-3.5 text-sm font-semibold text-neutral-950 transition-all hover:bg-neutral-200 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:-translate-y-0.5">
+                Get in touch
+                <i data-feather="arrow-right" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"></i>
+            </a>
+        </div>
+    </div>
+
+    <script src="js/games.js"></script>
+    <script>
+        // Click to load: the tool only downloads when someone wants it.
+        // Once open, a Close button puts the cover back and unloads the tool.
+        const box = document.getElementById('proto-box');
+        const start = document.getElementById('proto-start');
+        const close = document.createElement('button');
+        close.type = 'button';
+        close.className = 'absolute right-3 top-3 z-20 inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-neutral-950/80 px-4 py-2 text-sm font-semibold text-white shadow-lg backdrop-blur transition-colors hover:bg-neutral-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400';
+        close.setAttribute('aria-label', 'Close the tool');
+        close.innerHTML = '<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>Close';
+
+        start.addEventListener('click', function () {
+            const frame = document.createElement('iframe');
+            frame.src = 'prototypes/axo/index.html';
+            frame.title = 'Axo mockup maker';
+            frame.className = 'absolute inset-0 h-full w-full border-0';
+            start.replaceWith(frame);
+            box.appendChild(close);
+        });
+        close.addEventListener('click', function () {
+            const frame = box.querySelector('iframe');
+            if (frame) frame.replaceWith(start);
+            close.remove();
+            start.focus();
+            box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+    </script>
+</body>
+
+</html>

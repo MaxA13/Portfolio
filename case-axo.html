@@ -122,7 +122,7 @@
             <div class="reveal flex flex-col gap-4">
                 <div class="flex items-center gap-3"><div class="flex h-10 w-10 items-center justify-center rounded-lg border border-brand-500/30 bg-brand-500/10 shadow-sm"><i data-feather="cpu" class="h-5 w-5 text-brand-400"></i></div><h2 class="text-2xl font-semibold tracking-tight text-white">How I built it with AI</h2></div>
                 <p class="max-w-3xl leading-relaxed text-neutral-400">This is an old idea of mine: a tool that makes design work look good in a presentation. Now it's live, and anyone can use it. I wrote the brief, decided what the tool should and shouldn't do, and tested every version. Claude Code wrote the rendering code.</p>
-                <p class="max-w-3xl leading-relaxed text-neutral-400">My part was scope and judgement: which controls earn a place, what the defaults are, and what breaks in real use. I found that recording after a preview never finished, and that Firefox couldn't save a video at all. Both are fixed.</p>
+                <p class="max-w-3xl leading-relaxed text-neutral-400">My part was scope and judgement: which controls earn a place, and what breaks in real use.</p>
             </div>
             <div class="grid w-full gap-6 md:grid-cols-2">
                 <div class="reveal tile p-7">
@@ -131,7 +131,7 @@
                 </div>
                 <div class="reveal delay-100 tile p-7">
                     <span class="text-xs font-semibold uppercase tracking-wider text-brand-400">I added</span>
-                    <p class="mt-3 leading-relaxed text-neutral-300">The idea, the scope, the defaults and the bug reports from using it on my own cases.</p>
+                    <p class="mt-3 leading-relaxed text-neutral-300">What to build, what to leave out, and what broke in real use.</p>
                 </div>
             </div>
         </section>
@@ -206,81 +206,9 @@
             </div>
         </section>
 
-        <!-- What it does -->
-        <section class="relative z-10 flex w-full max-w-5xl flex-col gap-16 md:gap-24">
-            <div class="reveal flex items-center gap-3"><div class="flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-700 bg-neutral-800 shadow-sm"><i data-feather="layers" class="h-5 w-5 text-neutral-300"></i></div><h2 class="text-2xl font-semibold tracking-tight text-white">What it does</h2></div>
-
-            <div class="grid items-center gap-8 md:grid-cols-[1.5fr_1fr] md:gap-12">
-                <div class="reveal shot"><img class="zoomable" src="img/cases/axo/any-image.jpg" alt="Ten screens of different shapes, phone and desktop, in one grid" loading="lazy"></div>
-                <div class="reveal flex flex-col gap-4">
-                    <span class="text-sm font-semibold text-brand-400">01 · Any image</span>
-                    <h3 class="text-xl font-semibold tracking-tight text-white md:text-2xl">The frame fits the image, not the other way round</h3>
-                    <p class="leading-relaxed text-neutral-400">There's no device to match. Each image gets a frame in its own shape, and every card takes up the same area, so a phone screen and a desktop dashboard sit together without one dwarfing the other.</p>
-                </div>
-            </div>
-
-            <div class="grid items-center gap-8 md:grid-cols-[1fr_1.5fr] md:gap-12">
-                <div class="reveal shot md:order-2"><img class="zoomable" src="img/cases/axo/views.jpg" alt="The same three screens in flat, 2.5D and isometric views" loading="lazy"></div>
-                <div class="reveal flex flex-col gap-4 md:order-1">
-                    <span class="text-sm font-semibold text-brand-400">02 · Three views</span>
-                    <h3 class="text-xl font-semibold tracking-tight text-white md:text-2xl">Flat, 2.5D or isometric, and any angle between</h3>
-                    <p class="leading-relaxed text-neutral-400">The three views are one camera in three positions, so switching between them animates. Drag the canvas to find your own angle, and scroll to zoom.</p>
-                </div>
-            </div>
-
-            <div class="grid items-center gap-8 md:grid-cols-[1.5fr_1fr] md:gap-12">
-                <div class="reveal shot"><img class="zoomable" src="img/cases/axo/glass.jpg" alt="Close-up of three overlapping screens whose glass frames blur the cards behind them" loading="lazy"></div>
-                <div class="reveal flex flex-col gap-4">
-                    <span class="text-sm font-semibold text-brand-400">03 · Glass frames</span>
-                    <h3 class="text-xl font-semibold tracking-tight text-white md:text-2xl">Glass that blurs what's behind it</h3>
-                    <p class="leading-relaxed text-neutral-400">Each frame blurs whatever sits behind it, including the other cards, the way frosted glass would. You set its thickness, corners and blur, or switch to a solid frame or none.</p>
-                </div>
-            </div>
-
-            <div class="grid items-center gap-8 md:grid-cols-[1fr_1.5fr] md:gap-12">
-                <div class="reveal shot md:order-2"><img class="zoomable" src="img/cases/axo/shadow-glow.jpg" alt="The same row of screens with a soft shadow on a light background and a mint glow on a dark one" loading="lazy"></div>
-                <div class="reveal flex flex-col gap-4 md:order-1">
-                    <span class="text-sm font-semibold text-brand-400">04 · Shadow or glow</span>
-                    <h3 class="text-xl font-semibold tracking-tight text-white md:text-2xl">Lift the cards, or light them</h3>
-                    <p class="leading-relaxed text-neutral-400">Elevation moves the shadow away from the card and softens it. Spread grows or shrinks it. On dark backgrounds, switch to a glow in any colour.</p>
-                </div>
-            </div>
-
-            <div class="grid items-center gap-8 md:grid-cols-[1.5fr_1fr] md:gap-12">
-                <div class="reveal shot"><img class="zoomable" src="img/cases/axo/looks.jpg" alt="Four different scenes made from the same kind of screens" loading="lazy"></div>
-                <div class="reveal flex flex-col gap-4">
-                    <span class="text-sm font-semibold text-brand-400">05 · Randomize</span>
-                    <h3 class="text-xl font-semibold tracking-tight text-white md:text-2xl">One button to find a direction</h3>
-                    <p class="leading-relaxed text-neutral-400">Randomize picks a new view, layout, frame and background while keeping your images. In a video, the Shuffle motion does the same thing on a timer.</p>
-                </div>
-            </div>
-
-            <div class="grid items-center gap-8 md:grid-cols-[1fr_1.5fr] md:gap-12">
-                <div class="reveal shot md:order-2"><img class="zoomable" src="img/cases/axo/ui.jpg" alt="The Axo interface: controls on the left, the scene on the right" loading="lazy"></div>
-                <div class="reveal flex flex-col gap-4 md:order-1">
-                    <span class="text-sm font-semibold text-brand-400">06 · Export</span>
-                    <h3 class="text-xl font-semibold tracking-tight text-white md:text-2xl">An image or a short video</h3>
-                    <p class="leading-relaxed text-neutral-400">Save a PNG up to 3840 px wide, or a video of 3 to 10 seconds in five canvas shapes, from 16:9 to 9:16. The video is drawn frame by frame, so it stays smooth on a slow computer.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Logo -->
+        <!-- Key decisions -->
         <section class="relative z-10 flex w-full max-w-5xl flex-col gap-8">
-            <div class="reveal flex items-center gap-3"><div class="flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-700 bg-neutral-800 shadow-sm"><i data-feather="pen-tool" class="h-5 w-5 text-neutral-300"></i></div><h2 class="text-2xl font-semibold tracking-tight text-white">Name and logo</h2></div>
-            <div class="reveal grid items-center gap-10 rounded-3xl border border-neutral-800 bg-[#0b0c11] p-8 md:grid-cols-[auto_1fr] md:p-12">
-                <div class="flex items-end justify-center gap-6">
-                    <img src="img/cases/axo/axo-mark.svg" alt="Axo logo: three rounded plates stacked at an isometric angle" class="h-32 w-32 md:h-40 md:w-40">
-                    <img src="img/cases/axo/axo-mark.svg" alt="" class="h-12 w-12">
-                    <img src="img/cases/axo/axo-mark.svg" alt="" class="h-6 w-6">
-                </div>
-                <p class="leading-relaxed text-neutral-400">Axo is short for axonometric, the family of projections that isometric belongs to. The logo is the product in miniature: three screens, stacked, seen at an angle. It stays readable at 16 px.</p>
-            </div>
-        </section>
-
-        <!-- Design decisions -->
-        <section class="relative z-10 flex w-full max-w-5xl flex-col gap-8">
-            <div class="reveal flex items-center gap-3"><div class="flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-700 bg-neutral-800 shadow-sm"><i data-feather="compass" class="h-5 w-5 text-neutral-300"></i></div><h2 class="text-2xl font-semibold tracking-tight text-white">Design decisions</h2></div>
+            <div class="reveal flex items-center gap-3"><div class="flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-700 bg-neutral-800 shadow-sm"><i data-feather="compass" class="h-5 w-5 text-neutral-300"></i></div><h2 class="text-2xl font-semibold tracking-tight text-white">Key decisions</h2></div>
             <div class="grid gap-5 md:grid-cols-2">
                 <div class="reveal tile p-7">
                     <h3 class="text-xl font-semibold text-white">Finished before you touch anything</h3>
@@ -298,6 +226,78 @@
                     <h3 class="text-xl font-semibold text-white">It tells you what went wrong</h3>
                     <p class="mt-2 leading-relaxed text-neutral-400">Firefox can't make MP4 video, so the tool saves WebM there instead of failing. Recording has a Stop button, and if an export fails the message names the reason.</p>
                 </div>
+            </div>
+        </section>
+
+        <!-- What it does -->
+        <section class="relative z-10 flex w-full max-w-5xl flex-col gap-16 md:gap-24">
+            <div class="reveal flex items-center gap-3"><div class="flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-700 bg-neutral-800 shadow-sm"><i data-feather="layers" class="h-5 w-5 text-neutral-300"></i></div><h2 class="text-2xl font-semibold tracking-tight text-white">What it does</h2></div>
+
+            <div class="grid items-center gap-8 md:grid-cols-[1.5fr_1fr] md:gap-12">
+                <div class="reveal shot"><img class="zoomable" src="img/cases/axo/any-image.jpg" alt="Ten screens of different shapes, phone and desktop, in one grid" loading="lazy"></div>
+                <div class="reveal flex flex-col gap-4">
+                    <span class="text-sm font-semibold text-brand-400">01 · Any image</span>
+                    <h3 class="text-xl font-semibold tracking-tight text-white md:text-2xl">The frame fits the image, not the other way round</h3>
+                    <p class="leading-relaxed text-neutral-400">There's no device to match. Each image gets a frame in its own shape, so a phone screen and a desktop dashboard sit together.</p>
+                </div>
+            </div>
+
+            <div class="grid items-center gap-8 md:grid-cols-[1fr_1.5fr] md:gap-12">
+                <div class="reveal shot md:order-2"><img class="zoomable" src="img/cases/axo/views.jpg" alt="The same three screens in flat, 2.5D and isometric views" loading="lazy"></div>
+                <div class="reveal flex flex-col gap-4 md:order-1">
+                    <span class="text-sm font-semibold text-brand-400">02 · Three views</span>
+                    <h3 class="text-xl font-semibold tracking-tight text-white md:text-2xl">Flat, 2.5D or isometric, and any angle between</h3>
+                    <p class="leading-relaxed text-neutral-400">Drag the canvas to find your own angle, and scroll to zoom.</p>
+                </div>
+            </div>
+
+            <div class="grid items-center gap-8 md:grid-cols-[1.5fr_1fr] md:gap-12">
+                <div class="reveal shot"><img class="zoomable" src="img/cases/axo/glass.jpg" alt="Close-up of three overlapping screens whose glass frames blur the cards behind them" loading="lazy"></div>
+                <div class="reveal flex flex-col gap-4">
+                    <span class="text-sm font-semibold text-brand-400">03 · Glass frames</span>
+                    <h3 class="text-xl font-semibold tracking-tight text-white md:text-2xl">Glass that blurs what's behind it</h3>
+                    <p class="leading-relaxed text-neutral-400">Each frame blurs whatever sits behind it, including the other cards, the way frosted glass would. You set its thickness, corners and blur, or switch to a solid frame or none.</p>
+                </div>
+            </div>
+
+            <div class="grid items-center gap-8 md:grid-cols-[1fr_1.5fr] md:gap-12">
+                <div class="reveal shot md:order-2"><img class="zoomable" src="img/cases/axo/shadow-glow.jpg" alt="The same row of screens with a soft shadow on a light background and a mint glow on a dark one" loading="lazy"></div>
+                <div class="reveal flex flex-col gap-4 md:order-1">
+                    <span class="text-sm font-semibold text-brand-400">04 · Shadow or glow</span>
+                    <h3 class="text-xl font-semibold tracking-tight text-white md:text-2xl">Lift the cards, or light them</h3>
+                    <p class="leading-relaxed text-neutral-400">Elevation moves the shadow away from the card and softens it, and spread grows or shrinks it. On dark backgrounds, switch to a glow in any colour.</p>
+                </div>
+            </div>
+
+            <div class="grid items-center gap-8 md:grid-cols-[1.5fr_1fr] md:gap-12">
+                <div class="reveal shot"><img class="zoomable" src="img/cases/axo/looks.jpg" alt="Four different scenes made from the same kind of screens" loading="lazy"></div>
+                <div class="reveal flex flex-col gap-4">
+                    <span class="text-sm font-semibold text-brand-400">05 · Randomize</span>
+                    <h3 class="text-xl font-semibold tracking-tight text-white md:text-2xl">One button to find a direction</h3>
+                    <p class="leading-relaxed text-neutral-400">Randomize picks a new view, layout, frame and background while keeping your images. In a video, the Shuffle motion does the same thing on a timer.</p>
+                </div>
+            </div>
+
+            <div class="grid items-center gap-8 md:grid-cols-[1fr_1.5fr] md:gap-12">
+                <div class="reveal shot md:order-2"><img class="zoomable" src="img/cases/axo/ui.jpg" alt="The Axo interface: controls on the left, the scene on the right" loading="lazy"></div>
+                <div class="reveal flex flex-col gap-4 md:order-1">
+                    <span class="text-sm font-semibold text-brand-400">06 · Export</span>
+                    <h3 class="text-xl font-semibold tracking-tight text-white md:text-2xl">An image or a short video</h3>
+                    <p class="leading-relaxed text-neutral-400">Save a PNG up to 3840 px wide, or a video of 3 to 10 seconds in five canvas shapes, from 16:9 to 9:16.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Logo -->
+        <section class="relative z-10 flex w-full max-w-5xl flex-col gap-8">
+            <div class="reveal flex items-center gap-3"><div class="flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-700 bg-neutral-800 shadow-sm"><i data-feather="pen-tool" class="h-5 w-5 text-neutral-300"></i></div><h2 class="text-2xl font-semibold tracking-tight text-white">Name and logo</h2></div>
+            <div class="reveal grid items-center gap-10 rounded-3xl border border-neutral-800 bg-[#0b0c11] p-8 md:grid-cols-[auto_1fr] md:p-12">
+                <div class="flex items-end justify-center gap-6">
+                    <img src="img/cases/axo/axo-mark.svg" alt="Axo logo: three rounded plates stacked at an isometric angle" class="h-32 w-32 md:h-40 md:w-40">
+                    <img src="img/cases/axo/axo-mark.svg" alt="" class="h-12 w-12">
+                    <img src="img/cases/axo/axo-mark.svg" alt="" class="h-6 w-6">
+                </div>
+                <p class="leading-relaxed text-neutral-400">Axo is short for axonometric, the family of projections that isometric belongs to. The logo is the product in miniature: three screens, stacked, seen at an angle. It stays readable at 16 px.</p>
             </div>
         </section>
 

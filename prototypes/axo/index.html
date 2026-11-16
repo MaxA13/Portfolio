@@ -129,6 +129,7 @@ input[type=range] { width: 100%; accent-color: var(--mint); height: 18px; margin
   .stage { padding: 12px; }
 }
 </style>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="c5802c43-19a1-4467-8fc4-cff970abae1f" data-domains="codexlab.vip" data-auto-track="false"></script>
 </head>
 <body>
   <aside class="panel">
@@ -4580,5 +4581,31 @@ If you want to allow non-zero first timestamps, set firstTimestampBehavior: 'per
 <a id="cp-back" href="../../case-axo.html#prototype" style="display:none;position:fixed;right:12px;bottom:12px;z-index:2147483000;align-items:center;gap:6px;padding:9px 14px;border-radius:999px;background:rgba(16,22,34,.88);color:#fff;font:600 13px/1 Inter,system-ui,sans-serif;text-decoration:none;box-shadow:0 6px 20px rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.12);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)">&#8592; Back to case study</a>
 <script>/* only when the tool is opened on its own, not inside the case page */
 if (window.self === window.top && matchMedia('(min-width: 600px)').matches) document.getElementById('cp-back').style.display = 'inline-flex';</script>
+<script>/* Umami: count the tool's use. Inside the case page the visit is already counted, so only a standalone open is a page view. */
+(function () {
+  var embedded = window.self !== window.top;
+  function send(name, data) {
+    var go = function () { window.umami.track(name, data); };
+    if (window.umami) go(); else window.addEventListener('load', function () { if (window.umami) go(); });
+  }
+  function pick(key) { var b = document.querySelector('.seg[data-key="' + key + '"] button.on'); return b ? b.dataset.val : ''; }
+  function base() { return { where: embedded ? 'case page' : 'standalone', images: document.querySelectorAll('.thumbs > *').length }; }
+  if (!embedded) send(function (props) { return Object.assign({}, props, { title: 'Axo tool' }); });
+  var exportsMap = { png: 'PNG', png2: 'PNG 2x', video: 'Video' };
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest && e.target.closest('#png, #png2, #video, #random, #preview, #bgImage, #grain');
+    if (!b) return;
+    var d = base();
+    if (exportsMap[b.id]) {
+      d.format = exportsMap[b.id]; d.layout = pick('layout'); d.view = pick('view'); d.frame = pick('frameStyle') || pick('frame'); d.aspect = pick('aspect');
+      if (b.id === 'video') { d.motion = pick('motion'); d.duration = pick('duration'); }
+      send('Axo export', d);
+    } else if (b.id === 'random') send('Axo random layout', d);
+    else if (b.id === 'preview') { d.motion = pick('motion'); send('Axo preview motion', d); }
+    else send('Axo background', Object.assign(d, { option: b.id === 'grain' ? 'grain' : 'image' }));
+  }, true);
+  var file = document.getElementById('file');
+  if (file) file.addEventListener('change', function () { if (file.files && file.files.length) send('Axo add images', Object.assign(base(), { added: file.files.length })); });
+})();</script>
 </body>
 </html>

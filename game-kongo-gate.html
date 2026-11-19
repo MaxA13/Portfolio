@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KONGŌ GATE – Slot Game UX Case Study &amp; Prototype | Max Alexandrov</title>
+    <!-- SEO -->
+    <meta name="description" content="A 5×3, 20-line temple-gate slot in carved Japanese metal relief that you can play in the browser: guardian wilds, free spins, three dragon win screens and fully synthesised temple sound.">
+    <link rel="canonical" href="https://codexlab.vip/game-kongo-gate.html">
+    <meta name="author" content="Max Alexandrov">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="CodexLab">
+    <meta property="og:title" content="KONGŌ GATE – Slot Game UX Case Study &amp; Prototype | Max Alexandrov">
+    <meta property="og:description" content="A 5×3, 20-line temple-gate slot in carved Japanese metal relief that you can play in the browser: guardian wilds, free spins, three dragon win screens and fully synthesised temple sound.">
+    <meta property="og:url" content="https://codexlab.vip/game-kongo-gate.html">
+    <meta property="og:image" content="https://codexlab.vip/img/games/kongo-gate/cover.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="KONGŌ GATE – Slot Game UX Case Study &amp; Prototype | Max Alexandrov">
+    <meta name="twitter:description" content="A 5×3, 20-line temple-gate slot in carved Japanese metal relief that you can play in the browser: guardian wilds, free spins, three dragon win screens and fully synthesised temple sound.">
+    <meta name="twitter:image" content="https://codexlab.vip/img/games/kongo-gate/cover.jpg">
+    <!-- /SEO -->
+    <link rel="icon" type="image/svg+xml" href="img/logo/codexlab-mark.svg">
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter for text, Cinzel from the prototype for display type -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Cinzel:wght@600;700;800&display=swap" rel="stylesheet">
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Cinzel', 'Georgia', 'serif'],
+                    },
+                    colors: {
+                        neutral: { 950: '#0a0a0a', 900: '#171717', 800: '#262626', 700: '#404040', 400: '#a3a3a3', 300: '#d4d4d4' },
+                        /* KONGŌ GATE palette: gold = inlay and wins, copper = the guardians, sakura = blossoms */
+                        brand: { 300: '#F6DC8A', 400: '#E2BC5C', 500: '#D4A63C', 600: '#B08830', 700: '#7A5230' },
+                        alt: '#C97A4E',
+                        sakura: '#F2B8C0',
+                        ivory: '#F1E6CF',
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/games.css" rel="stylesheet">
+    <style>
+        body { background-color: #0E0D10; }
+        .font-display { letter-spacing: .04em; }
+        /* full screen: the whole player box goes full screen, so it can carry its own exit button */
+        #proto-box:fullscreen { width: 100vw; height: 100vh; aspect-ratio: auto !important; border: 0; border-radius: 0; }
+        #proto-box:-webkit-full-screen { width: 100vw; height: 100vh; aspect-ratio: auto !important; border: 0; border-radius: 0; }
+        #proto-exit { display: none; }
+        #proto-box:fullscreen #proto-exit { display: inline-flex; }
+        #proto-box:-webkit-full-screen #proto-exit { display: inline-flex; }
+        #proto-box:fullscreen #proto-close { display: none; }
+        #proto-box:-webkit-full-screen #proto-close { display: none; }
+    </style>
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="c5802c43-19a1-4467-8fc4-cff970abae1f" data-domains="codexlab.vip"></script>
+</head>
+
+<body class="antialiased">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-4 py-4 bg-[#0E0D10]/80 backdrop-blur-md border-b border-neutral-800/50 sm:px-12 reveal">
+        <a href="games.html" class="group flex items-center gap-2 text-sm font-medium text-neutral-400 transition-all hover:text-white">
+            <i data-feather="arrow-left" class="h-4 w-4 transition-transform group-hover:-translate-x-1"></i>
+            Game Design
+        </a>
+        <div class="flex items-center gap-6">
+            <a href="#play" class="hidden sm:inline-flex items-center gap-2 text-sm font-medium text-brand-400 hover:text-white transition-colors">
+                <i data-feather="play-circle" class="h-4 w-4"></i> Play prototype
+            </a>
+            <a href="index.html" class="flex items-center gap-3">
+                <img src="img/logo/codexlab-mark.svg" alt="CodexLab logo" class="h-8 w-8">
+                <span class="font-semibold text-white tracking-wide text-sm hidden md:block">Codex<span class="font-normal text-neutral-400">Lab</span></span>
+            </a>
+        </div>
+    </nav>
+
+    <div class="relative flex w-full flex-col items-center gap-10 px-4 pt-24 pb-12 md:gap-16 md:px-8 md:pt-32 md:pb-20 lg:pb-24 lg:pt-36 overflow-hidden">
+
+        <!-- Ambient Background Glows -->
+        <div class="fixed inset-0 z-0 bg-grid pointer-events-none opacity-30"></div>
+        <div class="absolute right-[-10%] top-[5%] z-0 h-96 w-96 rounded-full bg-brand-500/15 blur-[100px] pointer-events-none"></div>
+        <div class="absolute left-[-10%] top-[40%] z-0 h-72 w-72 rounded-full bg-alt/10 blur-[80px] pointer-events-none"></div>
+
+        <!-- Header -->
+        <div class="reveal relative z-10 flex w-full max-w-5xl flex-col items-center gap-4 text-center">
+            <span class="inline-flex items-center gap-1 rounded-full bg-brand-500/10 px-3 py-1 text-sm font-medium text-brand-400 border border-brand-500/20">
+                Game UX/UI Case Study · Video Slot + Live Prototype
+            </span>
+            <h1 class="sr-only">KONGŌ GATE: a temple-gate video slot</h1>
+            <img src="img/games/kongo-gate/logo.webp" alt="KONGŌ GATE logo" class="w-full max-w-md drop-shadow-[0_10px_40px_rgba(212,166,60,0.35)]">
+            <p class="w-full max-w-2xl text-base leading-relaxed text-neutral-300 md:text-lg lg:text-xl italic">
+                “Ring the temple bells, and the bronze guardians wake to fight beside you.”
+            </p>
+        </div>
+
+<!-- Live prototype -->
+<div id="play" class="relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 scroll-mt-24">
+<div class="flex w-full flex-col items-start gap-3">
+    <div class="flex items-center gap-3">
+        <div class="flex h-10 w-10 items-center justify-center rounded-lg border border-[#10b981]/20 bg-[#10b981]/10 shadow-sm">
+            <i data-feather="play-circle" class="h-5 w-5 text-[#10b981]"></i>
+        </div>
+        <span class="font-display text-3xl font-bold uppercase tracking-wide text-white">Live Prototype</span>
+    </div>
+</div>
+<div id="proto-box" class="reveal relative w-full overflow-hidden rounded-2xl border border-brand-500/30 bg-black shadow-[0_0_60px_rgba(212,166,60,0.15)]" style="aspect-ratio:16/9">
+    <button id="proto-start" data-umami-event="Open prototype" data-umami-event-case="kongo-gate" type="button" class="group absolute inset-0 flex h-full w-full items-center justify-center" aria-label="Load and play the KONGŌ GATE prototype">
+        <img src="img/games/kongo-gate/key-art.jpg" alt="" class="absolute inset-0 h-full w-full object-cover opacity-70 transition-opacity duration-300 group-hover:opacity-90">
+        <span class="relative flex flex-col items-center gap-3">
+            <span class="flex h-20 w-20 items-center justify-center rounded-full bg-brand-500 text-neutral-950 shadow-[0_0_40px_rgba(212,166,60,0.6)] transition-transform duration-300 group-hover:scale-110">
+                <i data-feather="play" class="h-9 w-9 translate-x-0.5"></i>
+            </span>
+            <span class="font-display text-2xl font-bold uppercase tracking-widest text-white drop-shadow">Play the prototype</span>
+            <span class="text-xs text-neutral-300">Loads about 11 MB · sound on, M to mute</span>
+        </span>
+    </button>
+</div>
+<div class="reveal flex w-full flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+    <p class="text-sm text-neutral-400 max-w-2xl">No backend and a fake balance; the outcome maths is tuned for demo moments: a win about 1 in 3 spins, a big win about 1 in 23, free spins about 1 in 60. Every sound is synthesised in the browser. Best on a desktop or a phone held sideways. Click the game once to use the keyboard shortcuts.</p>
+    <div class="flex flex-shrink-0 items-center gap-5">
+        <button id="proto-fullscreen" data-umami-event="Prototype full screen" data-umami-event-case="kongo-gate" type="button"
+            class="inline-flex items-center gap-2 rounded-full bg-brand-500 px-6 py-3 text-sm font-semibold text-neutral-950 transition-all hover:shadow-[0_0_30px_rgba(212,166,60,0.5)] hover:-translate-y-0.5">
+            <i data-feather="maximize" class="h-4 w-4"></i> Full screen
+        </button>
+        <a href="prototypes/kongo-gate/index.html" target="_blank" data-umami-event="Prototype new tab" data-umami-event-case="kongo-gate" rel="noopener"
+            class="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-400 transition-colors hover:text-white">
+            Open in new tab <i data-feather="arrow-up-right" class="h-4 w-4"></i>
+        </a>
+    </div>
+</div>
+<div class="reveal grid w-full grid-cols-2 gap-3 md:grid-cols-4">
+    <div class="rounded-xl border border-neutral-700 bg-neutral-800/50 p-4"><span class="font-display text-lg font-bold text-white">Space</span><p class="text-sm text-neutral-400">Spin, slam stop, continue</p></div>
+    <div class="rounded-xl border border-neutral-700 bg-neutral-800/50 p-4"><span class="font-display text-lg font-bold text-white">M</span><p class="text-sm text-neutral-400">Sound on / off</p></div>
+    <div class="rounded-xl border border-brand-500/30 bg-brand-500/5 p-4"><span class="font-display text-lg font-bold text-brand-400">1 · 2 · 3</span><p class="text-sm text-neutral-400">Next spin is a Big, Mega or Epic Win</p></div>
+    <div class="rounded-xl border border-alt/30 bg-alt/5 p-4"><span class="font-display text-lg font-bold text-alt">4 · 5</span><p class="text-sm text-neutral-400">Force free spins · both guardians on the next free spin</p></div>
+</div>
+</div>
+
+<!-- Overview -->
+<div class="relative z-10 flex w-full max-w-5xl flex-col items-start gap-6">
+<h2 class="reveal font-display text-3xl font-bold uppercase tracking-wide text-white">Overview</h2>
+<div class="reveal grid w-full grid-cols-2 gap-4 md:grid-cols-4">
+    <div class="rounded-xl border border-neutral-700 bg-neutral-800/50 p-5"><span class="font-display text-3xl font-bold text-brand-400">5×3</span><p class="text-sm text-neutral-400">reels × rows, 20 paylines</p></div>
+    <div class="rounded-xl border border-neutral-700 bg-neutral-800/50 p-5"><span class="font-display text-3xl font-bold text-alt">2</span><p class="text-sm text-neutral-400">guardian wilds that fill a whole reel</p></div>
+    <div class="rounded-xl border border-neutral-700 bg-neutral-800/50 p-5"><span class="font-display text-3xl font-bold text-brand-300">3</span><p class="text-sm text-neutral-400">dragon win screens: Big, Mega and Epic</p></div>
+    <div class="rounded-xl border border-neutral-700 bg-neutral-800/50 p-5"><span class="font-display text-3xl font-bold text-white">0</span><p class="text-sm text-neutral-400">audio files: every sound is synthesised</p></div>
+</div>
+<div class="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4 md:gap-6">
+<div class="reveal  flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_rgba(212,166,60,0.15)]">
+    <span class="text-xs font-semibold uppercase tracking-wider text-brand-400">Theme</span>
+    <span class="text-sm text-neutral-300">A Buddhist mountain temple gate at dawn in Japan, watched by the two Niō guardian kings. Calm and heavy in the base game, a storm when the guardians wake.</span>
+</div>
+<div class="reveal delay-100 flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_rgba(212,166,60,0.15)]">
+    <span class="text-xs font-semibold uppercase tracking-wider text-brand-400">Art direction</span>
+    <span class="text-sm text-neutral-300">Everything is carved Edo-period metal relief, like a tsuba sword guard: dark shakudō, copper and bronze figures, gold inlay, small sakura blossoms.</span>
+</div>
+<div class="reveal delay-200 flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_rgba(212,166,60,0.15)]">
+    <span class="text-xs font-semibold uppercase tracking-wider text-alt">Hook</span>
+    <span class="text-sm text-neutral-300">THE GUARDIANS AWAKEN free spins. Agyō and Ungyō grow into full-reel wilds; both on one spin triples every win.</span>
+</div>
+<div class="reveal delay-300 flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_rgba(212,166,60,0.15)]">
+    <span class="text-xs font-semibold uppercase tracking-wider text-brand-300">Prototype</span>
+    <span class="text-sm text-neutral-300">A clickable, animated 5×3 / 20-line slot built from the art with plain HTML, CSS and JS, with its own synthesised sound.</span>
+</div>
+</div>
+</div>
+
+<!-- world -->
+<div id="world" class="reveal relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-8 scroll-mt-24">
+<div class="flex w-full flex-col items-start gap-3">
+    <div class="flex items-center gap-3">
+        <div class="flex h-10 w-10 items-center justify-center rounded-lg border border-brand-500/20 bg-brand-500/10 shadow-sm">
+            <i data-feather="globe" class="h-5 w-5 text-brand-400"></i>
+        </div>
+        <span class="font-display text-3xl font-bold uppercase tracking-wide text-white">The World</span>
+    </div>
+</div>
+<div class="lore text-base text-neutral-400 max-w-3xl leading-relaxed">
+    <p>A Buddhist temple stands at the top of a long mountain stair. Its great gate, the <span class="text-neutral-200">niōmon</span>, is watched by the two Niō: the vajra-holding guardian kings, the <span class="text-neutral-200">Kongō rikishi</span> who give the game its name.</p>
+    <p>They stand watch over everyone who climbs to the gate. When a pilgrim proves worthy, a storm gathers, the bronze guardians wake, lightning falls from the vajra and the gate opens its treasure.</p>
+    <p class="lore-quote text-brand-300">Agyō opens his mouth on “A”, the first sound. Ungyō closes his on “Un”, the last. Together, A-Un: the beginning, the end and everything between.</p>
+</div>
+<div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/kongo-gate/game-background.jpg" alt="Calm game backdrop: the gate under a gold sun, the guardians at the edges and a clear centre for the reels" loading="lazy" />
+    <div class="absolute top-4 right-4 rounded bg-black/60 border-white/10 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">Game Background</div>
+</div>
+</div>
+
+<!-- guardians -->
+<div id="guardians" class="relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-8 scroll-mt-24">
+<div class="flex w-full flex-col items-start gap-3">
+    <div class="flex items-center gap-3">
+        <div class="flex h-10 w-10 items-center justify-center rounded-lg border border-alt/20 bg-alt/10 shadow-sm">
+            <i data-feather="shield" class="h-5 w-5 text-alt"></i>
+        </div>
+        <span class="font-display text-3xl font-bold uppercase tracking-wide text-white">The Guardians</span>
+    </div>
+    <p class="text-base text-neutral-400 max-w-3xl">Two kings, one pair. They are always powerful and dignified, never comic or cute. On the reels they are high symbols; in free spins each one grows into a full-reel wild panel.</p>
+</div>
+<div class="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4 md:gap-6">
+<div class="reveal  flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_rgba(212,166,60,0.15)]">
+    <span class="text-xs font-semibold uppercase tracking-wider text-alt">Agyō</span>
+    <span class="text-sm text-neutral-300">Mouth open in a roar, the sound “A”, the beginning. Raises the gold vajra. Fierce, all motion.</span>
+</div>
+<div class="reveal delay-100 flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_rgba(212,166,60,0.15)]">
+    <span class="text-xs font-semibold uppercase tracking-wider text-alt">Ungyō</span>
+    <span class="text-sm text-neutral-300">Mouth closed, the sound “Un”, the end. Raises an open palm to halt evil. Silent resolve.</span>
+</div>
+<div class="reveal delay-200 flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_rgba(212,166,60,0.15)]">
+    <span class="text-xs font-semibold uppercase tracking-wider text-brand-400">The Vajra</span>
+    <span class="text-sm text-neutral-300">The guardians’ thunderbolt weapon: unbreakable like a diamond, unstoppable like lightning. It spins on every big moment.</span>
+</div>
+<div class="reveal delay-300 flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_rgba(212,166,60,0.15)]">
+    <span class="text-xs font-semibold uppercase tracking-wider text-brand-400">The Ryū</span>
+    <span class="text-sm text-neutral-300">Japanese three-claw dragons, guardians of the temple’s heaven. One for each win tier.</span>
+</div>
+</div>
+<div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/kongo-gate/guardians.jpg" alt="Agyō and Ungyō coins with their full-reel guardian wild panels" loading="lazy" />
+    <div class="absolute top-4 right-4 rounded z-20 bg-brand-700/90 border-white/20 shadow-lg backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">Guardian Wilds</div>
+</div>
+</div>
+
+<!-- symbols -->
+<div id="symbols" class="relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-8 scroll-mt-24">
+<div class="flex w-full flex-col items-start gap-3">
+    <div class="flex items-center gap-3">
+        <div class="flex h-10 w-10 items-center justify-center rounded-lg border border-brand-500/20 bg-brand-500/10 shadow-sm">
+            <i data-feather="grid" class="h-5 w-5 text-brand-400"></i>
+        </div>
+        <span class="font-display text-3xl font-bold uppercase tracking-wide text-white">Symbols &amp; Paytable</span>
+    </div>
+    <p class="text-base text-neutral-400 max-w-3xl">Every symbol is a solid carved coin with no holes or cut-outs, so the set reads as one material. High coins have a gold rim and a sakura vine, low coins a plain bronze rim and their own plate shape. Pays are × bet per line for 3 / 4 / 5 of a kind, placeholders tuned for a convincing demo.</p>
+</div>
+<div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/kongo-gate/symbols-high.jpg" alt="High symbols: Agyō, Ungyō, vajra, pagoda, koi and lantern" loading="lazy" />
+    <div class="absolute top-4 right-4 rounded z-20 bg-brand-700/90 border-white/20 shadow-lg backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">High Symbols</div>
+</div>
+<div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/kongo-gate/symbols-special-low.jpg" alt="Lotus Wild, Temple Bell Scatter, and the low symbols Daruma, fan, incense burner and prayer beads" loading="lazy" />
+    <div class="absolute top-4 right-4 rounded bg-black/60 border-white/10 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">Wild · Scatter · Low</div>
+</div>
+<div class="reveal w-full overflow-x-auto rounded-2xl border border-neutral-700 bg-neutral-900/60 px-6 py-2">
+<table class="w-full text-left text-sm">
+<thead><tr class="text-xs uppercase tracking-wider text-neutral-500"><th class="py-3 pr-4 font-semibold">Type</th><th class="py-3 pr-4 font-semibold">Symbol</th><th class="py-3 pr-4 font-semibold hidden md:table-cell">Design</th><th class="py-3 font-semibold">Pays / effect</th></tr></thead>
+<tbody>
+<tr class="border-t border-neutral-800">
+    <td class="py-3 pr-4 font-display text-base font-bold tracking-wide text-brand-400">WILD</td>
+    <td class="py-3 pr-4 font-semibold text-white">Golden Lotus</td>
+    <td class="py-3 pr-4 text-neutral-400 hidden md:table-cell">Gold lotus on a thick gold rim; purity, the gate’s treasure</td>
+    <td class="py-3 text-neutral-300">Reels 2–4, substitutes all but the Scatter</td>
+</tr>
+<tr class="border-t border-neutral-800">
+    <td class="py-3 pr-4 font-display text-base font-bold tracking-wide text-alt">SCATTER</td>
+    <td class="py-3 pr-4 font-semibold text-white">Temple Bell</td>
+    <td class="py-3 pr-4 text-neutral-400 hidden md:table-cell">Bronze bonshō on a carved plate</td>
+    <td class="py-3 text-neutral-300">3 / 4 / 5 anywhere = 8 / 12 / 15 free spins, pays 2 / 10 / 50 × total bet</td>
+</tr>
+<tr class="border-t border-neutral-800">
+    <td class="py-3 pr-4 font-display text-base font-bold tracking-wide text-brand-400">H1</td>
+    <td class="py-3 pr-4 font-semibold text-white">Agyō</td>
+    <td class="py-3 pr-4 text-neutral-400 hidden md:table-cell">Open-mouthed guardian, vajra raised</td>
+    <td class="py-3 text-neutral-300">10 / 40 / 150 · full-reel wild in free spins</td>
+</tr>
+<tr class="border-t border-neutral-800">
+    <td class="py-3 pr-4 font-display text-base font-bold tracking-wide text-brand-400">H2</td>
+    <td class="py-3 pr-4 font-semibold text-white">Ungyō</td>
+    <td class="py-3 pr-4 text-neutral-400 hidden md:table-cell">Closed-mouthed guardian, palm raised</td>
+    <td class="py-3 text-neutral-300">10 / 40 / 150 · full-reel wild in free spins</td>
+</tr>
+<tr class="border-t border-neutral-800">
+    <td class="py-3 pr-4 font-display text-base font-bold tracking-wide text-neutral-300">H3</td>
+    <td class="py-3 pr-4 font-semibold text-white">Vajra</td>
+    <td class="py-3 pr-4 text-neutral-400 hidden md:table-cell">The guardians’ gold thunderbolt weapon</td>
+    <td class="py-3 text-neutral-300">8 / 30 / 100</td>
+</tr>
+<tr class="border-t border-neutral-800">
+    <td class="py-3 pr-4 font-display text-base font-bold tracking-wide text-neutral-300">H4</td>
+    <td class="py-3 pr-4 font-semibold text-white">Pagoda</td>
+    <td class="py-3 pr-4 text-neutral-400 hidden md:table-cell">Five-storey gold pagoda over clouds</td>
+    <td class="py-3 text-neutral-300">6 / 20 / 75</td>
+</tr>
+<tr class="border-t border-neutral-800">
+    <td class="py-3 pr-4 font-display text-base font-bold tracking-wide text-neutral-300">H5</td>
+    <td class="py-3 pr-4 font-semibold text-white">Koi</td>
+    <td class="py-3 pr-4 text-neutral-400 hidden md:table-cell">Koi among lotus leaves</td>
+    <td class="py-3 text-neutral-300">5 / 15 / 50</td>
+</tr>
+<tr class="border-t border-neutral-800">
+    <td class="py-3 pr-4 font-display text-base font-bold tracking-wide text-neutral-300">H6</td>
+    <td class="py-3 pr-4 font-semibold text-white">Lantern</td>
+    <td class="py-3 pr-4 text-neutral-400 hidden md:table-cell">Stone temple lantern</td>
+    <td class="py-3 text-neutral-300">4 / 12 / 40</td>
+</tr>
+<tr class="border-t border-neutral-800">
+    <td class="py-3 pr-4 font-display text-base font-bold tracking-wide text-neutral-300">LOW</td>
+    <td class="py-3 pr-4 font-semibold text-white">Daruma · Fan · Incense · Beads</td>
+    <td class="py-3 pr-4 text-neutral-400 hidden md:table-cell">Bronze-rim plates, each with its own silhouette</td>
+    <td class="py-3 text-neutral-300">Daruma 2/5/20 · Fan 2/5/15 · Incense 1/4/12 · Beads 1/3/10</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/kongo-gate/paytable.jpg" alt="The in-game paytable menu with live values at the current bet" loading="lazy" />
+    <div class="absolute top-4 right-4 rounded bg-black/60 border-white/10 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">In-game Paytable</div>
+</div>
+</div>
+
+<!-- screens -->
+<div id="screens" class="relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-8 scroll-mt-24">
+<div class="flex w-full flex-col items-start gap-3">
+    <div class="flex items-center gap-3">
+        <div class="flex h-10 w-10 items-center justify-center rounded-lg border border-brand-500/20 bg-brand-500/10 shadow-sm">
+            <i data-feather="monitor" class="h-5 w-5 text-brand-400"></i>
+        </div>
+        <span class="font-display text-3xl font-bold uppercase tracking-wide text-white">Screens</span>
+    </div>
+    <p class="text-base text-neutral-400 max-w-3xl">A 16:9 main game with portrait splash and intro art for mobile. Both backdrops keep a calm, dark centre behind the reels; the free spins version turns the same scene into a storm.</p>
+</div>
+<div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/kongo-gate/main-screen.jpg" alt="Main game screen in the prototype" loading="lazy" />
+    <div class="absolute top-4 right-4 rounded z-20 bg-brand-700/90 border-white/20 shadow-lg backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">Main Game</div>
+</div>
+<div class="grid w-full grid-cols-1 gap-6 md:grid-cols-2 ">
+<div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/kongo-gate/cover.jpg" alt="Splash screen with the KONGŌ GATE logo and Tap to start" loading="lazy" />
+    <div class="absolute top-4 right-4 rounded bg-black/60 border-white/10 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">Splash</div>
+</div>
+<div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/kongo-gate/game-background-storm.jpg" alt="Free spins backdrop: storm clouds, gold lightning, guardians with glowing eyes" loading="lazy" />
+    <div class="absolute top-4 right-4 rounded bg-black/60 border-white/10 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">Storm Backdrop</div>
+</div>
+</div>
+<div class="grid w-full grid-cols-1 gap-6 grid-cols-2 md:grid-cols-[1fr_1fr_2fr] items-start">
+<div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/kongo-gate/splash-mobile.jpg" alt="Mobile splash, 9:16" loading="lazy" />
+    <div class="absolute top-4 right-4 rounded bg-black/60 border-white/10 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">Splash · Mobile</div>
+</div>
+<div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/kongo-gate/free-spins-mobile.jpg" alt="Mobile free spins intro, 9:16" loading="lazy" />
+    <div class="absolute top-4 right-4 rounded bg-black/60 border-white/10 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">Free Spins · Mobile</div>
+</div>
+<div class="col-span-2 flex flex-col gap-6 md:col-span-1"><div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/kongo-gate/free-spins-intro-art.jpg" alt="Free spins intro art with the blank plate for the title" loading="lazy" />
+    <div class="absolute top-4 right-4 rounded bg-black/60 border-white/10 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">Intro · Art</div>
+</div><div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/kongo-gate/free-spins-intro.jpg" alt="Free spins intro in the prototype: 8 free spins, The Guardians Awaken" loading="lazy" />
+    <div class="absolute top-4 right-4 rounded bg-black/60 border-white/10 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">Intro · Live</div>
+</div></div>
+</div>
+</div>
+
+<!-- wins -->
+<div id="wins" class="relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-8 scroll-mt-24">
+<div class="flex w-full flex-col items-start gap-3">
+    <div class="flex items-center gap-3">
+        <div class="flex h-10 w-10 items-center justify-center rounded-lg border border-alt/20 bg-alt/10 shadow-sm">
+            <i data-feather="award" class="h-5 w-5 text-alt"></i>
+        </div>
+        <span class="font-display text-3xl font-bold uppercase tracking-wide text-white">Dragon Win Screens</span>
+    </div>
+    <p class="text-base text-neutral-400 max-w-3xl">Each tier adds dragons, colour and drama. Big Win: one iron dragon, claws spread, guarding. Mega Win: twin dragons, bronze and gold, holding the sacred pearl. Epic Win: one golden dragon cradling the pearl, in flames. Plaques use the same engraved serif as the logo.</p>
+</div>
+<div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/kongo-gate/dragons.jpg" alt="The three dragon panels with their plaques: iron, bronze and gold" loading="lazy" />
+    <div class="absolute top-4 right-4 rounded z-20 bg-brand-700/90 border-white/20 shadow-lg backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">Dragon Panels</div>
+</div>
+<div class="grid w-full grid-cols-1 gap-6 md:grid-cols-3 ">
+<div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/kongo-gate/big-win.jpg" alt="Big Win in the prototype" loading="lazy" />
+    <div class="absolute top-4 right-4 rounded bg-black/60 border-white/10 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">Big Win</div>
+</div>
+<div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/kongo-gate/mega-win.jpg" alt="Mega Win in the prototype" loading="lazy" />
+    <div class="absolute top-4 right-4 rounded bg-black/60 border-white/10 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">Mega Win</div>
+</div>
+<div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/kongo-gate/epic-win.jpg" alt="Epic Win in the prototype, with flames at the sides" loading="lazy" />
+    <div class="absolute top-4 right-4 rounded bg-black/60 border-white/10 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">Epic Win</div>
+</div>
+</div>
+<div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/kongo-gate/win-plaques.jpg" alt="Big Win, Mega Win, Epic Win and Free Spins plaques" loading="lazy" />
+    <div class="absolute top-4 right-4 rounded bg-black/60 border-white/10 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">Plaques</div>
+</div>
+</div>
+
+<!-- ui -->
+<div id="ui" class="relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-8 scroll-mt-24">
+<div class="flex w-full flex-col items-start gap-3">
+    <div class="flex items-center gap-3">
+        <div class="flex h-10 w-10 items-center justify-center rounded-lg border border-brand-500/20 bg-brand-500/10 shadow-sm">
+            <i data-feather="sliders" class="h-5 w-5 text-brand-400"></i>
+        </div>
+        <span class="font-display text-3xl font-bold uppercase tracking-wide text-white">UI Kit &amp; Effects</span>
+    </div>
+    <p class="text-base text-neutral-400 max-w-3xl">Buttons and panels are cast in the same metal as the world. The SPIN button comes as one image and as a base and rotor pair, so only the inner tomoe turns. Lightning and flames are carved gold sprites, not glows, and the vajra is a single four-fold sprite that rotates in code.</p>
+</div>
+<div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/kongo-gate/ui-kit.jpg" alt="Spin button and rotor, autoplay, minus, plus, menu, loading emblem, and the balance, bet and win panels" loading="lazy" />
+    <div class="absolute top-4 right-4 rounded z-20 bg-brand-700/90 border-white/20 shadow-lg backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">UI Kit</div>
+</div>
+<div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/kongo-gate/fx.jpg" alt="Vajra, four carved lightning bolts and two flame halos" loading="lazy" />
+    <div class="absolute top-4 right-4 rounded bg-black/60 border-white/10 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">Vajra · Lightning · Flames</div>
+</div>
+<div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/kongo-gate/logo.webp" alt="KONGŌ GATE logo plaque with the gate roof, clouds and lightning" loading="lazy" />
+    <div class="absolute top-4 right-4 rounded bg-black/60 border-white/10 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">Logo</div>
+</div>
+</div>
+
+<!-- motion -->
+<div id="motion" class="relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-8 scroll-mt-24">
+<div class="flex w-full flex-col items-start gap-3">
+    <div class="flex items-center gap-3">
+        <div class="flex h-10 w-10 items-center justify-center rounded-lg border border-alt/20 bg-alt/10 shadow-sm">
+            <i data-feather="film" class="h-5 w-5 text-alt"></i>
+        </div>
+        <span class="font-display text-3xl font-bold uppercase tracking-wide text-white">The Prototype in Motion</span>
+    </div>
+    <p class="text-base text-neutral-400 max-w-3xl">Real captures from the running prototype. In free spins a guardian that lands is struck by lightning and grows to fill the reel; with both on one spin, ×3 is stamped on the win.</p>
+</div>
+<div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/kongo-gate/guardians-awaken.webp" alt="Free spin: lightning strikes, Agyō and Ungyō expand to full-reel wilds, ×3 stamped" loading="lazy" />
+    <div class="absolute top-4 right-4 rounded z-20 bg-brand-700/90 border-white/20 shadow-lg backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">The Guardians Awaken</div>
+</div>
+<div class="grid w-full grid-cols-1 gap-6 md:grid-cols-2 ">
+<div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/kongo-gate/guardian-strike.jpg" alt="Lightning strikes the reel as a guardian expands" loading="lazy" />
+    <div class="absolute top-4 right-4 rounded bg-black/60 border-white/10 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">Guardian Strike</div>
+</div>
+<div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/kongo-gate/guardians-x3.jpg" alt="Both guardians on one spin: ×3" loading="lazy" />
+    <div class="absolute top-4 right-4 rounded bg-black/60 border-white/10 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">Both Guardians · ×3</div>
+</div>
+</div>
+<div class="grid w-full grid-cols-1 gap-6 md:grid-cols-2 ">
+<div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/kongo-gate/reels-spinning.jpg" alt="Reels spinning with vertical motion blur" loading="lazy" />
+    <div class="absolute top-4 right-4 rounded bg-black/60 border-white/10 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">Heavy Reels</div>
+</div>
+<div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/kongo-gate/line-win.jpg" alt="A line win drawn in gold across the reels" loading="lazy" />
+    <div class="absolute top-4 right-4 rounded bg-black/60 border-white/10 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">Line Win</div>
+</div>
+</div>
+</div>
+
+<!-- style -->
+<div id="style" class="relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-8 scroll-mt-24">
+<div class="flex w-full flex-col items-start gap-3">
+    <div class="flex items-center gap-3">
+        <div class="flex h-10 w-10 items-center justify-center rounded-lg border border-sakura/20 bg-sakura/10 shadow-sm">
+            <i data-feather="feather" class="h-5 w-5 text-sakura"></i>
+        </div>
+        <span class="font-display text-3xl font-bold uppercase tracking-wide text-white">Style Guide</span>
+    </div>
+    <p class="text-base text-neutral-400 max-w-3xl">Carved Edo-period kinko metalwork, like a tsuba: high relief (takabori), gold inlay (zōgan), dark patinated shakudō with nanako dot texture. Soft key light from the top left, museum-photo realism.</p>
+</div>
+<div class="reveal grid w-full grid-cols-2 gap-4 sm:grid-cols-4 md:grid-cols-7">
+<div class="flex flex-col gap-1.5"><div class="swatch" style="background:#1E1E22"></div><span class="text-xs font-semibold text-neutral-200">Shakudō</span><span class="text-xs text-neutral-500">#1E1E22 · Dark metal · plates, reel window</span></div>
+<div class="flex flex-col gap-1.5"><div class="swatch" style="background:#7A5230"></div><span class="text-xs font-semibold text-neutral-200">Bronze</span><span class="text-xs text-neutral-500">#7A5230 · Bells, low coins, frames</span></div>
+<div class="flex flex-col gap-1.5"><div class="swatch" style="background:#B0643C"></div><span class="text-xs font-semibold text-neutral-200">Copper</span><span class="text-xs text-neutral-500">#B0643C · Guardians, dragons, flames</span></div>
+<div class="flex flex-col gap-1.5"><div class="swatch" style="background:#D4A63C"></div><span class="text-xs font-semibold text-neutral-200">Gold</span><span class="text-xs text-neutral-500">#D4A63C · Inlay, rims, paylines</span></div>
+<div class="flex flex-col gap-1.5"><div class="swatch" style="background:#F6DC8A"></div><span class="text-xs font-semibold text-neutral-200">Bright Gold</span><span class="text-xs text-neutral-500">#F6DC8A · Glints, lightning, coins</span></div>
+<div class="flex flex-col gap-1.5"><div class="swatch" style="background:#F2B8C0"></div><span class="text-xs font-semibold text-neutral-200">Sakura</span><span class="text-xs text-neutral-500">#F2B8C0 · Blossoms, petals</span></div>
+<div class="flex flex-col gap-1.5"><div class="swatch" style="background:#F1E6CF"></div><span class="text-xs font-semibold text-neutral-200">Ivory</span><span class="text-xs text-neutral-500">#F1E6CF · All code-drawn text</span></div>
+</div>
+<ul class="reveal grid w-full grid-cols-1 gap-3 text-sm text-neutral-300 md:grid-cols-2">
+<li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-400"></i><span>Every asset is carved metal: symbols, world, dragons, UI and even the lightning.</span></li>
+<li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-400"></i><span>Symbols are solid coin-like medallions: no gaps, the relief fills the face.</span></li>
+<li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-400"></i><span>A limited palette: metal, gold, bronze, copper and sakura. No neon.</span></li>
+<li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-400"></i><span>Sayagata pattern only in the background, at low contrast.</span></li>
+<li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-400"></i><span>Lettering: engraved serif capitals on carved metal plaques, Latin letters only.</span></li>
+<li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-400"></i><span>Authentic details: three-claw ryū, zuiun clouds, kaen flames, Kamakura-era Niō.</span></li>
+</ul>
+</div>
+
+<!-- respect -->
+<div id="respect" class="relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-8 scroll-mt-24">
+<div class="flex w-full flex-col items-start gap-3">
+    <div class="flex items-center gap-3">
+        <div class="flex h-10 w-10 items-center justify-center rounded-lg border border-sakura/20 bg-sakura/10 shadow-sm">
+            <i data-feather="heart" class="h-5 w-5 text-sakura"></i>
+        </div>
+        <span class="font-display text-3xl font-bold uppercase tracking-wide text-white">Respect Rules</span>
+    </div>
+    <p class="text-base text-neutral-400 max-w-3xl">The game borrows from a living religious tradition, so the lore came with rules that every image and line of code had to follow.</p>
+</div>
+<ul class="reveal grid w-full grid-cols-1 gap-3 text-sm text-neutral-300 md:grid-cols-2">
+<li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-sakura"></i><span>A Buddhist temple gate (niōmon), never a Shinto torii.</span></li>
+<li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-sakura"></i><span>No Buddha figure anywhere: not a symbol, a character or a jackpot.</span></li>
+<li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-sakura"></i><span>No kanji or fake Japanese script. AI draws fake kanji, so all text is in Latin letters.</span></li>
+<li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-sakura"></i><span>No manji symbol, no sutra text, no real temple names.</span></li>
+<li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-sakura"></i><span>Guardians and dragons always powerful and dignified, never comic, cute or sexualised.</span></li>
+<li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-sakura"></i><span>Before showing it to a Japanese audience: one native-speaker review.</span></li>
+</ul>
+</div>
+
+<!-- features -->
+<div id="features" class="relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-8 scroll-mt-24">
+<div class="flex w-full flex-col items-start gap-3">
+    <div class="flex items-center gap-3">
+        <div class="flex h-10 w-10 items-center justify-center rounded-lg border border-brand-500/20 bg-brand-500/10 shadow-sm">
+            <i data-feather="zap" class="h-5 w-5 text-brand-400"></i>
+        </div>
+        <span class="font-display text-3xl font-bold uppercase tracking-wide text-white">What the Prototype Shows</span>
+    </div>
+</div>
+<div class="grid w-full grid-cols-1 gap-6 md:grid-cols-2 ">
+<div class="reveal flex flex-col gap-3 rounded-2xl border border-neutral-700 bg-neutral-800/50 p-6">
+<div class="flex items-center gap-2"><i data-feather="rotate-cw" class="h-5 w-5 text-brand-400"></i><span class="font-display text-xl font-bold uppercase tracking-wide text-white">Core Loop</span></div>
+<ul class="flex flex-col gap-1.5 text-sm text-neutral-300">
+<li class="flex gap-2"><span class="text-brand-400">›</span><span>Preloader: the key art pushes in, a tomoe emblem fills with real loading progress, a glint runs across the logo letters</span></li>
+<li class="flex gap-2"><span class="text-brand-400">›</span><span>16:9 stage that scales to any window</span></li>
+<li class="flex gap-2"><span class="text-brand-400">›</span><span>Heavy reels: a lift, motion blur, staggered stops with overshoot and a metal thud</span></li>
+<li class="flex gap-2"><span class="text-brand-400">›</span><span>Slam stop: press SPIN again while the reels spin</span></li>
+<li class="flex gap-2"><span class="text-brand-400">›</span><span>Two bells showing: the last reels slow down and build tension</span></li>
+</ul>
+</div>
+<div class="reveal flex flex-col gap-3 rounded-2xl border border-neutral-700 bg-neutral-800/50 p-6">
+<div class="flex items-center gap-2"><i data-feather="award" class="h-5 w-5 text-brand-300"></i><span class="font-display text-xl font-bold uppercase tracking-wide text-white">Win Presentation</span></div>
+<ul class="flex flex-col gap-1.5 text-sm text-neutral-300">
+<li class="flex gap-2"><span class="text-brand-300">›</span><span>20 paylines drawn in gold, with a flash of carved lightning along each line</span></li>
+<li class="flex gap-2"><span class="text-brand-300">›</span><span>Winning coins glow and pulse; the rest dim</span></li>
+<li class="flex gap-2"><span class="text-brand-300">›</span><span>Big / Mega / Epic at 15× / 40× / 100× the bet, each with its own dragon panel</span></li>
+<li class="flex gap-2"><span class="text-brand-300">›</span><span>The counter climbs through the tiers, panels crossfade, the vajra spins above, coins and sakura fall</span></li>
+</ul>
+</div>
+<div class="reveal flex flex-col gap-3 rounded-2xl border border-neutral-700 bg-neutral-800/50 p-6">
+<div class="flex items-center gap-2"><i data-feather="cloud-lightning" class="h-5 w-5 text-alt"></i><span class="font-display text-xl font-bold uppercase tracking-wide text-white">The Guardians Awaken</span></div>
+<ul class="flex flex-col gap-1.5 text-sm text-neutral-300">
+<li class="flex gap-2"><span class="text-alt">›</span><span>3 / 4 / 5 bells = 8 / 12 / 15 free spins; the bells ring and send gold ripples</span></li>
+<li class="flex gap-2"><span class="text-alt">›</span><span>Intro: lightning strikes the sky beside the carved vajra while the spin count rises</span></li>
+<li class="flex gap-2"><span class="text-alt">›</span><span>The stage turns to storm</span></li>
+<li class="flex gap-2"><span class="text-alt">›</span><span>Agyō or Ungyō lands: lightning strikes the reel and the guardian grows to fill it</span></li>
+<li class="flex gap-2"><span class="text-alt">›</span><span>Both on one spin: ×3 stamped on the win</span></li>
+</ul>
+</div>
+<div class="reveal flex flex-col gap-3 rounded-2xl border border-neutral-700 bg-neutral-800/50 p-6">
+<div class="flex items-center gap-2"><i data-feather="music" class="h-5 w-5 text-sakura"></i><span class="font-display text-xl font-bold uppercase tracking-wide text-white">Sound</span></div>
+<ul class="flex flex-col gap-1.5 text-sm text-neutral-300">
+<li class="flex gap-2"><span class="text-sakura">›</span><span>Bronze temple bell (bonshō), small rin bells, taiko and a wooden knock for buttons</span></li>
+<li class="flex gap-2"><span class="text-sakura">›</span><span>Koto plucks in the Japanese “in” scale for wins</span></li>
+<li class="flex gap-2"><span class="text-sakura">›</span><span>Deep thunder for the storm, coin clinks for count-ups</span></li>
+<li class="flex gap-2"><span class="text-sakura">›</span><span>Agyō roars an open “A”, Ungyō hums a closed “Un”</span></li>
+<li class="flex gap-2"><span class="text-sakura">›</span><span>100% Web Audio synthesis: no audio files, nothing to license</span></li>
+</ul>
+</div>
+</div>
+</div>
+
+<!-- notes -->
+<div id="notes" class="relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-8 scroll-mt-24">
+<div class="flex w-full flex-col items-start gap-3">
+    <div class="flex items-center gap-3">
+        <div class="flex h-10 w-10 items-center justify-center rounded-lg border border-brand-500/20 bg-brand-500/10 shadow-sm">
+            <i data-feather="edit-3" class="h-5 w-5 text-brand-400"></i>
+        </div>
+        <span class="font-display text-3xl font-bold uppercase tracking-wide text-white">Design Notes</span>
+    </div>
+</div>
+<ul class="reveal grid w-full grid-cols-1 gap-3 text-sm text-neutral-300 md:grid-cols-2">
+<li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-400"></i><span><span class="font-semibold text-white">Heavy, not neon.</span> Easing, blur, landing and sound are tuned to feel like carved metal: lift, thud, bronze bell, no bleeps.</span></li>
+<li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-400"></i><span><span class="font-semibold text-white">Only the rotor turns.</span> The SPIN button’s lighting is baked into the art, so only its inner tomoe disc rotates, and a counter-gradient cancels the turning highlight.</span></li>
+<li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-400"></i><span><span class="font-semibold text-white">The art stays untouched.</span> Ungyō faces the other way in the art, so he is mirrored in code; the bet panel is cropped, not squashed, to fit.</span></li>
+<li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-400"></i><span><span class="font-semibold text-white">Tonal sound only.</span> Rain, wind and an electric crackle were tried and cut as noise. The base game is quiet except for a distant bell; free spins add distant thunder.</span></li>
+<li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-400"></i><span><span class="font-semibold text-white">No jumping plaques.</span> Win tiers crossfade between layers of a fixed size, so the plaque never resizes as the counter climbs.</span></li>
+<li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-400"></i><span><span class="font-semibold text-white">Demo maths.</span> An outcome-first engine picks the result, then builds reels that pay it, simulated over many spins to hit the target rates.</span></li>
+<li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-400"></i><span><span class="font-semibold text-white">Made in code.</span> Paylines, gold rims, glows, ripples, coin and petal particles, the logo glint and every sound.</span></li>
+<li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-400"></i><span><span class="font-semibold text-white">Plain stack.</span> HTML, CSS and JavaScript only, no frameworks, no build step, no audio files.</span></li>
+</ul>
+</div>
+
+<!-- Call to Action -->
+<div class="reveal relative z-10 mt-8 flex w-full max-w-5xl flex-col items-center gap-6 rounded-[2rem] border border-neutral-800 bg-gradient-to-br from-neutral-900 to-[#16120d] p-10 text-center shadow-2xl md:p-14">
+    <span class="font-display text-2xl font-bold uppercase tracking-wide text-white md:text-3xl">Building a slot or casual game and need UX, UI or a playable prototype?</span>
+    <div class="flex flex-wrap items-center justify-center gap-4">
+        <a href="#play" class="inline-flex items-center gap-2 rounded-full bg-brand-500 px-7 py-3.5 text-sm font-semibold text-neutral-950 transition-all hover:shadow-[0_0_30px_rgba(212,166,60,0.5)] hover:-translate-y-0.5">
+            <i data-feather="play" class="h-4 w-4"></i> Play the prototype
+        </a>
+        <a href="index.html#contact" data-umami-event="Get in touch" data-umami-event-page="game-kongo-gate" class="inline-flex items-center gap-2 rounded-full border border-neutral-700 px-7 py-3.5 text-sm font-semibold text-white transition-all hover:border-neutral-500 hover:-translate-y-0.5">
+            Get in touch <i data-feather="arrow-right" class="h-4 w-4"></i>
+        </a>
+    </div>
+</div>
+
+    </div>
+
+    <script src="js/games.js"></script>
+    <script>
+        // Load the prototype only when asked: it pulls the full art set.
+        // Once open, a Close button unloads the prototype and puts the cover back.
+        const PROTO = 'prototypes/kongo-gate/index.html';
+        const protoStart = document.getElementById('proto-start');
+        const protoClose = document.createElement('button');
+        protoClose.type = 'button';
+        protoClose.className = 'absolute right-3 top-3 z-20 inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-neutral-950/80 px-4 py-2 text-sm font-semibold text-white shadow-lg backdrop-blur transition-colors hover:bg-neutral-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400';
+        protoClose.id = 'proto-close';
+        protoClose.setAttribute('aria-label', 'Close the prototype');
+        protoClose.innerHTML = '<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>Close';
+        protoClose.addEventListener('click', function () {
+            const frame = document.querySelector('#proto-box iframe');
+            if (frame) frame.replaceWith(protoStart);
+            protoClose.remove();
+            protoStart.focus();
+            document.getElementById('proto-box').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+        const protoBox = document.getElementById('proto-box');
+        const fsElement = () => document.fullscreenElement || document.webkitFullscreenElement;
+        const protoExit = document.createElement('button');
+        protoExit.type = 'button';
+        protoExit.id = 'proto-exit';
+        protoExit.className = 'absolute left-3 top-3 z-20 items-center gap-1.5 rounded-full border border-white/15 bg-neutral-950/60 px-3.5 py-1.5 text-xs font-semibold text-white shadow-lg backdrop-blur transition-colors hover:bg-neutral-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400';
+        protoExit.setAttribute('aria-label', 'Exit full screen');
+        protoExit.innerHTML = '<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 0 1-2 2H3M21 8h-3a2 2 0 0 1-2-2V3M3 16h3a2 2 0 0 1 2 2v3M16 21v-3a2 2 0 0 1 2-2h3"/></svg>Exit full screen';
+        protoExit.addEventListener('click', function () {
+            (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+        });
+        protoBox.appendChild(protoExit);
+        // back from full screen (button or Esc): give the keyboard back to the game
+        const refocus = () => { if (!fsElement()) { const f = protoBox.querySelector('iframe'); if (f) f.focus(); } };
+        document.addEventListener('fullscreenchange', refocus);
+        document.addEventListener('webkitfullscreenchange', refocus);
+        function loadPrototype() {
+            const existing = document.querySelector('#proto-box iframe');
+            if (existing) return existing;
+            const frame = document.createElement('iframe');
+            frame.src = PROTO;
+            frame.title = 'KONGŌ GATE slot prototype';
+            frame.allow = 'fullscreen; autoplay';
+            frame.allowFullscreen = true;
+            frame.className = 'absolute inset-0 h-full w-full border-0';
+            protoStart.replaceWith(frame);
+            document.getElementById('proto-box').appendChild(protoClose);
+            frame.addEventListener('load', function () { frame.focus(); });
+            return frame;
+        }
+        protoStart.addEventListener('click', loadPrototype);
+
+        // Full screen: expand the player box (game + exit button) in place. Where a browser refuses
+        // or never answers (iPhone Safari, in-app browsers), open the game on its own page instead.
+        document.getElementById('proto-fullscreen').addEventListener('click', function () {
+            const frame = loadPrototype();
+            let done = false;
+            const openPage = () => {
+                if (done || fsElement()) return;
+                done = true;
+                location.href = PROTO;
+            };
+            const req = protoBox.requestFullscreen || protoBox.webkitRequestFullscreen;
+            if (!req || document.fullscreenEnabled === false) return openPage();
+            const granted = () => { done = true; frame.focus(); };
+            document.addEventListener('fullscreenchange', granted, { once: true });
+            document.addEventListener('webkitfullscreenchange', granted, { once: true });
+            try {
+                const p = req.call(protoBox);
+                if (p && typeof p.catch === 'function') p.catch(openPage);
+            } catch (e) { openPage(); }
+            setTimeout(openPage, 1200);
+        });
+    </script>
+</body>
+
+</html>

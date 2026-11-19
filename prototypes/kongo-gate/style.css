@@ -14,6 +14,7 @@ img { display: block; -webkit-user-drag: none; user-select: none; }
 #viewport { position: fixed; inset: 0; overflow: hidden; }
 #stage { position: absolute; left: 0; top: 0; width: 2752px; height: 1536px; transform-origin: 0 0; overflow: hidden; background: #000; }
 #game, .layer { position: absolute; inset: 0; }
+#core { position: absolute; left: 0; top: 0; width: 2752px; height: 1536px; transform-origin: 0 0; }   /* reel block */
 .abs { position: absolute; }
 .ctr { position: absolute; transform: translate(-50%, -50%); }
 .noptr { pointer-events: none; }
@@ -277,3 +278,45 @@ img { display: block; -webkit-user-drag: none; user-select: none; }
 .letterShine .sweep { animation: letterSweep 7s cubic-bezier(.45,.05,.55,.95) infinite; animation-delay: 1.5s; }
 #preLogo .letterShine .sweep { animation-duration: 5s; animation-delay: .8s; }
 @keyframes letterSweep { 0% { transform: skewX(-18deg) translateX(0); } 28%, 100% { transform: skewX(-18deg) translateX(3300px); } }
+
+
+/* =====================================================================
+   PORTRAIT (phone held upright): 1536×2752 stage. #core (reel block) is moved + scaled in game.js;
+   everything below only re-places what lives directly on the stage.
+   ===================================================================== */
+#vpFill { position: absolute; inset: -80px; background: center / cover no-repeat; filter: blur(40px) brightness(.32); display: none; }
+#viewport.port #vpFill { display: block; }
+#stage.port .bgimg { width: 1536px; height: 2752px; object-fit: cover; }
+#stage.port #bgfs { filter: brightness(.72) saturate(.7) contrast(1.08); }
+#stage.port #game.fs #vignette { background-color: rgba(20,32,48,.22); }   /* cool storm tint over the darkened backdrop */
+#stage.port #sun { left: 408px; top: 80px; width: 720px; height: 500px; }
+#stage.port #vignette { background:
+  radial-gradient(ellipse 120% 46% at 50% 63%, rgba(0,0,0,0) 60%, rgba(0,0,0,.22) 88%, rgba(0,0,0,.35) 100%); }
+#stage.port .pcanvas { width: 1536px; height: 2752px; }
+#stage.port .panel .lab { font-size: 25px; margin-bottom: 9px; }
+#stage.port .panel .val { font-size: 52px; }
+#stage.port #winPanel .val { font-size: 64px; }
+#stage.port #game.fs #logo, #stage.port #game.fs #logoGlow { opacity: 0; }
+#stage.port #logo, #stage.port #logoGlow { transition: opacity .8s ease; }
+
+#stage.port #bwPanel { left: 768px; top: 1300px; width: 1480px; height: 859px; }
+#stage.port #bwVajra { left: 768px; top: 690px; width: 340px; }
+#stage.port #bwAmount { left: 768px; top: 1900px; font-size: 150px; }
+#stage.port #bwHint { left: 768px; top: 2130px; font-size: 26px; }
+#stage.port .flame { top: 1300px; height: 1150px; }
+
+#stage.port #fsNum { left: 724px; top: 1660px; font-size: 300px; }
+#stage.port #fsPlaque { left: 812px; top: 2064px; width: 820px; }
+#stage.port #fsTap { left: 768px; top: 2290px; font-size: 40px; }
+
+#stage.port #feVajra { left: 768px; top: 900px; width: 320px; }
+#stage.port #fePlaque { left: 768px; top: 1230px; width: 1100px; }
+#stage.port #feLabel { left: 768px; top: 1500px; }
+#stage.port #feAmount { left: 768px; top: 1680px; }
+#stage.port #feTap { left: 768px; top: 1960px; font-size: 34px; }
+
+#stage.port #paySheet { left: 768px; top: 1376px; width: 1440px; padding: 46px 54px 50px; }
+#stage.port #payGrid { grid-template-columns: repeat(4, 1fr); gap: 26px 18px; }
+#stage.port #payRules { grid-template-columns: 1fr; gap: 22px; }
+#stage.port .pitem .nm { font-size: 26px; }
+#stage.port .pitem .py, #stage.port .rule { font-size: 26px; }

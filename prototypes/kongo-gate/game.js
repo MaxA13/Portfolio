@@ -176,6 +176,27 @@ const L = {
   balPanel: { cx: 900, cy: 1415, w: 400 },
   menu: { cx: 2622, cy: 118, d: 110 },
 };
+// PORTRAIT (screen taller than wide): 1536×2752 stage. The reel block (frame, reels, wilds, lines, win
+// panel) keeps its landscape coordinates inside #core, which is moved and scaled as one piece (CORE);
+// logo, panels and buttons get their own portrait positions. Maths, sprites and sound are the same.
+const PORT = typeof window !== 'undefined' && innerWidth / innerHeight < 0.8;
+const CORE = { k: .93, top: 1300 };                 // reel block scale + top edge of the frame on the portrait stage
+CORE.x = 768 - (L.frame.x + L.frame.w / 2) * CORE.k;
+CORE.y = CORE.top - L.frame.y * CORE.k;
+if (PORT) Object.assign(L, {
+  W: 1536, H: 2752,
+  logo: { cx: 768, cy: 960, w: 640 },             // over the foot of the stairs
+  win: { cx: 1376, cy: 308, w: 600 },             // core coordinates (on the frame's top edge), bigger for phones
+  balPanel: { cx: 768, cy: 1192, w: 520 },        // top centre of the game area, under the logo
+  betPanel: { cx: 768, cy: 2318, w: 416, h: 520 * 275 / 1289 },   // bet −/+ centred under the reels
+  minus: { cx: 466, cy: 2318, d: 130 },
+  plus: { cx: 1070, cy: 2318, d: 130 },
+  spin: { cx: 768, cy: 2529, d: 250, rotor: 534 / 740 },
+  auto: { cx: 478, cy: 2529, d: 160 },
+  menu: { cx: 1058, cy: 2529, d: 160 },
+  snd: { cx: 1424, cy: 124, d: 104 },
+  hud: { y: 960, x: [450, 1086], w: 520 },        // free spins counters take the logo's place
+});
 const cellCX = c => L.colX[c] + L.colW / 2;
 const cellCY = r => L.rowY0 + r * L.pitch + L.pitch / 2;
 
@@ -183,7 +204,10 @@ const SYMFILE = { WILD: 'wild_lotus', SC: 'scatter_bell', H1: 'h1_agyo', H2: 'h2
 const SYMNAME = { WILD: 'Lotus Wild', SC: 'Temple Bell', H1: 'Agyō', H2: 'Ungyō', H3: 'Vajra', H4: 'Pagoda', H5: 'Koi', H6: 'Lantern', L1: 'Daruma', L2: 'Fan', L3: 'Incense', L4: 'Beads' };
 const symSrc = id => `sprites/symbols/${SYMFILE[id]}.webp`;
 const A = {
-  bg: 'art/screens/game_bg.webp', bgfs: 'art/screens/game_bg_freespins.webp', intro: 'art/screens/freespins_intro_16x9.webp',
+  keyart: 'art/screens/game_bg.webp',
+  bg: PORT ? 'art/screens/game_bg_portrait.webp' : 'art/screens/game_bg.webp',
+  bgfs: PORT ? 'art/screens/game_bg_portrait.webp' : 'art/screens/game_bg_freespins.webp',   // portrait storm = same art, darkened in CSS
+  intro: PORT ? 'art/screens/freespins_intro_9x16.webp' : 'art/screens/freespins_intro_16x9.webp',
   frame: 'sprites/ui/reel_frame.webp', logo: 'sprites/ui/logo_kongo_gate.webp', tomoe: 'sprites/ui/preloader_tomoe.webp',
   spinBase: 'sprites/ui/btn_spin_base.webp', spinRotor: 'sprites/ui/btn_spin_rotor.webp', auto: 'sprites/ui/btn_autoplay.webp', plus: 'sprites/ui/btn_plus.webp', minus: 'sprites/ui/btn_minus.webp', menu: 'sprites/ui/btn_menu.webp',
   pBal: 'sprites/ui/panel_balance.webp', pBet: 'sprites/ui/panel_bet.webp', pWin: 'sprites/ui/panel_win.webp', pSpare: 'sprites/ui/panel_spare.webp',
@@ -247,6 +271,12 @@ const IMG = {};        // preloaded Image objects (kept so decoded bitmaps stay 
 function build() {
   const stage = document.getElementById('stage');
   U.stage = stage;
+  if (PORT) {
+    stage.classList.add('port'); Object.assign(stage.style, { width: px(L.W), height: px(L.H) });
+    // letterbox on tall phones: blurred copy of the backdrop behind the stage
+    document.getElementById('viewport').classList.add('port');
+    document.getElementById('vpFill').style.backgroundImage = `url("${A.bg}")`;
+  }
   const game = U.game = el('div', '', stage, { id: 'game' });
 
   img(A.bg, 'bgimg', game, { id: 'bg' });
@@ -255,9 +285,20 @@ function build() {
 
   // depth: stage vignette (edges darker, frame area clear) + soft shadow hugging the reel frame
   el('div', 'layer noptr', game, { id: 'vignette' });
-  el('div', 'noptr', game, { id: 'frameShadow', style: { left: px(L.frame.x + 40), top: px(L.frame.y + 40), width: px(L.frame.w - 80), height: px(L.frame.h - 80) } });
-  img(A.frame, '', game, { id: 'frame', style: { left: px(L.frame.x), top: px(L.frame.y), width: px(L.frame.w), height: px(L.frame.h) } });
-  const reelBox = U.reels = el('div', '', game, { id: 'reels', style: { left: px(L.reel.x), top: px(L.reel.y), width: px(L.reel.w), height: px(L.reel.h) } });
+
+  // logo + soft pulsing glow behind it (before the reel block, so the win panel can overlap it in portrait)
+  centre(el('div', 'ctr logoGlow', game, { id: 'logoGlow' }), L.logo.cx, L.logo.cy, L.logo.w * 1.5, L.logo.w * .85);
+  U.logo = centre(el('div', 'ctr', game, { id: 'logo' }), L.logo.cx, L.logo.cy, L.logo.w);
+  U.logoImg = img(A.logo, '', U.logo);
+  U.shine = el('canvas', '', U.logo, { id: 'logoShine', width: 1120, height: 535 });
+  letterShine(U.logo, 'lsGame');
+
+  // reel block: landscape coordinates; in portrait the whole block is moved + scaled
+  const core = U.core = el('div', '', game, { id: 'core' });
+  if (PORT) core.style.transform = `translate(${CORE.x.toFixed(1)}px,${CORE.y.toFixed(1)}px) scale(${CORE.k})`;
+  el('div', 'noptr', core, { id: 'frameShadow', style: { left: px(L.frame.x + 40), top: px(L.frame.y + 40), width: px(L.frame.w - 80), height: px(L.frame.h - 80) } });
+  img(A.frame, '', core, { id: 'frame', style: { left: px(L.frame.x), top: px(L.frame.y), width: px(L.frame.w), height: px(L.frame.h) } });
+  const reelBox = U.reels = el('div', '', core, { id: 'reels', style: { left: px(L.reel.x), top: px(L.reel.y), width: px(L.reel.w), height: px(L.reel.h) } });
   const START = [['H4', 'L4', 'L3'], ['H3', 'H6', 'SC'], ['H1', 'WILD', 'L1'], ['L2', 'H5', 'H6'], ['H2', 'L1', 'L4']];
   for (let c = 0; c < 5; c++) {
     const col = el('div', 'col', reelBox, { style: { left: px(L.colX[c] - L.reel.x) } });
@@ -266,10 +307,10 @@ function build() {
     reels.push(R);
     setReel(R, START[c]);
   }
-  U.wilds = el('div', '', game, { id: 'wilds' });
+  U.wilds = el('div', '', core, { id: 'wilds' });
 
   // fx: paylines svg + lightning + ripples
-  U.fx = el('div', '', game, { id: 'fx' });
+  U.fx = el('div', '', core, { id: 'fx' });
   U.fx.innerHTML = `<svg id="lines" viewBox="0 0 2752 1536" xmlns="http://www.w3.org/2000/svg">
     <defs><filter id="lineGlow" x="-10%" y="-30%" width="120%" height="160%">
       <feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
@@ -277,23 +318,17 @@ function build() {
   U.lineG = U.fx.querySelector('#lineG');
 
   // win panel (hidden unless there is a win) + ×3 stamp
-  U.winPanel = centre(el('div', 'abs', game, { id: 'winPanel' }), L.win.cx, L.win.cy, L.win.w);
+  U.winPanel = centre(el('div', 'abs', core, { id: 'winPanel' }), L.win.cx, L.win.cy, L.win.w);
   img(A.pWin, '', U.winPanel);
   U.winVal = el('div', 'val ivory', U.winPanel);
-  U.stamp = centre(el('div', 'ctr goldtext', game, { id: 'stamp', text: '×3' }), L.win.cx + L.win.w / 2 + 84, L.win.cy - 3);
+  U.stamp = centre(el('div', 'ctr goldtext', core, { id: 'stamp', text: '×3' }), L.win.cx + L.win.w / 2 + 84, L.win.cy - 3);
   U.stamp.style.width = '';
-
-  // logo + soft pulsing glow behind it
-  centre(el('div', 'ctr logoGlow', game, { id: 'logoGlow' }), L.logo.cx, L.logo.cy, L.logo.w * 1.5, L.logo.w * .85);
-  U.logo = centre(el('div', 'ctr', game, { id: 'logo' }), L.logo.cx, L.logo.cy, L.logo.w);
-  U.logoImg = img(A.logo, '', U.logo);
-  U.shine = el('canvas', '', U.logo, { id: 'logoShine', width: 1120, height: 535 });
-  letterShine(U.logo, 'lsGame');
 
   // free spins HUD near the logo
   const hud = el('div', '', game, { id: 'fsHud' });
-  U.fsLeft = panel(hud, A.pSpare, 640, L.logo.cy, 430, 'FREE SPINS');
-  U.fsWin = panel(hud, A.pSpare, 2112, L.logo.cy, 430, 'TOTAL WIN');
+  const H_ = L.hud || { y: L.logo.cy, x: [640, 2112], w: 430 };
+  U.fsLeft = panel(hud, A.pSpare, H_.x[0], H_.y, H_.w, 'FREE SPINS');
+  U.fsWin = panel(hud, A.pSpare, H_.x[1], H_.y, H_.w, 'TOTAL WIN');
 
   // bottom bar + menu
   U.bal = panel(game, A.pBal, L.balPanel.cx, L.balPanel.cy, L.balPanel.w, 'BALANCE');
@@ -313,7 +348,8 @@ function build() {
   U.plusBtn = button(game, A.plus, L.plus, () => changeBet(1), 'plusBtn', 'Raise bet');
   U.menuBtn = button(game, A.menu, L.menu, openPaytable, 'menuBtn', 'Paytable');
   // sound toggle: code-drawn (no sprite exists for it), sits left of the menu
-  const sb = U.sndBtn = centre(el('div', 'btn', game, { id: 'sndBtn', role: 'button', 'aria-label': 'Sound on/off' }), L.menu.cx - 132, L.menu.cy, 84, 84);
+  const SN = L.snd || { cx: L.menu.cx - 132, cy: L.menu.cy, d: 84 };
+  const sb = U.sndBtn = centre(el('div', 'btn', game, { id: 'sndBtn', role: 'button', 'aria-label': 'Sound on/off' }), SN.cx, SN.cy, SN.d, SN.d);
   el('div', 'press', sb, { html: `<svg viewBox="0 0 64 64" aria-hidden="true"><path class="sp" d="M12 25h9l13-11v36L21 39h-9z"/>
     <path class="wv" d="M41 24q6 8 0 16M47 18q11 14 0 28"/><path class="x" d="M41 24l14 16M55 24L41 40"/></svg>` });
   sb.addEventListener('pointerdown', e => { e.preventDefault(); sb.classList.add('down'); });
@@ -321,7 +357,7 @@ function build() {
   sb.addEventListener('click', e => { e.stopPropagation(); toggleSound(); });
   sb.classList.toggle('muted', !SFX.on);
 
-  U.petals = el('canvas', 'pcanvas', game, { width: 1376, height: 768 });
+  U.petals = el('canvas', 'pcanvas', game, { width: L.W / 2, height: L.H / 2 });
 
   buildBigWin(stage);
   buildFsIntro(stage);
@@ -739,9 +775,9 @@ function clearWilds() {
 // =====================================================================
 function buildBigWin(stage) {
   const o = U.bw = el('div', 'overlay', stage, { id: 'bigwin' });
-  U.bwParticles = el('canvas', 'pcanvas', o, { width: 1376, height: 768 });
-  U.bwFlameL = img(A.flame(1), 'flame', o, { style: { left: '640px' } });
-  U.bwFlameR = img(A.flame(2), 'flame', o, { style: { left: '2112px', transform: 'translate(-50%,-50%) scaleX(-1)' } });
+  U.bwParticles = el('canvas', 'pcanvas', o, { width: L.W / 2, height: L.H / 2 });
+  U.bwFlameL = img(A.flame(1), 'flame', o, { style: { left: PORT ? '200px' : '640px' } });
+  U.bwFlameR = img(A.flame(2), 'flame', o, { style: { left: PORT ? '1336px' : '2112px', transform: 'translate(-50%,-50%) scaleX(-1)' } });
   // fixed-size box; one stacked layer per tier (dragon + its plaque), crossfaded on upgrade
   U.bwPanel = el('div', 'ctr', o, { id: 'bwPanel' });
   U.bwLayers = {};
@@ -852,12 +888,13 @@ function particleTick(now) {
     P.acc += P.rate * dt * .9;
     while (P.acc >= 1) {
       P.acc--;
-      if (Math.random() < .93) P.list.push({ k: 'c', x: 688 + (Math.random() - .5) * 360, y: 470, vx: (Math.random() - .5) * 13, vy: -(9 + Math.random() * 10), r: 9 + Math.random() * 8, a: Math.random() * 6, va: .1 + Math.random() * .25 });
-      else P.list.push({ k: 'p', x: Math.random() * 1376, y: -20, vx: .6 + Math.random() * 1.2, vy: 1.2 + Math.random() * 1.6, r: 7 + Math.random() * 6, a: Math.random() * 6, va: (Math.random() - .5) * .08, ph: Math.random() * 6 });
+      const cw = cv.width, ch = cv.height;
+      if (Math.random() < .93) P.list.push({ k: 'c', x: cw / 2 + (Math.random() - .5) * 360, y: ch * (PORT ? .5 : .61), vx: (Math.random() - .5) * 13, vy: -(9 + Math.random() * 10), r: 9 + Math.random() * 8, a: Math.random() * 6, va: .1 + Math.random() * .25 });
+      else P.list.push({ k: 'p', x: Math.random() * cw, y: -20, vx: .6 + Math.random() * 1.2, vy: 1.2 + Math.random() * 1.6, r: 7 + Math.random() * 6, a: Math.random() * 6, va: (Math.random() - .5) * .08, ph: Math.random() * 6 });
     }
   }
   ctx.clearRect(0, 0, cv.width, cv.height);
-  P.list = P.list.filter(p => p.y < 820 && p.x > -40 && p.x < 1420);
+  P.list = P.list.filter(p => p.y < cv.height + 52 && p.x > -40 && p.x < cv.width + 44);
   for (const p of P.list) {
     p.a += p.va * dt;
     if (p.k === 'c') {
@@ -903,7 +940,7 @@ function buildFsIntro(stage) {
 }
 function buildFsEnd(stage) {
   const o = U.fse = el('div', 'overlay', stage, { id: 'fsEnd' });
-  U.fseParticles = el('canvas', 'pcanvas', o, { width: 1376, height: 768 });
+  U.fseParticles = el('canvas', 'pcanvas', o, { width: L.W / 2, height: L.H / 2 });
   img(A.vajra, 'ctr spinc vajra', o, { id: 'feVajra', style: { '--dur': '2.2s' } });
   U.fsePlaque = img(A.plaqueFs, 'ctr', o, { id: 'fePlaque' });
   el('div', 'ctr', o, { id: 'feLabel', text: 'TOTAL WIN' });
@@ -923,11 +960,11 @@ function waitOverlay(o, name, autoMs) {
 }
 
 // ---- intro storm: carved gold bolts strike down beside the carved vajra, each with a sky flash
-const VAJRA_X = 1359; // carved vajra centre on freespins_intro_16x9
+const VAJRA_X = PORT ? 768 : 1359; // carved vajra centre on freespins_intro_16x9 / 9x16
 function stormStrike(big, forceSide) {
   const side = forceSide || (Math.random() < .5 ? -1 : 1);
   // open sky = the gaps between the carved centre bolts and each guardian's flame halo
-  const x = VAJRA_X + side * (250 + Math.random() * 220);
+  const x = VAJRA_X + side * (PORT ? 300 + Math.random() * 200 : 250 + Math.random() * 220);
   const rot = side * (3 + Math.random() * 8);               // lean slightly inward, framing the count
   const h = (big ? 1000 : 720) + Math.random() * 200;
   SFX.stormStrike(big, side);
@@ -1066,7 +1103,7 @@ function closePaytable() { U.pay.classList.remove('show'); S.overlay = null; S.o
 // =====================================================================
 const SPLASH_PORTRAIT = 'art/screens/splash_9x16.webp';
 const PRE = {
-  land: { w: 2752, h: 1536, art: A.bg, logo: [1376, 1000, 900], plate: [1376, 1335, 660], sun: [1376, 255, 1100], demo: 1478 },
+  land: { w: 2752, h: 1536, art: A.keyart, logo: [1376, 1000, 900], plate: [1376, 1335, 660], sun: [1376, 255, 1100], demo: 1478 },
   port: { w: 1536, h: 2752, art: SPLASH_PORTRAIT, logo: [768, 1430, 900], plate: [768, 1850, 660], sun: [768, 190, 900], demo: 2668 },
 };
 const preMode = () => (innerWidth / innerHeight < 0.8 ? 'port' : 'land');
@@ -1075,7 +1112,7 @@ function buildPreloader() {
   const o = U.pre = el('div', '', document.body, { id: 'pre' });
   U.preFill = el('div', '', o, { id: 'preFill' });
   const box = U.preBox = el('div', '', o, { id: 'preBox' });
-  U.preArt = img(A.bg, '', box, { id: 'preArt' });
+  U.preArt = img(PRE[preMode()].art, '', box, { id: 'preArt' });
   U.preSun = el('div', 'ctr', box, { id: 'preSun' });
   el('div', '', box, { id: 'preVignette' });
   U.prePetals = el('canvas', '', box, { id: 'prePetals', width: 688, height: 768 });
@@ -1241,17 +1278,18 @@ function ambientTick(now) {
 
   // petals
   const ctx = U.petals.getContext('2d');
-  ctx.clearRect(0, 0, 1376, 768);
+  const cw = U.petals.width, ch = U.petals.height;
+  ctx.clearRect(0, 0, cw, ch);
   const k = dt / 16.7;
   for (const p of petals) {
     drawPetal(ctx, p, k * .55);
-    if (p.y > 790 || p.x > 1410) resetPetal(p, false);
+    if (p.y > ch + 22 || p.x > cw + 34) resetPetal(p, false);
   }
   requestAnimationFrame(ambientTick);
 }
 function resetPetal(p, anywhere) {
   Object.assign(p, {
-    x: anywhere ? Math.random() * 1376 : -30 + Math.random() * 700, y: anywhere ? Math.random() * 768 : -20,
+    x: anywhere ? Math.random() * L.W / 2 : -30 + Math.random() * L.W / 4, y: anywhere ? Math.random() * L.H / 2 : -20,
     vx: .5 + Math.random() * .9, vy: .5 + Math.random() * .7, r: 5 + Math.random() * 5,
     a: Math.random() * 6, va: (Math.random() - .5) * .05, ph: Math.random() * 6, alpha: .55 + Math.random() * .35,
   });
@@ -1599,6 +1637,9 @@ function fit() {
 function onKey(e) {
   if (e.code === 'Space' || e.key === ' ') { e.preventDefault(); if (!e.repeat) onSpinPress(); return; }
   if (e.key === 'Escape' && S.overlay === 'menu') { closePaytable(); return; }
+  // Esc inside the game: tell the case page (if embedded) to leave its full screen; keys pressed in
+  // an iframe never reach the parent page on their own
+  if (e.key === 'Escape' && window.parent !== window) { window.parent.postMessage({ type: 'kongo-gate:escape' }, '*'); return; }
   if (e.key === 'm' || e.key === 'M') { toggleSound(); return; }
   const dbg = { '1': 'big', '2': 'mega', '3': 'epic', '4': 'fs' }[e.key];
   if (dbg) { S.force = dbg; if (!S.busy && !S.overlay && !S.fs) baseSpin(); return; }
@@ -1608,7 +1649,11 @@ function onKey(e) {
 async function boot() {
   build();
   fit();
-  addEventListener('resize', () => { fit(); layoutPreloader(); });
+  addEventListener('resize', () => {
+    fit(); layoutPreloader();
+    clearTimeout(S.modeT);   // orientation flipped: reload into the other layout (portrait ↔ landscape)
+    S.modeT = setTimeout(() => { if ((innerWidth / innerHeight < 0.8) !== PORT) location.reload(); }, 400);
+  });
   addEventListener('keydown', onKey);
   setControls();
   startPreTick();

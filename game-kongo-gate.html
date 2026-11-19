@@ -54,12 +54,24 @@
     <style>
         body { background-color: #0E0D10; }
         .font-display { letter-spacing: .04em; }
+        .mode-btn { color: #a3a3a3; transition: background-color .2s, color .2s; }
+        .mode-btn:hover { color: #fff; }
+        .mode-btn[aria-pressed="true"] { background: #D4A63C; color: #0E0D10; }
+        /* portrait player: a 9:16 box, centred, never taller than the window */
+        #proto-box.port { aspect-ratio: 9 / 16 !important; width: min(100%, calc((100vh - 150px) * 9 / 16)); align-self: center; }
         /* full screen: the whole player box goes full screen, so it can carry its own exit button */
         #proto-box:fullscreen { width: 100vw; height: 100vh; aspect-ratio: auto !important; border: 0; border-radius: 0; }
         #proto-box:-webkit-full-screen { width: 100vw; height: 100vh; aspect-ratio: auto !important; border: 0; border-radius: 0; }
+        /* in-page full screen, where the browser refuses the real one (iPhone Safari, in-app browsers) */
+        #proto-box.pfs { position: fixed; inset: 0; z-index: 100; width: 100vw; height: 100vh; height: 100dvh; aspect-ratio: auto !important; border: 0; border-radius: 0; margin: 0; }
+        .pfs-on #play { z-index: 200; }   /* lift the player's section above the fixed site nav */
         #proto-exit { display: none; }
         #proto-box:fullscreen #proto-exit { display: inline-flex; }
         #proto-box:-webkit-full-screen #proto-exit { display: inline-flex; }
+        #proto-box.pfs #proto-exit { display: inline-flex; }
+        /* portrait stays a 9:16 game in the middle of a full screen */
+        #proto-box.port:fullscreen iframe, #proto-box.port.pfs iframe { left: 50%; width: min(100vw, calc(100vh * 9 / 16)); transform: translateX(-50%); }
+        #proto-box.port:-webkit-full-screen iframe { left: 50%; width: min(100vw, calc(100vh * 9 / 16)); transform: translateX(-50%); }
     </style>
     <script defer src="https://cloud.umami.is/script.js" data-website-id="c5802c43-19a1-4467-8fc4-cff970abae1f" data-domains="codexlab.vip"></script>
 </head>
@@ -112,9 +124,13 @@
         <span class="font-display text-3xl font-bold uppercase tracking-wide text-white">Live Prototype</span>
     </div>
 </div>
+<div id="proto-mode" role="group" aria-label="Player layout" class="reveal inline-flex rounded-full border border-neutral-700 bg-neutral-900/70 p-1 text-sm font-semibold">
+    <button type="button" data-mode="land" aria-pressed="true" data-umami-event="Prototype layout" data-umami-event-layout="landscape" class="mode-btn inline-flex items-center gap-2 rounded-full px-4 py-2"><i data-feather="monitor" class="h-4 w-4"></i> Landscape</button>
+    <button type="button" data-mode="port" aria-pressed="false" data-umami-event="Prototype layout" data-umami-event-layout="portrait" class="mode-btn inline-flex items-center gap-2 rounded-full px-4 py-2"><i data-feather="smartphone" class="h-4 w-4"></i> Portrait</button>
+</div>
 <div id="proto-box" class="reveal relative w-full overflow-hidden rounded-2xl border border-brand-500/30 bg-black shadow-[0_0_60px_rgba(212,166,60,0.15)]" style="aspect-ratio:16/9">
     <button id="proto-start" data-umami-event="Open prototype" data-umami-event-case="kongo-gate" type="button" class="group absolute inset-0 flex h-full w-full items-center justify-center" aria-label="Load and play the KONGŌ GATE prototype">
-        <img src="img/games/kongo-gate/key-art.jpg" alt="" class="absolute inset-0 h-full w-full object-cover opacity-70 transition-opacity duration-300 group-hover:opacity-90">
+        <img id="proto-cover" src="img/games/kongo-gate/key-art.jpg" alt="" class="absolute inset-0 h-full w-full object-cover opacity-70 transition-opacity duration-300 group-hover:opacity-90">
         <span class="relative flex flex-col items-center gap-3">
             <span class="flex h-20 w-20 items-center justify-center rounded-full bg-brand-500 text-neutral-950 shadow-[0_0_40px_rgba(212,166,60,0.6)] transition-transform duration-300 group-hover:scale-110">
                 <i data-feather="play" class="h-9 w-9 translate-x-0.5"></i>
@@ -125,7 +141,7 @@
     </button>
 </div>
 <div class="reveal flex w-full flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
-    <p class="text-sm text-neutral-400 max-w-2xl">No backend and a fake balance; the outcome maths is tuned for demo moments: a win about 1 in 3 spins, a big win about 1 in 23, free spins about 1 in 60. Every sound is synthesised in the browser. Best on a desktop or a phone held sideways. Click the game once to use the keyboard shortcuts.</p>
+    <p class="text-sm text-neutral-400 max-w-2xl">Fake balance, demo-tuned maths: win ~1 in 3, big win ~1 in 23, free spins ~1 in 60. Landscape or portrait, switch above or turn your phone.</p>
     <div id="proto-actions" class="flex flex-shrink-0 flex-wrap items-center gap-x-5 gap-y-3">
         <button id="proto-fullscreen" data-umami-event="Prototype full screen" data-umami-event-case="kongo-gate" type="button"
             class="inline-flex items-center gap-2 rounded-full bg-brand-500 px-6 py-3 text-sm font-semibold text-neutral-950 transition-all hover:shadow-[0_0_30px_rgba(212,166,60,0.5)] hover:-translate-y-0.5">
@@ -360,6 +376,53 @@
 </div>
 </div>
 
+<!-- portrait -->
+<div id="portrait" class="relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-8 scroll-mt-24">
+<div class="flex w-full flex-col items-start gap-3">
+    <div class="flex items-center gap-3">
+        <div class="flex h-10 w-10 items-center justify-center rounded-lg border border-sakura/20 bg-sakura/10 shadow-sm">
+            <i data-feather="smartphone" class="h-5 w-5 text-sakura"></i>
+        </div>
+        <span class="font-display text-3xl font-bold uppercase tracking-wide text-white">Portrait Mode</span>
+    </div>
+    <p class="text-base text-neutral-400 max-w-3xl">The same game held upright. When the screen is taller than it is wide, the prototype builds a 9:16 layout: the guardians and the temple stay visible at the top, the logo sits on the foot of the stairs, the balance above the reels and the bet and SPIN controls under the thumb. Maths, symbols, effects and sound are exactly the same.</p>
+</div>
+<div class="grid w-full grid-cols-1 gap-6 grid-cols-2 md:grid-cols-4 items-start">
+<div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/kongo-gate/portrait-main.jpg" alt="Portrait main game screen" loading="lazy" />
+    <div class="absolute top-4 right-4 rounded z-20 bg-brand-700/90 border-white/20 shadow-lg backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">Main Game</div>
+</div>
+<div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/kongo-gate/portrait-bigwin.jpg" alt="Big Win in portrait" loading="lazy" />
+    <div class="absolute top-4 right-4 rounded bg-black/60 border-white/10 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">Big Win</div>
+</div>
+<div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/kongo-gate/portrait-fs-intro.jpg" alt="Free spins intro in portrait, on the 9:16 intro art" loading="lazy" />
+    <div class="absolute top-4 right-4 rounded bg-black/60 border-white/10 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">Free Spins Intro</div>
+</div>
+<div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/kongo-gate/portrait-guardians.jpg" alt="Both guardians as full-reel wilds in portrait free spins" loading="lazy" />
+    <div class="absolute top-4 right-4 rounded bg-black/60 border-white/10 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">Guardians</div>
+</div>
+</div>
+<div class="reveal grid w-full grid-cols-1 items-center gap-6 md:grid-cols-[3fr_2fr]">
+<div class="group relative w-full overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-2xl">
+    <img class="zoomable block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105" src="img/games/kongo-gate/portrait-backdrop-rounds.jpg" alt="Two rounds of the portrait backdrop: koi and gold waves at the bottom, then calm stone" loading="lazy" />
+    <div class="absolute top-4 right-4 rounded bg-black/60 border-white/10 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white border">Round 1 → Round 2</div>
+</div>
+<div class="flex flex-col gap-4">
+<div class="reveal  flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_rgba(212,166,60,0.15)]">
+    <span class="text-xs font-semibold uppercase tracking-wider text-sakura">New art: one backdrop</span>
+    <span class="text-sm text-neutral-300">Only the portrait game backdrop was new, made from the landscape scene. The first round put two golden koi in carved waves at the bottom; behind the panels and buttons it was too busy, so the second keeps that area as quiet stone with faint pines and clouds at the edges.</span>
+</div>
+<div class="reveal delay-100 flex flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-800/50 backdrop-blur-sm p-6 transition-all duration-300 hover:scale-105 hover:bg-neutral-800 hover:border-neutral-600 hover:shadow-[0_0_30px_rgba(212,166,60,0.15)]">
+    <span class="text-xs font-semibold uppercase tracking-wider text-brand-400">Reused for the rest</span>
+    <span class="text-sm text-neutral-300">Free spins darken the same backdrop with a cool storm tint in code. The loading screen and the free spins intro use the 9:16 art made earlier.</span>
+</div>
+</div>
+</div>
+</div>
+
 <!-- wins -->
 <div id="wins" class="relative z-10 flex w-full max-w-5xl flex-col items-start gap-6 pt-8 scroll-mt-24">
 <div class="flex w-full flex-col items-start gap-3">
@@ -523,7 +586,7 @@
 <div class="flex items-center gap-2"><i data-feather="rotate-cw" class="h-5 w-5 text-brand-400"></i><span class="font-display text-xl font-bold uppercase tracking-wide text-white">Core Loop</span></div>
 <ul class="flex flex-col gap-1.5 text-sm text-neutral-300">
 <li class="flex gap-2"><span class="text-brand-400">›</span><span>Preloader: the key art pushes in, a tomoe emblem fills with real loading progress, a glint runs across the logo letters</span></li>
-<li class="flex gap-2"><span class="text-brand-400">›</span><span>16:9 stage that scales to any window</span></li>
+<li class="flex gap-2"><span class="text-brand-400">›</span><span>A 16:9 stage for desktop and a 9:16 portrait layout for phones, picked by screen shape</span></li>
 <li class="flex gap-2"><span class="text-brand-400">›</span><span>Heavy reels: a lift, motion blur, staggered stops with overshoot and a metal thud</span></li>
 <li class="flex gap-2"><span class="text-brand-400">›</span><span>Slam stop: press SPIN again while the reels spin</span></li>
 <li class="flex gap-2"><span class="text-brand-400">›</span><span>Two bells showing: the last reels slow down and build tension</span></li>
@@ -579,6 +642,7 @@
 <li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-400"></i><span><span class="font-semibold text-white">No jumping plaques.</span> Win tiers crossfade between layers of a fixed size, so the plaque never resizes as the counter climbs.</span></li>
 <li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-400"></i><span><span class="font-semibold text-white">Demo maths.</span> An outcome-first engine picks the result, then builds reels that pay it, simulated over many spins to hit the target rates.</span></li>
 <li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-400"></i><span><span class="font-semibold text-white">Made in code.</span> Paylines, gold rims, glows, ripples, coin and petal particles, the logo glint and every sound.</span></li>
+<li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-400"></i><span><span class="font-semibold text-white">One game, two layouts.</span> In portrait the reel block (frame, reels, lines, wilds, win panel) moves and scales as one piece and keeps its landscape coordinates; only the logo, panels and buttons have their own positions. Turning the phone reloads into the other layout.</span></li>
 <li class="flex gap-3"><i data-feather="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-400"></i><span><span class="font-semibold text-white">Plain stack.</span> HTML, CSS and JavaScript only, no frameworks, no build step, no audio files.</span></li>
 </ul>
 </div>
@@ -624,9 +688,25 @@
         protoExit.id = 'proto-exit';
         protoExit.className = 'absolute left-3 top-3 z-20 items-center gap-1.5 rounded-full border border-white/15 bg-neutral-950/60 px-3.5 py-1.5 text-xs font-semibold text-white shadow-lg backdrop-blur transition-colors hover:bg-neutral-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400';
         protoExit.setAttribute('aria-label', 'Exit full screen');
-        protoExit.innerHTML = '<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 0 1-2 2H3M21 8h-3a2 2 0 0 1-2-2V3M3 16h3a2 2 0 0 1 2 2v3M16 21v-3a2 2 0 0 1 2-2h3"/></svg>Exit full screen';
+        protoExit.innerHTML = '<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 0 1-2 2H3M21 8h-3a2 2 0 0 1-2-2V3M3 16h3a2 2 0 0 1 2 2v3M16 21v-3a2 2 0 0 1 2-2h3"/></svg>Exit full screen<kbd class="ml-1 hidden rounded border border-white/25 px-1.5 py-px font-sans text-[10px] font-semibold text-neutral-300 sm:inline">Esc</kbd>';
+        const exitPfs = () => {
+            if (!protoBox.classList.contains('pfs')) return;
+            protoBox.classList.remove('pfs'); document.documentElement.classList.remove('pfs-on'); document.documentElement.style.overflow = '';
+            const f = protoBox.querySelector('iframe'); if (f) f.focus();
+        };
         protoExit.addEventListener('click', function () {
-            (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+            if (fsElement()) (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+            else exitPfs();
+        });
+        // Esc leaves full screen: pressed on the page, or inside the game (which forwards it here)
+        const escape = () => {
+            if (fsElement()) (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+            else exitPfs();
+        };
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') escape(); });
+        window.addEventListener('message', e => {
+            const f = protoBox.querySelector('iframe');
+            if (f && e.source === f.contentWindow && e.data && e.data.type === 'kongo-gate:escape') escape();
         });
         protoBox.appendChild(protoExit);
         // back from full screen (button or Esc): give the keyboard back to the game
@@ -649,15 +729,30 @@
         }
         protoStart.addEventListener('click', loadPrototype);
 
+        // Landscape / Portrait: the game picks its layout from the shape of its box, so switching only
+        // reshapes the box (a running game reloads itself into the other layout). Phones held upright
+        // start in portrait.
+        const modeBtns = document.querySelectorAll('#proto-mode .mode-btn');
+        const cover = document.getElementById('proto-cover');
+        function setMode(m) {
+            protoBox.classList.toggle('port', m === 'port');
+            cover.src = m === 'port' ? 'img/games/kongo-gate/key-art-portrait.jpg' : 'img/games/kongo-gate/key-art.jpg';
+            modeBtns.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.mode === m)));
+        }
+        modeBtns.forEach(b => b.addEventListener('click', () => setMode(b.dataset.mode)));
+        if (matchMedia('(max-width: 767px) and (orientation: portrait)').matches) setMode('port');
+
         // Full screen: expand the player box (game + exit button) in place. Where a browser refuses
-        // or never answers (iPhone Safari, in-app browsers), open the game on its own page instead.
+        // or never answers (iPhone Safari, in-app browsers), the box fills the window instead, with the
+        // same Exit button.
         document.getElementById('proto-fullscreen').addEventListener('click', function () {
             const frame = loadPrototype();
             let done = false;
             const openPage = () => {
                 if (done || fsElement()) return;
                 done = true;
-                location.href = PROTO;
+                protoBox.classList.add('pfs'); document.documentElement.classList.add('pfs-on'); document.documentElement.style.overflow = 'hidden';
+                frame.focus();
             };
             const req = protoBox.requestFullscreen || protoBox.webkitRequestFullscreen;
             if (!req || document.fullscreenEnabled === false) return openPage();

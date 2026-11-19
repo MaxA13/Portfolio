@@ -691,11 +691,32 @@
                     <img src="img/ava.png" alt="Max Alexandrov" class="rv mb-8 h-24 w-24 rounded-full border-4 border-neutral-800 object-cover shadow-xl">
                     <p class="rv text-lg font-light text-neutral-300" style="--d:.1s">Hi, I'm Max, an ethical UX specialist helping brands build interfaces that respect their users.</p>
                     <h2 class="rv mt-6 font-heading text-[clamp(2.25rem,6vw,4.5rem)] font-bold leading-[1.05] tracking-tight" style="--d:.2s">Let's build something people can <span class="grad-text">trust</span>.</h2>
-                    <div class="rv mt-10 flex flex-col items-center gap-5" style="--d:.3s">
-                        <a href="mailto:alexandrovlab@gmail.com" data-umami-event="Let's talk" data-umami-event-place="contact" class="magnetic group inline-flex items-center gap-3 rounded-full bg-white px-9 py-4 text-lg font-semibold text-neutral-950 shadow-[0_4px_30px_rgba(255,255,255,0.15)] transition-shadow hover:shadow-[0_4px_40px_rgba(129,140,248,0.5)]">
-                            Let's talk
-                            <svg class="h-5 w-5 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-                        </a>
+                    <form id="contact-form" action="https://api.web3forms.com/submit" method="POST" class="rv mt-10 w-full max-w-xl text-left" style="--d:.3s" novalidate>
+                        <input type="hidden" name="access_key" value="5aadb8df-9700-4907-a7ee-d9e32fba3d73">
+                        <input type="hidden" name="subject" value="New message from codexlab.vip">
+                        <input type="hidden" name="from_name" value="CodexLab portfolio">
+                        <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off">
+                        <div id="form-fields" class="flex flex-col gap-3">
+                            <label class="sr-only" for="cf-email">Your email</label>
+                            <input id="cf-email" name="email" type="email" required autocomplete="email" placeholder="Your email" class="w-full rounded-2xl border border-neutral-800 bg-neutral-950/60 px-5 py-4 text-base text-white placeholder-neutral-500 outline-none transition-colors focus:border-brand-500">
+                            <label class="sr-only" for="cf-message">Message</label>
+                            <textarea id="cf-message" name="message" required rows="4" maxlength="5000" placeholder="What are you working on?" class="w-full resize-y rounded-2xl border border-neutral-800 bg-neutral-950/60 px-5 py-4 text-base text-white placeholder-neutral-500 outline-none transition-colors focus:border-brand-500"></textarea>
+                            <div class="mt-2 flex flex-col items-center gap-3">
+                                <p class="text-center text-xs text-neutral-500">Your message comes straight to my inbox. Nothing else is stored or shared.</p>
+                                <button type="submit" id="cf-send" class="magnetic group inline-flex items-center gap-3 rounded-full bg-white px-9 py-4 text-lg font-semibold text-neutral-950 shadow-[0_4px_30px_rgba(255,255,255,0.15)] transition-shadow hover:shadow-[0_4px_40px_rgba(129,140,248,0.5)] disabled:opacity-60">
+                                    <span id="cf-label">Send message</span>
+                                    <svg class="h-5 w-5 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                                </button>
+                                <p id="cf-error" class="hidden text-center text-sm text-rose-400" role="alert"></p>
+                            </div>
+                        </div>
+                        <div id="form-done" class="hidden flex-col items-center gap-2 rounded-2xl border border-neutral-800 bg-neutral-950/60 px-6 py-10 text-center" role="status" tabindex="-1">
+                            <svg class="h-8 w-8 text-green-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                            <p class="text-lg font-semibold text-white">Thanks, your message is on its way</p>
+                            <p class="text-sm text-neutral-400">I'll reply to your email soon.</p>
+                        </div>
+                    </form>
+                    <div class="rv mt-8 flex flex-col items-center gap-3" style="--d:.4s">
                         <button type="button" id="copy-email" title="Copy email address" aria-label="Copy email address alexandrovlab@gmail.com" class="group inline-flex max-w-full items-center gap-2.5 whitespace-nowrap rounded-full border border-neutral-800 bg-neutral-950/50 px-4 py-2.5 text-neutral-400 transition-colors hover:border-neutral-600 hover:text-white">
                             <svg class="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
                             <span id="copy-feedback" class="text-sm font-medium tracking-wide">alexandrovlab@gmail.com</span>
@@ -788,6 +809,31 @@
                 el.textContent = 'Copied!'; el.classList.add('text-green-400');
                 setTimeout(() => { el.textContent = 'alexandrovlab@gmail.com'; el.classList.remove('text-green-400'); }, 2000);
             });
+        });
+
+        /* ---- contact form (Web3Forms) ---- */
+        const cf = document.getElementById('contact-form');
+        cf.addEventListener('submit', async e => {
+            e.preventDefault();
+            const err = document.getElementById('cf-error'), send = document.getElementById('cf-send'), label = document.getElementById('cf-label');
+            const email = cf.email.value.trim(), msg = cf.message.value.trim();
+            const fail = t => { err.textContent = t; err.classList.remove('hidden'); };
+            err.classList.add('hidden');
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { fail('Please check your email address.'); cf.email.focus(); return; }
+            if (msg.length < 2) { fail('Please write a short message.'); cf.message.focus(); return; }
+            send.disabled = true; label.textContent = 'Sending…';
+            try {
+                const r = await fetch(cf.action, { method: 'POST', headers: { Accept: 'application/json' }, body: new FormData(cf) });
+                const data = await r.json().catch(() => ({}));
+                if (!r.ok || data.success === false) throw new Error();
+                document.getElementById('form-fields').classList.add('hidden');
+                const done = document.getElementById('form-done');
+                done.classList.remove('hidden'); done.classList.add('flex'); done.focus();
+                window.umami?.track('Form sent');
+            } catch {
+                fail("Sorry, it didn't send. Please try again or email me directly below.");
+                send.disabled = false; label.textContent = 'Send message';
+            }
         });
 
         /* ---- game rail: arrows + drag to scroll ---- */
